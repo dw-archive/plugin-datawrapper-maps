@@ -6,6 +6,8 @@
 	background-color   : rgba(250,250,250,0.85);
 	-moz-box-shadow    : 1px 1px 4px black;
 	-webkit-box-shadow : 1px 1px 4px black;
+	box-shadow         : 1px 1px 4px black;
+	text-align         : right; 
 }
 
 .tooltip h2 {
@@ -17,49 +19,62 @@
 	text-transform : capitalize;
 }
 
-.scale {
-	height: 1%; overflow: hidden;
+.scale div {
+	padding     : 1em 1em;
+	font-size   : 0.8em;
+	width       : 35px;
+	white-space : nowrap;
 }
 
 .scale.vertical {
-	padding-bottom: 20px;
+	float        : right;
+	position     : absolute;
+	right        : 0px;
+	padding-left : 10px;
 }
 
-.scale ul {
-	width: -moz-fit-content;
-    width: -webkit-fit-content;
-    width: fit-content;
-	padding: 0;
+.scale.vertical div {
+	border-left  : 1px solid #989898;
+	border-right : 1px solid #989898;
 }
 
-.scale.horizontal ul {
-	height: 1%; overflow: hidden;
-	margin: auto;
+.scale.vertical div:last-child {
+	-moz-border-radius    : 0px 0px 6px 6px;
+	-webkit-border-radius : 0px 0px 6px 6px;
+	border-radius         : 0px 0px 6px 6px;
+	border-bottom         : 1px solid #989898;
 }
 
-.scale li {
-	list-style : none;
-	float      : left;
-    clear      : left;
-	margin     : 6px 0px;
-	line-height: 1em;
+.scale.vertical div:first-child {
+	-moz-border-radius    : 6px 6px 0px 0px;
+	-webkit-border-radius : 6px 6px 0px 0px;
+	border-radius         : 6px 6px 0px 0px;
+	border-top            : 1px solid #989898;
 }
 
-.scale.horizontal li {
-	float      : left;
-	clear      : none;
+.scale.horizontal {
+	text-align  : center;
+	padding-top : 20px;
 }
 
-.scale span {
-	font-size : 0.9em;
+.scale.horizontal div {
+	display       : inline-block;
+	border-top    : 1px solid #989898;
+	border-bottom : 1px solid #989898;
 }
 
-.scale_color {
-	width  : 1em;
-	height : 1em;
-	border : 1px solid #353535;
-	margin : 0 2px 0px 5px;
-	float  : left;
+.scale.horizontal div:last-child {
+	-moz-border-radius    : 0px 6px 6px 0;
+	-webkit-border-radius : 0px 6px 6px 0;
+	border-radius         : 0px 6px 6px 0;
+	border-right          : 1px solid #989898;
+}
+
+.scale.horizontal div:first-child {
+	-moz-border-radius    : 6px 0px 0px 6px;
+	-webkit-border-radius : 6px 0px 0px 6px;
+	border-radius         : 6px 0px 0px 6px;
+	border-left           : 1px solid #989898;
 }
 
 #footer {

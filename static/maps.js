@@ -4,62 +4,132 @@
     // Map
     // -------------------------
 
-    var Map = Datawrapper.Visualizations.Map = function() {
-
+    var startsWith = function(str, starts){
+      if (starts === '') return true;
+      if (str == null || starts == null) return false;
+      str = String(str); starts = String(starts);
+      return str.length >= starts.length && str.slice(0, starts.length) === starts;
     };
 
-    _.extend(Map.prototype, Datawrapper.Visualizations.Base, {
+    var Maps = Datawrapper.Visualizations.Maps = function() {};
 
-        getSVG: function() {
-            throw "getSVG: implement me";
+    _.extend(Maps.prototype, Datawrapper.Visualizations.Base, {
+
+        render: function(el) {
+            el = $(el); me = this;
+            me.loadMap(el);
         },
 
+        /**
+        * Return the path for svg file.
+        */
+        getSVG: function() {
+            return window.vis.meta.__static_path + 'maps/' + me.get('map') + "/map.svg";
+        },
+
+        /**
+        * Parse and return the map's json
+        */
+        getMapMeta: function() {
+            if (me.map_meta != undefined) return me.map_meta;
+            var res = $.ajax({
+                url: window.vis.meta.__static_path + 'maps/' + me.get('map') + "/map.json",
+                async: false,
+                dataType: 'json'
+            });
+            var meta = eval('(' + res.responseText + ')');
+            me.map_meta = meta;
+            return meta;
+        },
+
+        /** Map style, Can be overwrited */
         getStyle: function() {
             return {};
         },
 
+        /**
+        * Can be overwrited. This function return the data as:
+        * Array(geo_code_as_key => {raw:, value:})
+        * value is the raw formated.
+        * @return {Array} 
+        */
+        getDataSeries: function() {
+            var data = new Array();
+            _.each(me.chart.dataSeries()[0].data, function(value, s) {
+                var geo_code = me.chart.rowLabels()[s];
+                data[geo_code]     = {};
+                data[geo_code].raw = value;
+                if (Number(value) == value)
+                    data[geo_code].value = me.chart.formatValue(value, true);
+                else
+                    data[geo_code].value = me.chart.formatValue(value, false);
+            });
+            return data;
+        },
+
+        /**
+        * Loops into svg's paths, filter the given data to
+        * keep only related data.
+        * Provide also the label from svg's paths
+        * @return {Array} 
+        */
+        filterDataWithMapPaths: function(data) {
+            var filtered = Array();
+            _.each(me.map.getLayer('layer0').paths, function(path){
+                var key = path.data['key'];
+                if (data[key] !== undefined) {
+                    filtered[key] = _.extend(data[key], {
+                        label: path.data['label']
+                    });
+                }
+            });
+            return filtered;
+        },
+
         loadMap: function(el) {
             el = $(el);
-            var c = me.initCanvas({});
-            me.initDataSeries(); // set me.data
-            me.map_meta = this.meta['map'];
-            var $map    = $('<div id="map"></div>');
-            me.map      = Kartograph.map($map, me.__w, me.__h);
+            me.__initCanvas({});
+            var $map = $('<div id="map"></div>');
+
+            // FIXME: set the right size
+            me.map = Kartograph.map($map, me.__w, me.__h);
+
+            // Load all the layers (defined in the map.json)
             me.map.loadMap(me.getSVG(), function(){
-                me.map.addLayer(me.map_meta['layer'], {
-                    styles: me.getStyle()
-                    // NOTE: native tooltip. Disabled since we use custom tooltip
-                    // title: function(data) {return data[me.map_meta['label']];}
+
+                // Loops over layers and adds it into map
+                _.each(me.getMapMeta().layers, function(layer){
+                    me.map.addLayer(layer.id, {styles: layer.style});
                 });
-                // set label in data
-                _.each(me.map.getLayer(me.map_meta['layer']).paths, function(path){
-                    if (me.data[path.data[me.map_meta['key']]] !== undefined) {
-                        me.data[path.data[me.map_meta['key']]].label = path.data[me.map_meta['label']];
-                    }
-                });
+
+                me.data = me.filterDataWithMapPaths(me.getDataSeries());
+
                 // colorize
+                // set base color (from custom color if defined)
                 var custom_color = me.get('custom-colors', {});
                 if (custom_color[me.chart.dataSeries()[0].name])
                     var base_color = custom_color[me.chart.dataSeries()[0].name];
                 else
                     var base_color = me.theme.colors.palette[me.get('base-color', 0)];
-                var scale     = chroma.scale([chroma.color(base_color).darken(-75), base_color]).domain(me.chart.dataSeries()[0].data, 5, 'e');
-                me.map.getLayer(me.map_meta['layer']).style('fill', function(data) {
-                    var meta = me.data[data[me.map_meta['key']]];
-                    if (meta !== undefined) {
-                        if (meta.raw == "n/a") {
+                me.scale = me.getScale(me.chart.dataSeries()[0].data, base_color);
+
+                me.map.getLayer('layer0').style('fill', function(path_data) {
+                    var data = me.data[path_data['key']];
+                    if (data !== undefined) {
+                        if (data.raw == "n/a") {
                             var color = "#CECECE";
                         } else {
-                            var color = scale(meta.raw).hex();
+                            var color = me.scale(data.raw).hex();
                         }
-                        me.data[data[me.map_meta['key']]].color = color;
-                        return meta.color;
+                        me.data[path_data['key']].color = color;
+                        return data.color;
                     }
                 });
+
                 // show scale
-                me.showScale(scale);
+                me.showScale(me.scale);
                 // binds mouse events
-                me.map.getLayer(me.map_meta['layer']).on('mouseenter', me.showTooltip).on('mouseleave', me.hideTooltip);
+                me.map.getLayer('layer0').on('mouseenter', me.showTooltip).on('mouseleave', me.hideTooltip);
             });
             el.append($map);
         },
@@ -69,30 +139,30 @@
             $("#map").css({height:h, width:w});
         },
 
+        getScale: function(data, base_color) {
+            return chroma.scale([chroma.color(base_color).darken(-75), base_color]).domain(data, 5, 'e');
+        },
+
         showScale: function(scale) {
-            if (!me.get('show-legend')) {return false;}
             var legend = {
                 position : me.get('legend-position', 'vertical')
             };
             var domains = scale.domain();
             var $scale      = $("<div class='scale'></div>");
-            var $scale_list = $("<ul></ul>");
             domains.every(function(domain, i) {
                 if (domains.length <= i+1) {return false;}
                 var label  = me.chart.get('metadata.describe.number-prepend', '');
-                label     += domain.toFixed(2)+" - "+domains[i+1].toFixed(2);
+                label     += domain.toFixed(0);
                 label     += me.chart.get('metadata.describe.number-append', '');
                 var color  = scale(domain);
-                $scale_list.append("<li><div class=\"scale_color\" style=\"background-color:"+color+"\"></div><span>"+label+"</span></li>");
+                $scale.append("<div style=\"background-color:"+color+"\">> "+label+"</div>");
                 return true;
             });
-            $scale.append($scale_list);
             $('#map').after($scale);
-
             if (legend.position == "vertical") {
-                $scale.addClass("vertical").css('padding-top', $('#map').height() - $scale.outerHeight(true));
+                $scale.addClass("vertical").css('padding-top', $('#map').height()/2 - $scale.outerHeight(true)/2);
                 $('#map').css("float", "left");
-                me.resizeMap(me.__w - $scale_list.outerWidth(false), me.__h);
+                me.resizeMap(me.__w - $scale.outerWidth(true), me.__h);
             } else if (legend.position == "horizontal") {
                 $scale.addClass("horizontal");
                 me.resizeMap(me.__w, me.__h - $scale.outerHeight(true));
@@ -100,13 +170,13 @@
         },
 
         showTooltip: function(data, path, event) {
-            if (me.data[data[me.map_meta['key']]] === undefined) {return;}
+            if (me.data[data['key']] === undefined) {return;}
             var $tooltip = $("<div class='tooltip'></div>");
             // set title
-            $title = $("<h2></h2>").text(me.data[data[me.map_meta['key']]].label);
+            $title = $("<h2></h2>").text(me.data[data['key']].label);
             $tooltip.append($title);
             // set value
-            $value = $("<div></div>").text(me.data[data[me.map_meta['key']]].value);
+            $value = $("<div></div>").text(me.data[data['key']].value);
             $tooltip.append($value);
             // show
             $('#chart').append($tooltip);
@@ -128,27 +198,8 @@
         hideTooltip: function(data, path, event) {
             $('#chart').find('.tooltip').remove();
         },
-        
-        /**
-         * 
-         *
-         * @return {Array} Generated data
-         */
-        initDataSeries: function() {
-            me.data = new Array();
-            _.each(me.chart.dataSeries()[0].data, function(value, s) {
-                var geo_code = me.chart.rowLabels()[s];
-                me.data[geo_code]       = {};
-                me.data[geo_code].raw   = value;
-                if (Number(value) == value)
-                    me.data[geo_code].value = me.chart.formatValue(value, true);
-                else
-                    me.data[geo_code].value = me.chart.formatValue(value, false);
-            });
-            return me.data;
-        },
 
-        initCanvas: function(canvas) {
+        __initCanvas: function(canvas) {
             var me = this;
             canvas = _.extend({
                 w: me.__w,
