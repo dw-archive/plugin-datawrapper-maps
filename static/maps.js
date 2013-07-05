@@ -28,6 +28,30 @@
         },
 
         /**
+        * Return the label for the given path key.
+        * If the translation doens't exist in the <map>/locale/<lang>.json file,
+        * The label is retrieved in the svg file at the 'data-label' field.
+        */
+        getLabel: function(key) {
+            if (me._localized_labels === undefined) {
+                var res = $.ajax({
+                    url: window.vis.meta.__static_path + 'maps/' + me.get('map') + "/locale/" + me.chart.locale.replace('-', '_') +".json",
+                    async: false,
+                    dataType: 'json'
+                });
+                me._localized_labels = (res.status == 200) ? eval('(' + res.responseText + ')') : null;
+            }
+            if (me._localized_labels != undefined && me._localized_labels[key] != undefined) {
+                return me._localized_labels[key];
+            }
+            var path = me.map.getLayer('layer0').getPaths({"key":key.toString()});
+            if (path.length > 0) {
+                return me.map.getLayer('layer0').getPaths({key:key.toString()})[0].data.label;    
+            }
+            return "";
+        },
+
+        /**
         * Parse and return the map's json
         */
         getMapMeta: function() {
@@ -59,6 +83,7 @@
                 var geo_code = me.chart.rowLabels()[s];
                 data[geo_code]     = {};
                 data[geo_code].raw = value;
+                data[geo_code].label = me.getLabel(me.chart.rowLabels()[s]);
                 if (Number(value) == value)
                     data[geo_code].value = me.chart.formatValue(value, true);
                 else
@@ -70,17 +95,15 @@
         /**
         * Loops into svg's paths, filter the given data to
         * keep only related data.
-        * Provide also the label from svg's paths
         * @return {Array} 
         */
         filterDataWithMapPaths: function(data) {
             var filtered = Array();
             _.each(me.map.getLayer('layer0').paths, function(path){
                 var key = path.data['key'];
+                console.log(key);
                 if (data[key] !== undefined) {
-                    filtered[key] = _.extend(data[key], {
-                        label: path.data['label']
-                    });
+                    filtered[key] = data[key];
                 }
             });
             return filtered;
