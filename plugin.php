@@ -4,7 +4,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
 
     private function getMaps() {
         $maps = scandir(dirname(__FILE__).'/static/maps');
-        $maps = array_filter($maps, function($var){return ($var != "." && $var != "..");});
+        $maps = array_filter($maps, function($var){return strncmp($var, ".", 1);});
         return $maps;
     }
 
