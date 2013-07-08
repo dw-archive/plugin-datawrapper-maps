@@ -1,9 +1,18 @@
 {
 	"layers" : [
 		{
+			"id":"background",
+			"style": {
+				"fill" : "#B0E1EF",
+				"stroke-width": 0
+			}
+		},
+		{
 			"id":"layer0",
 			"style": {
-				"stroke-width" : "0.3"
+				"stroke-width" : "0.1",
+				"fill" : "#FDFDFD",
+				"stroke": "#5A5A5A"
 			}
 		}
 	]

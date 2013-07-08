@@ -101,7 +101,6 @@
             var filtered = Array();
             _.each(me.map.getLayer('layer0').paths, function(path){
                 var key = path.data['key'];
-                console.log(key);
                 if (data[key] !== undefined) {
                     filtered[key] = data[key];
                 }
