@@ -19,6 +19,12 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
         return $res;
     }
 
+    private function getDefaultMap() {
+        $maps = $this->getMapsAsOption();
+        $map = reset($maps);
+        return $map['value'];
+    }
+
     private function getAssets() {
         $assets = array();
         foreach ($this->getMaps() as $map) {
@@ -35,7 +41,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 "type" => "select",
                 "label" => __("maps", $id),
                 "options" => $this->getMapsAsOption(),
-                "default" => $this->getMapsAsOption()[0]['value']
+                "default" => $this->getDefaultMap()
             ),
             "legend-position" => array(
                 "type"    => "radio",
