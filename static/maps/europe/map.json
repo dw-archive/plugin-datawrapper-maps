@@ -3,16 +3,16 @@
 		{
 			"id":"background",
 			"style": {
-				"fill" : "#B0E1EF",
+				"fill" : "#C8D5E5",
 				"stroke-width": 0
 			}
 		},
 		{
 			"id":"layer0",
 			"style": {
-				"stroke-width" : "0.1",
-				"fill" : "#FDFDFD",
-				"stroke": "#5A5A5A"
+				"stroke-width" : "0.2",
+				"fill" : "#F7F2F2",
+				"stroke": "#969696"
 			}
 		}
 	]
