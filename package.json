@@ -2,5 +2,9 @@
     "version": "0.1",
     "dependencies": {
         "visualization": "*"
-    }
+    },
+    "repository": {
+       "type": "git",
+       "url": "git@git.jplusplus.org:dw-plugin-maps"
+   }
 }
