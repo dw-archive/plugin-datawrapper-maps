@@ -2,20 +2,39 @@
 
 class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualization {
 
+    function __construct() {
+        $this->maps           = null;
+        $this->maps_as_option = null;
+    }
+
     private function getMaps() {
+        if (!empty($this->maps)) return $this->maps;
         $maps = scandir(dirname(__FILE__).'/static/maps');
         $maps = array_filter($maps, function($var){return strncmp($var, ".", 1);});
+        $this->maps = $maps;
         return $maps;
     }
 
     private function getMapsAsOption() {
+        if (!empty($this->maps_as_option)) return $this->maps_as_option;
         $res = array();
+        $locale = substr(DatawrapperSession::getLanguage(), 0, 2);
         foreach ($this->getMaps() as $map) {
+            $json = json_decode(file_get_contents(dirname(__FILE__).'/static/maps/'.$map.'/map.json'), true);
+            $label = $map;
+            if (!empty($json['title'])) {
+                if (!empty($json['title'][$locale])) {
+                    $label = $json['title'][$locale];
+                } elseif (!empty($json['title']['en'])) {
+                    $label = $json['title']['en'];
+                }
+            }
             $res[] = array(
                 'value' => $map,
-                'label' => $map
+                'label' => $label
             );
         }
+        $this->maps_as_option = $res;
         return $res;
     }
 

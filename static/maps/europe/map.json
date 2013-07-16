@@ -1,4 +1,10 @@
 {
+	"title" : {
+		"en" : "Europe",
+		"fr" : "Europe",
+		"es" : "Europa",
+		"de" : "Europa"
+	},
 	"layers" : [
 		{
 			"id":"background",
