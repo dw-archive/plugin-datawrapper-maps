@@ -19,62 +19,44 @@
 	text-transform : capitalize;
 }
 
-.scale div {
-	padding     : 1em 1em;
-	font-size   : 0.8em;
-	width       : 35px;
-	white-space : nowrap;
+.scale {
+	position: relative;
+	margin: 0 auto;
 }
 
 .scale.vertical {
 	float        : right;
-	position     : absolute;
-	right        : 0px;
-	padding-left : 10px;
-}
-
-.scale.vertical div {
-	border-left  : 1px solid #989898;
-	border-right : 1px solid #989898;
-}
-
-.scale.vertical div:last-child {
-	-moz-border-radius    : 0px 0px 6px 6px;
-	-webkit-border-radius : 0px 0px 6px 6px;
-	border-radius         : 0px 0px 6px 6px;
-	border-bottom         : 1px solid #989898;
-}
-
-.scale.vertical div:first-child {
-	-moz-border-radius    : 6px 6px 0px 0px;
-	-webkit-border-radius : 6px 6px 0px 0px;
-	border-radius         : 6px 6px 0px 0px;
-	border-top            : 1px solid #989898;
+	padding-right : 30px;
 }
 
 .scale.horizontal {
-	text-align  : center;
-	padding-top : 20px;
+	padding-top: 20px;
+	height: 60px;
 }
 
-.scale.horizontal div {
+.scale .sticker {
+	position : absolute;
+}
+
+.scale.vertical .sticker {
+	border-bottom   : 1px solid #505050;
+	padding-left    : 23px;
+	padding-bottom  : 5px;
+}
+
+.scale.horizontal .sticker {
+	border-left  : 1px solid #505050;
+	padding-top  : 23px;
+	padding-left : 5px;
+}
+
+.scale.vertical .step {
+	width        : 20px;
+}
+
+.scale.horizontal .step {
 	display       : inline-block;
-	border-top    : 1px solid #989898;
-	border-bottom : 1px solid #989898;
-}
-
-.scale.horizontal div:last-child {
-	-moz-border-radius    : 0px 6px 6px 0;
-	-webkit-border-radius : 0px 6px 6px 0;
-	border-radius         : 0px 6px 6px 0;
-	border-right          : 1px solid #989898;
-}
-
-.scale.horizontal div:first-child {
-	-moz-border-radius    : 6px 0px 0px 6px;
-	-webkit-border-radius : 6px 0px 0px 6px;
-	border-radius         : 6px 0px 0px 6px;
-	border-left           : 1px solid #989898;
+	height        : 20px;
 }
 
 #footer {

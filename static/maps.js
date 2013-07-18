@@ -143,7 +143,7 @@
                 });
 
                 // show scale
-                me.showScale(me.scale);
+                me.showLegend(me.scale);
                 // binds mouse events
                 me.map.getLayer('layer0').on('mouseenter', me.showTooltip).on('mouseleave', me.hideTooltip);
             });
@@ -159,28 +159,42 @@
             return chroma.scale([chroma.color(base_color).darken(-75), base_color]).domain(data, 5, 'e');
         },
 
-        showScale: function(scale) {
-            var legend = {
-                position : me.get('legend-position', 'vertical')
-            };
-            var domains = scale.domain();
-            var $scale      = $("<div class='scale'></div>");
-            domains.every(function(domain, i) {
-                if (domains.length <= i+1) {return false;}
-                var label  = me.chart.get('metadata.describe.number-prepend', '');
-                label     += domain.toFixed(0);
-                label     += me.chart.get('metadata.describe.number-append', '');
-                var color  = scale(domain);
-                $scale.append("<div style=\"background-color:"+color+"\">> "+label+"</div>");
-                return true;
+        showLegend: function(scale) {
+            var legend_size   = 400;
+            // reduce the size if vertical
+            legend_size       = me.get('legend-position', 'vertical') == 'vertical' ? legend_size/2 : legend_size;
+            var domains       = scale.domain();
+            var domains_delta = domains[domains.length-1] - domains[0];
+            var $scale        = $("<div class='scale'></div>");
+            $scale.addClass(me.get('legend-position', 'vertical'));
+            var orientation   = me.get('legend-position', 'vertical') == 'vertical' ? 'height' : 'width';
+            $scale.css(orientation, legend_size);
+            _.each(domains, function(step, index) {
+                // for each segment, we adding a domain in the legend and a sticker
+                if (index < domains.length - 1 ) {
+                    var delta = domains[index+1] - step;
+                    var color = scale(step);
+                    var size  = delta / domains_delta * legend_size;
+                    // setting step
+                    var $step = $("<div class='step'></div>");
+                    var opt          = {'background-color' : color};
+                    opt[orientation] = size;
+                    $step.css(opt);
+                    // settings ticker
+                    var $sticker = $("<span class='sticker'></span>");
+                    $sticker.css(me.get('legend-position', 'vertical') == 'vertical' ? 'bottom' : 'left', size * index);
+                    $sticker.html(step.toFixed(2));
+                    $scale[me.get('legend-position', 'vertical') == 'vertical' ? 'prepend' : 'append']($step);
+                    $scale.append($sticker);
+                }
             });
+            // showing the legend
             $('#map').after($scale);
-            if (legend.position == "vertical") {
-                $scale.addClass("vertical").css('padding-top', $('#map').height()/2 - $scale.outerHeight(true)/2);
+            if (me.get('legend-position', 'vertical') == 'vertical') {
                 $('#map').css("float", "left");
+                $scale.css('padding-top', $('#map').height()/2 - $scale.outerHeight(true)/2);
                 me.resizeMap(me.__w - $scale.outerWidth(true), me.__h);
-            } else if (legend.position == "horizontal") {
-                $scale.addClass("horizontal");
+            } else {
                 me.resizeMap(me.__w, me.__h - $scale.outerHeight(true));
             }
         },
