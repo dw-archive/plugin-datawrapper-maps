@@ -35,7 +35,7 @@
         getLabel: function(key) {
             if (me._localized_labels === undefined) {
                 var res = $.ajax({
-                    url: window.vis.meta.__static_path + 'maps/' + me.get('map') + "/locale/" + me.chart.locale.replace('-', '_') +".json",
+                    url: window.vis.meta.__static_path + 'maps/' + me.get('map') + "/locale/" + me.chart.locale().replace('-', '_') +".json",
                     async: false,
                     dataType: 'json'
                 });
@@ -66,11 +66,6 @@
             return meta;
         },
 
-        /** Map style, Can be overwrited */
-        getStyle: function() {
-            return {};
-        },
-
         /**
         * Can be overwrited. This function return the data as:
         * Array(geo_code_as_key => {raw:, value:})
@@ -79,15 +74,12 @@
         */
         getDataSeries: function() {
             var data = new Array();
-            _.each(me.chart.dataSeries()[0].data, function(value, s) {
-                var geo_code = me.chart.rowLabels()[s];
-                data[geo_code]     = {};
-                data[geo_code].raw = value;
-                data[geo_code].label = me.getLabel(me.chart.rowLabels()[s]);
-                if (Number(value) == value)
-                    data[geo_code].value = me.chart.formatValue(value, true);
-                else
-                    data[geo_code].value = me.chart.formatValue(value, false);
+            me.dataset.column(0).each(function (geo_code, index) {
+                var value = me.dataset.column(1).val(index);
+                data[geo_code]  = {};
+                data[geo_code].raw   = value;
+                data[geo_code].label = me.getLabel(geo_code);
+                data[geo_code].value = me.chart.formatValue(value, value != null);
             });
             return data;
         },
@@ -129,16 +121,18 @@
                 // colorize
                 // set base color (from custom color if defined)
                 var custom_color = me.get('custom-colors', {});
-                if (custom_color[me.chart.dataSeries()[0].name])
+                if (custom_color[me.dataset.column(0).name()])
                     var base_color = custom_color[me.chart.dataSeries()[0].name];
                 else
                     var base_color = me.theme.colors.palette[me.get('base-color', 0)];
-                me.scale = me.getScale(me.chart.dataSeries()[0].data, base_color);
-
+                // FIXME: use the futur values() function.
+                var _before_we_have_a_values_function = Array();
+                me.dataset.column(1).each(function(value){_before_we_have_a_values_function.push(value);});
+                me.scale = me.getScale(_before_we_have_a_values_function, base_color);
                 me.map.getLayer('layer0').style('fill', function(path_data) {
                     var data = me.data[path_data['key']];
                     if (data !== undefined) {
-                        if (data.raw == "n/a") {
+                        if (data.raw == null) {
                             var color = "#CECECE";
                         } else {
                             var color = me.scale(data.raw).hex();
