@@ -79,7 +79,11 @@
                 data[geo_code]  = {};
                 data[geo_code].raw   = value;
                 data[geo_code].label = me.getLabel(geo_code);
-                data[geo_code].value = me.chart.formatValue(value, value != null);
+                if (value == null) {
+                    data[geo_code].value = "n/a";
+                } else {
+                    data[geo_code].value = me.chart.formatValue(value, true);
+                }
             });
             return data;
         },
