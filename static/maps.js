@@ -177,7 +177,7 @@
             $scale.addClass(me.get('legend-position', 'vertical'));
             var orientation   = me.get('legend-position', 'vertical') == 'vertical' ? 'height' : 'width';
             $scale.css(orientation, legend_size);
-            var offset = 0;
+            var offset = 0, max_height=0;
             _.each(domains, function(step, index) {
                 // for each segment, we adding a domain in the legend and a sticker
                 if (index < domains.length - 1 ) {
@@ -208,6 +208,8 @@
             if (me.get('legend-position', 'vertical') == 'vertical') {
                 // vertical
                 $('#map').css("float", "left");
+                // FIXME: calcul the right value, max width of all stickers
+                $scale.width(60);
                 // NOTE: vertical title next to the legend
                 // $scale.prepend($title);
                 // $title.height($title.width());

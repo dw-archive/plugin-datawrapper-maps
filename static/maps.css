@@ -36,9 +36,7 @@
 	height        : 40px;
 }
 
-.scale .scale_title {
-	font-size:1.2em;
-}
+.scale .scale_title {font-size:1.2em;}
 
 .scale.vertical .scale_title {
 	/* Vertical title next to the legend */
@@ -51,7 +49,9 @@
 }
 
 .scale.vertical .step {
-	width        : 20px;
+	width : 20px;
+	right: -40px;
+	position: relative;
 }
 
 .scale.horizontal .step {
@@ -68,6 +68,7 @@
 	padding-right   : 23px;
 	padding-bottom  : 5px;
 	right           : 0px;
+	white-space      : nowrap;
 }
 
 .scale.horizontal .sticker {
