@@ -125,17 +125,15 @@
                     var base_color = custom_color[me.chart.dataSeries()[0].name];
                 else
                     var base_color = me.theme.colors.palette[me.get('base-color', 0)];
-                // FIXME: use the futur values() function.
-                var _before_we_have_a_values_function = Array();
-                me.dataset.column(1).each(function(value){_before_we_have_a_values_function.push(value);});
-                me.scale = me.getScale(_before_we_have_a_values_function, base_color);
+                me.scale = chroma.scale([chroma.color(base_color).darken(-75), base_color]).out('hex');
+                me.scale.domain(me.getBreaks(me.dataset.column(1).values()));
                 me.map.getLayer('layer0').style('fill', function(path_data) {
                     var data = me.data[path_data['key']];
                     if (data !== undefined) {
                         if (data.raw == null) {
                             var color = "#CECECE";
                         } else {
-                            var color = me.scale(data.raw).hex();
+                            var color = me.scale(data.raw);
                         }
                         me.data[path_data['key']].color = color;
                         return data.color;
@@ -155,8 +153,16 @@
             $("#map").css({height:h, width:w});
         },
 
-        getScale: function(data, base_color) {
-            return chroma.scale([chroma.color(base_color).darken(-75), base_color]).domain(data, 5, 'e');
+        getBreaks: function(data) {
+            var break_type     = me.get('breaks', 'equidistant');
+            var number_classes = me.get('classes', 5);
+            if (break_type == "equidistant") {
+                return chroma.limits(data, 'e', number_classes);
+            } else if (break_type == "equidistant-rounded") {
+                return chroma.limits(data, 'e', number_classes).map(Math.round);
+            } else if (break_type == "nice") {
+                return d3.scale.linear().domain(data).nice().ticks(number_classes);
+            }
         },
 
         showLegend: function(scale) {
@@ -167,6 +173,7 @@
             $scale.addClass(me.get('legend-position', 'vertical'));
             var orientation   = me.get('legend-position', 'vertical') == 'vertical' ? 'height' : 'width';
             $scale.css(orientation, legend_size);
+            var offset = 0;
             _.each(domains, function(step, index) {
                 // for each segment, we adding a domain in the legend and a sticker
                 if (index < domains.length - 1 ) {
@@ -180,10 +187,14 @@
                     $step.css(opt);
                     // settings ticker
                     var $sticker = $("<span class='sticker'></span>");
-                    $sticker.css(me.get('legend-position', 'vertical') == 'vertical' ? 'bottom' : 'left', size * index);
-                    $sticker.html(step.toFixed(2));
+                    $sticker.css(me.get('legend-position', 'vertical') == 'vertical' ? 'bottom' : 'left', offset);
+                    if (step.toString().split('.')[1] && step.toString().split('.')[1].length > 2){
+                        step = Globalize.format(step, 'n');
+                    }
+                    $sticker.html(me.chart.formatValue(step, true, true));
                     $scale[me.get('legend-position', 'vertical') == 'vertical' ? 'prepend' : 'append']($step);
                     $scale.append($sticker);
+                    offset += size;
                 }
             });
             // showing the legend

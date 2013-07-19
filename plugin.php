@@ -76,6 +76,30 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                     )
                 ),
                 "default"    => "vertical",
+            ),
+            "classes" => array(
+                "type" => "text",
+                "label"   => __("Number of classes", $id),
+                "default" => "5"
+            ),
+             "breaks" => array(
+                "type"    => "select",
+                "label"   => __("Breaks type", $id),
+                "options" => array(
+                    array(
+                        "value" => "equidistant",
+                        "label" => __("Equidistant", $id)
+                    ),
+                    array(
+                        "value" => "equidistant-rounded",
+                        "label" => __("Equidistant (rounded)", $id)
+                    ),
+                    array(
+                        "value" => "nice",
+                        "label" => __("Nice breaks", $id)
+                    )
+                ),
+                "default"    => "equidistant",
             )
         );
     }
@@ -86,7 +110,8 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             "libraries" => array(
                 "vendor/raphael.min.js",
                 "vendor/kartograph.min.js",
-                "vendor/chroma.min.js"
+                "vendor/chroma.min.js",
+                "vendor/d3.min.js",
             ),
             "title"   => __("Maps", $id),
             "version" => "2.0",
