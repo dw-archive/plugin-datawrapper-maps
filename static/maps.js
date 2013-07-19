@@ -160,10 +160,8 @@
         },
 
         showLegend: function(scale) {
-            var legend_size   = 400;
-            // reduce the size if vertical
-            legend_size       = me.get('legend-position', 'vertical') == 'vertical' ? legend_size/2 : legend_size;
             var domains       = scale.domain();
+            var legend_size   = me.get('legend-position', 'vertical') == 'vertical' ? me.__h/2 : me.__w/2;
             var domains_delta = domains[domains.length-1] - domains[0];
             var $scale        = $("<div class='scale'></div>");
             $scale.addClass(me.get('legend-position', 'vertical'));
