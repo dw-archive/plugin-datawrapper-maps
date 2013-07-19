@@ -201,13 +201,21 @@
                     offset += size;
                 }
             });
+            // title
+            var $title = $("<div class=\"scale_title\"></div>").html(me.dataset.column(1).name());
             // showing the legend
             $('#map').after($scale);
             if (me.get('legend-position', 'vertical') == 'vertical') {
+                // vertical
                 $('#map').css("float", "left");
+                // NOTE: vertical title next to the legend
+                // $scale.prepend($title);
+                // $title.height($title.width());
                 $scale.css('padding-top', $('#map').height()/2 - $scale.outerHeight(true)/2);
                 me.resizeMap(me.__w - $scale.outerWidth(true), me.__h);
             } else {
+                // horizontal
+                $scale.prepend($title);
                 me.resizeMap(me.__w, me.__h - $scale.outerHeight(true));
             }
         },

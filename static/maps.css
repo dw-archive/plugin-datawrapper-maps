@@ -26,11 +26,28 @@
 
 .scale.vertical {
 	float : right;
+	/* NOTE: Vertical title next to the legend */
+	/*margin-right : 20px;*/
 }
 
 .scale.horizontal {
-	padding-top : 20px;
-	height      : 40px;
+	padding-top   : 20px;
+	margin-bottom : 20px;
+	height        : 40px;
+}
+
+.scale .scale_title {
+	font-size:1.2em;
+}
+
+.scale.vertical .scale_title {
+	/* Vertical title next to the legend */
+	-webkit-transform: rotate(-90deg);
+	-moz-transform   : rotate(-90deg);
+	left             : 20px;
+	bottom           : 0px;
+	position         : absolute;
+	white-space      : nowrap;
 }
 
 .scale.vertical .step {
