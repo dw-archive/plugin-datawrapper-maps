@@ -116,6 +116,14 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             "title"   => __("Maps", $id),
             "version" => "2.0",
             "order"   => 62,
+            "axes"    => array(
+                "keys" => array(
+                    "accepts" => array("text"),
+                ),
+                "color" => array(
+                    "accepts" => array("number")
+                )
+            ),
             "assets"  => $this->getAssets(),
             "options" => $this->getOptions()
         );
