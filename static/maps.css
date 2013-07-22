@@ -50,7 +50,6 @@
 
 .scale.vertical .step {
 	width : 20px;
-	right: -40px;
 	position: relative;
 }
 
@@ -65,10 +64,11 @@
 
 .scale.vertical .sticker {
 	border-bottom   : 1px solid #505050;
-	padding-right   : 23px;
 	padding-bottom  : 5px;
 	right           : 0px;
-	white-space      : nowrap;
+	text-align      : left;	
+	white-space     : nowrap;
+	padding-right   : 10px;
 }
 
 .scale.horizontal .sticker {

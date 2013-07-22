@@ -211,8 +211,13 @@
             if (me.get('legend-position', 'vertical') == 'vertical') {
                 // vertical
                 $('#map').css("float", "left");
-                // FIXME: calcul the right value, max width of all stickers
-                $scale.width(60);
+                // get max width of all stickers because of the absolute position
+                var max_width = me.getStickersMaxWidth($scale);
+                _.each($scale.find('.sticker'), function(sticker) {
+                    sticker = $(sticker);
+                    sticker.css('width', max_width + $('.scale').innerWidth()/2); // NOTE: Why /2? I don't know!
+                });
+                $scale.css('margin-left', max_width + 10); // NOTE: -10 for the space between the map and the legend
                 // NOTE: vertical title next to the legend
                 // $scale.prepend($title);
                 // $title.height($title.width());
@@ -223,6 +228,14 @@
                 $scale.prepend($title);
                 me.resizeMap(me.__w, me.__h - $scale.outerHeight(true));
             }
+        },
+
+        getStickersMaxWidth: function ($scale) {
+            var max = 0;
+            _.each($scale.find('.sticker'), function (sticker) {
+                max = Math.max(max, $(sticker).outerWidth(false));
+            });
+            return max;
         },
 
         showTooltip: function(data, path, event) {
