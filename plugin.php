@@ -118,7 +118,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             "order"   => 62,
             "axes"    => array(
                 "keys" => array(
-                    "accepts" => array("text"),
+                    "accepts" => array("text", "number"),
                 ),
                 "color" => array(
                     "accepts" => array("number")

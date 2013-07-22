@@ -39,7 +39,7 @@
                     async: false,
                     dataType: 'json'
                 });
-                me._localized_labels = (res.status == 200) ? eval('(' + res.responseText + ')') : undefined;
+                me._localized_labels = (res.status == 200) ? eval('(' + res.responseText + ')') : null;
             }
             if (me._localized_labels && me._localized_labels[key]) {
                 return me._localized_labels[key];
