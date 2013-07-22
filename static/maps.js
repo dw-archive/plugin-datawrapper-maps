@@ -73,13 +73,16 @@
         * @return {Array} 
         */
         getDataSeries: function() {
-            var data = new Array();
-            me.dataset.column(0).each(function (geo_code, index) {
-                var value = me.dataset.column(1).val(index);
+            var me = this,
+                data = [],
+                keyColumn = me.axes(true).keys,
+                valueColumn = me.axes(true).color;
+            keyColumn.each(function (geo_code, index) {
+                var value = valueColumn.val(index);
                 data[geo_code]  = {};
                 data[geo_code].raw   = value;
                 data[geo_code].label = me.getLabel(geo_code);
-                if (value == null) {
+                if (_.isNull(value)) {
                     data[geo_code].value = "n/a";
                 } else {
                     data[geo_code].value = me.chart.formatValue(value, true);
