@@ -6,7 +6,7 @@
 
     var startsWith = function(str, starts){
       if (starts === '') return true;
-      if (str == null || starts == null) return false;
+      if (str === null || starts === null) return false;
       str = String(str); starts = String(starts);
       return str.length >= starts.length && str.slice(0, starts.length) === starts;
     };
@@ -41,12 +41,12 @@
                 });
                 me._localized_labels = (res.status == 200) ? eval('(' + res.responseText + ')') : null;
             }
-            if (me._localized_labels != undefined && me._localized_labels[key] != undefined) {
+            if (me._localized_labels && me._localized_labels[key]) {
                 return me._localized_labels[key];
             }
             var path = me.map.getLayer('layer0').getPaths({"key":key.toString()});
             if (path.length > 0) {
-                return me.map.getLayer('layer0').getPaths({key:key.toString()})[0].data.label;    
+                return me.map.getLayer('layer0').getPaths({key:key.toString()})[0].data.label;
             }
             return "";
         },
@@ -55,7 +55,7 @@
         * Parse and return the map's json
         */
         getMapMeta: function() {
-            if (me.map_meta != undefined) return me.map_meta;
+            if (me.map_meta) return me.map_meta;
             var res = $.ajax({
                 url: window.vis.meta.__static_path + 'maps/' + me.get('map') + "/map.json",
                 async: false,
@@ -127,20 +127,20 @@
 
                 // colorize
                 // set base color (from custom color if defined)
-                var custom_color = me.get('custom-colors', {});
+                var custom_color = me.get('custom-colors', {}), base_color = null, color = null;
                 if (custom_color[me.dataset.column(0).name()])
-                    var base_color = custom_color[me.chart.dataSeries()[0].name];
+                    base_color = custom_color[me.chart.dataSeries()[0].name];
                 else
-                    var base_color = me.theme.colors.palette[me.get('base-color', 0)];
+                    base_color = me.theme.colors.palette[me.get('base-color', 0)];
                 me.scale = chroma.scale([chroma.color(base_color).darken(-75), base_color]).out('hex');
                 me.scale.domain(me.getBreaks(me.dataset.column(1).values()));
                 me.map.getLayer('layer0').style('fill', function(path_data) {
                     var data = me.data[path_data['key']];
                     if (data !== undefined) {
-                        if (data.raw == null) {
-                            var color = "#CECECE";
+                        if (data.raw === null) {
+                            color = "#CECECE";
                         } else {
-                            var color = me.scale(data.raw);
+                            color = me.scale(data.raw);
                         }
                         me.data[path_data['key']].color = color;
                         return data.color;
