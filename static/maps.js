@@ -73,11 +73,11 @@
         * @return {Array} 
         */
         getDataSeries: function() {
-            var me = this,
-                data = [],
-                keyColumn = me.axes(true).keys,
+            var me          = this,
+                data        = [],
+                keyColumn   = me.axes(true).keys,
                 valueColumn = me.axes(true).color;
-            keyColumn.each(function (geo_code, index) {
+            _.each(keyColumn.raw(), function (geo_code, index) {
                 var value = valueColumn.val(index);
                 data[geo_code]  = {};
                 data[geo_code].raw   = value;
