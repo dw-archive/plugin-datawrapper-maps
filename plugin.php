@@ -114,7 +114,6 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 "vendor/d3.min.js",
             ),
             "title"   => __("Maps", $id),
-            "version" => "2.0",
             "order"   => 62,
             "axes"    => array(
                 "keys" => array(
