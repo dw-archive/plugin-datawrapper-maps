@@ -77,29 +77,13 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 ),
                 "default"    => "vertical",
             ),
-            "classes" => array(
-                "type" => "text",
-                "label"   => __("Number of classes", $id),
-                "default" => "5"
-            ),
-             "breaks" => array(
-                "type"    => "select",
-                "label"   => __("Breaks type", $id),
-                "options" => array(
-                    array(
-                        "value" => "equidistant",
-                        "label" => __("Equidistant", $id)
-                    ),
-                    array(
-                        "value" => "equidistant-rounded",
-                        "label" => __("Equidistant (rounded)", $id)
-                    ),
-                    array(
-                        "value" => "nice",
-                        "label" => __("Nice breaks", $id)
-                    )
-                ),
-                "default"    => "equidistant",
+            "gradient" => array(
+                "type" => "color-gradient-selector",
+                "label" => __("Color gradient", $id),
+                "locale" => array(
+                    "number of classes" => __("Number of classes", $id),
+                    "breaks type" => __("Breaks type", $id)
+                )
             )
         );
     }

@@ -161,8 +161,8 @@
         },
 
         getBreaks: function(data) {
-            var break_type     = me.get('breaks', 'equidistant');
-            var number_classes = me.get('classes', 5);
+            var break_type     = me.get('gradient.class-limit-mode', 'equidistant');
+            var number_classes = me.get('gradient.classes-number', 5);
             if (break_type == "equidistant") {
                 return chroma.limits(data, 'e', number_classes);
             } else if (break_type == "equidistant-rounded") {
