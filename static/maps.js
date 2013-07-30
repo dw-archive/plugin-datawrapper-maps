@@ -126,14 +126,7 @@
                 me.data = me.filterDataWithMapPaths(me.getDataSeries());
 
                 // colorize
-                // set base color (from custom color if defined)
-                var custom_color = me.get('custom-colors', {}), base_color, color;
-                if (custom_color[me.dataset.column(0).name()])
-                    base_color = custom_color[me.chart.dataSeries()[0].name];
-                else
-                    base_color = me.theme.colors.palette[me.get('base-color', 0)];
-                me.scale = chroma.scale([chroma.color(base_color).darken(-75), base_color]).out('hex');
-                me.scale.domain(me.getBreaks(me.dataset.column(1).values()));
+                me.scale = eval(me.get('gradient.chromajs-constructor'));
                 me.map.getLayer('layer0').style('fill', function(path_data) {
                     var data = me.data[path_data['key']];
                     if (data !== undefined) {
@@ -146,7 +139,6 @@
                         return data.color;
                     }
                 });
-
                 // show scale
                 me.showLegend(me.scale);
                 // binds mouse events
@@ -158,18 +150,6 @@
         resizeMap: function(w, h) {
             me.map.resize(w,h);
             $("#map").css({height:h, width:w});
-        },
-
-        getBreaks: function(data) {
-            var break_type     = me.get('gradient.class-limit-mode', 'equidistant');
-            var number_classes = me.get('gradient.classes-number', 5);
-            if (break_type == "equidistant") {
-                return chroma.limits(data, 'e', number_classes);
-            } else if (break_type == "equidistant-rounded") {
-                return chroma.limits(data, 'e', number_classes).map(Math.round);
-            } else if (break_type == "nice") {
-                return d3.scale.linear().domain(data).nice().ticks(number_classes);
-            }
         },
 
         showLegend: function(scale) {
