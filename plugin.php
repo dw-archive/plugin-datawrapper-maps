@@ -95,7 +95,6 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 "vendor/raphael.min.js",
                 "vendor/kartograph.min.js",
                 "vendor/chroma.min.js",
-                "vendor/d3.min.js",
             ),
             "title"   => __("Maps", $id),
             "order"   => 62,
