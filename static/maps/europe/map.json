@@ -5,21 +5,22 @@
 		"es" : "Europa",
 		"de" : "Europa"
 	},
-	"layers" : [
-		{
-			"id":"background",
-			"style": {
-				"fill" : "#C8D5E5",
-				"stroke-width": 0
+	"layers" : {
+		"bg": {
+			"src":"layer0",
+			"styles": {
+				"stroke-width" : 6,
+				"fill" : "none",
+				"stroke": "#ddd",
+				"stroke-linejoin": "round"
 			}
 		},
-		{
-			"id":"layer0",
-			"style": {
-				"stroke-width" : "0.2",
-				"fill" : "#F7F2F2",
-				"stroke": "#969696"
+		"layer0": {
+			"src": "layer0",
+			"styles": {
+				"stroke-width" : "1",
+				"fill" : "#F7F2F2"
 			}
 		}
-	]
+	}
 }
