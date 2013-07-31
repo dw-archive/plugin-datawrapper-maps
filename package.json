@@ -1,8 +1,16 @@
 {
-    "version": "0.2",
+    "version": "0.3",
+    "author": "Edouard Richard"
     "dependencies": {
         "visualization": "*"
     },
+    "contributors": [{
+        "name": "Marak Squires",
+        "email": "marak@nodejitsu.com"
+    }, {
+        "name": "Gregor Aisch",
+        "email": "gregor@datawrapper.de"
+    }],
     "repository": {
        "type": "git",
        "url": "git@git.jplusplus.org:dw-plugin-maps"
