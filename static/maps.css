@@ -36,7 +36,7 @@
 	height        : 40px;
 }
 
-.scale .scale_title {font-size:1.2em;}
+.scale .scale_title {font-size: 1.2em; line-height: 1.6em; font-weight: bold; }
 
 .scale.vertical .scale_title {
 	/* Vertical title next to the legend */
@@ -49,13 +49,13 @@
 }
 
 .scale.vertical .step {
-	width : 20px;
+	width : 11px;
 	position: relative;
 }
 
 .scale.horizontal .step {
 	display       : inline-block;
-	height        : 20px;
+	height        : 11px;
 }
 
 .scale .sticker {
@@ -63,17 +63,17 @@
 }
 
 .scale.vertical .sticker {
-	border-bottom   : 1px solid #505050;
+	border-bottom   : 1px solid #000;
 	padding-bottom  : 0px;
 	right           : 0px;
-	text-align      : left;	
+	text-align      : left;
 	white-space     : nowrap;
 	padding-right   : 10px;
 }
 
 .scale.horizontal .sticker {
-	border-left  : 1px solid #505050;
-	padding-top  : 23px;
+	border-left  : 1px solid #000;
+	padding-top  : 15px;
 	padding-left : 5px;
 }
 
