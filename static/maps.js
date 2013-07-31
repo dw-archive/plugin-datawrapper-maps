@@ -171,6 +171,18 @@
                             return { color: fill, 'font-size': '13px', 'line-height': '15px' };
                         }
                     });
+                    me.map.addLayer('layer0', {
+                        name: 'tooltip-target',
+                        styles: {
+                            stroke: false,
+                            fill: '#fff',
+                            opacity: 0
+                        },
+                        add_svg_layer: true
+                    });
+                    me.map.getLayer('tooltip-target')
+                        .on('mouseenter', me.showTooltip)
+                        .on('mouseleave', me.hideTooltip);
                 }
             });
             el.append($map);
@@ -182,6 +194,8 @@
         },
 
         showLegend: function(scale) {
+            // remove old legend
+            $('#chart .scale').remove();
             var domains       = scale.domain(),
                 legend_size   = me.get('legend-position', 'vertical') == 'vertical' ? me.__h/2 : me.__w/2,
                 domains_delta = domains[domains.length-1] - domains[0],
