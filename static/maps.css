@@ -36,7 +36,7 @@
 	height        : 40px;
 }
 
-.scale .scale_title {font-size: 1.2em; line-height: 1.6em; font-weight: bold; }
+.scale .scale_title {font-size: 1.2em; line-height: 1.8em; font-weight: bold; }
 
 .scale.vertical .scale_title {
 	/* Vertical title next to the legend */
@@ -76,6 +76,11 @@
 	padding-top  : 15px;
 	padding-left : 5px;
 }
+
+.scale.horizontal .sticker.first {
+	border-left: 0;
+}
+
 
 #footer {
 	position: static !important;
