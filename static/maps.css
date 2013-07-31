@@ -64,7 +64,7 @@
 
 .scale.vertical .sticker {
 	border-bottom   : 1px solid #505050;
-	padding-bottom  : 5px;
+	padding-bottom  : 0px;
 	right           : 0px;
 	text-align      : left;	
 	white-space     : nowrap;
