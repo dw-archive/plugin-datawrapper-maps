@@ -119,30 +119,40 @@
             me.map.loadMap(me.getSVG(), function(){
 
                 // Loops over layers and adds it into map
-                _.each(me.getMapMeta().layers, function(layer){
-                    me.map.addLayer(layer.id, {styles: layer.style});
+                _.each(me.getMapMeta().layers, function(layer, name){
+                    layer.name = name;
+                    me.map.addLayer(layer.src, layer);
                 });
 
                 me.data = me.filterDataWithMapPaths(me.getDataSeries());
 
                 // colorize
                 me.scale = eval(me.get('gradient.chromajs-constructor'));
-                me.map.getLayer('layer0').style('fill', function(path_data) {
+                function fill(path_data) {
                     var data = me.data[path_data['key']];
                     if (data !== undefined) {
                         if (data.raw === null) {
                             color = "url('"+window.vis.meta.__static_path + 'stripped.png'+"')";
                         } else {
-                            color = me.scale(data.raw);
+                            color = me.scale(data.raw).hex();
                         }
                         me.data[path_data['key']].color = color;
                         return data.color;
                     }
+                }
+                me.map.getLayer('layer0').style('fill', fill);
+                me.map.getLayer('layer0').style('stroke', function(pd) {
+                    return chroma.hex(fill(pd) || '#ccc').darken(25).hex();
                 });
                 // show scale
                 me.showLegend(me.scale);
                 // binds mouse events
                 me.map.getLayer('layer0').on('mouseenter', me.showTooltip).on('mouseleave', me.hideTooltip);
+
+                me.map.getLayer('layer0').sort(function(pd) {
+                    // sort paths by fill lumincane, so darker paths are on top (outline looks better then)
+                    return chroma.hex(fill(pd) || '#ccc').luminance() * -1;
+                });
             });
             el.append($map);
         },
