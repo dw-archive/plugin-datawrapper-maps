@@ -113,7 +113,7 @@
             var $map = $('<div id="map"></div>');
 
             // FIXME: set the right size
-            me.map = Kartograph.map($map, me.__w, me.__h);
+            me.map = kartograph.map($map, me.__w, me.__h);
 
             // Load all the layers (defined in the map.json)
             me.map.loadMap(me.getSVG(), function(){
@@ -121,6 +121,7 @@
                 // Loops over layers and adds it into map
                 _.each(me.getMapMeta().layers, function(layer, name){
                     layer.name = name;
+                    layer.key = 'key';
                     me.map.addLayer(layer.src, layer);
                 });
 
@@ -153,6 +154,24 @@
                     // sort paths by fill lumincane, so darker paths are on top (outline looks better then)
                     return chroma.hex(fill(pd) || '#ccc').luminance() * -1;
                 });
+
+                var highlighted = me.get('highlighted-series', []),
+                    data = [];
+
+                if (highlighted.length > 0) {
+                    me.map.addSymbols({
+                        type: $K.HtmlLabel,
+                        data: highlighted,
+                        location: function(key) { return 'layer0.'+key; },
+                        text: function(key) {
+                            return me.data[key].label+'<br/>'+me.chart.formatValue(me.data[key].value);
+                        },
+                        css: function(key) {
+                            var fill = chroma.hex(me.data[key].color).luminance() > 0.4 ? '#000' : '#fff';
+                            return { color: fill, 'font-size': '13px', 'line-height': '15px' };
+                        }
+                    });
+                }
             });
             el.append($map);
         },
@@ -283,6 +302,11 @@
             http.open('HEAD', url, false);
             http.send();
             return http.status!=404;
+        },
+
+        keys: function() {
+            var me = this;
+            return me.axes(true).keys.values();
         }
     });
 
