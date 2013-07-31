@@ -164,13 +164,15 @@
 
         showLegend: function(scale) {
             var domains       = scale.domain();
-            var legend_size   = me.get('legend-position', 'vertical') == 'vertical' ? me.__h/2 : me.__w/2;
-            var domains_delta = domains[domains.length-1] - domains[0];
-            var $scale        = $("<div class='scale'></div>");
-            $scale.addClass(me.get('legend-position', 'vertical'));
-            var orientation   = me.get('legend-position', 'vertical') == 'vertical' ? 'height' : 'width';
+                legend_size   = me.get('legend-position', 'vertical') == 'vertical' ? me.__h/2 : me.__w/2,
+                domains_delta = domains[domains.length-1] - domains[0],
+                $scale        = $("<div class='scale'></div>").addClass(me.get('legend-position', 'vertical')),
+                orientation   = me.get('legend-position', 'vertical') == 'vertical' ? 'height' : 'width',
+                offset        = 0,
+                max_height    = 0;
+
             $scale.css(orientation, legend_size);
-            var offset = 0, max_height=0;
+
             _.each(domains, function(step, index) {
                 // for each segment, we adding a domain in the legend and a sticker
                 if (index < domains.length - 1 ) {
