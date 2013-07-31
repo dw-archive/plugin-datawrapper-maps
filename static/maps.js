@@ -131,7 +131,7 @@
                     var data = me.data[path_data['key']];
                     if (data !== undefined) {
                         if (data.raw === null) {
-                            color = "#CECECE";
+                            color = "url('"+window.vis.meta.__static_path + 'stripped.png'+"')";
                         } else {
                             color = me.scale(data.raw);
                         }
