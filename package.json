@@ -1,6 +1,6 @@
 {
     "version": "0.3",
-    "author": "Edouard Richard"
+    "author": "Edouard Richard",
     "dependencies": {
         "visualization": "*"
     },
