@@ -83,7 +83,8 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 "locale" => array(
                     "number of classes" => __("Number of classes", $id),
                     "breaks type" => __("Breaks type", $id)
-                )
+                ),
+                "color-axis" => "color"
             )
         );
     }
