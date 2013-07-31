@@ -163,7 +163,7 @@
         },
 
         showLegend: function(scale) {
-            var domains       = scale.domain();
+            var domains       = scale.domain(),
                 legend_size   = me.get('legend-position', 'vertical') == 'vertical' ? me.__h/2 : me.__w/2,
                 domains_delta = domains[domains.length-1] - domains[0],
                 $scale        = $("<div class='scale'></div>").addClass(me.get('legend-position', 'vertical')),
@@ -175,24 +175,28 @@
 
             _.each(domains, function(step, index) {
                 // for each segment, we adding a domain in the legend and a sticker
-                if (index < domains.length - 1 ) {
-                    var delta = domains[index+1] - step;
-                    var color = scale(step);
-                    var size  = delta / domains_delta * legend_size;
-                    // setting step
-                    var $step = $("<div class='step'></div>");
-                    var opt          = {'background-color' : color};
+                if (index < domains.length - 1) {
+                    var delta = domains[index+1] - step,
+                        color = scale(step),
+                        size  = delta / domains_delta * legend_size,
+                        // setting step
+                        $step = $("<div class='step'></div>"),
+                        opt = {'background-color' : color},
+                        $sticker = $("<span class='sticker'></span>").appendTo($scale);
+
                     opt[orientation] = size;
                     $step.css(opt);
                     // settings ticker
-                    var $sticker = $("<span class='sticker'></span>");
                     $sticker.css(me.get('legend-position', 'vertical') == 'vertical' ? 'bottom' : 'left', offset);
                     if (step.toString().split('.')[1] && step.toString().split('.')[1].length > 2){
                         step = Globalize.format(step, 'n');
                     }
-                    $sticker.html(me.chart.formatValue(step, true, true));
+                    if (index > 0) {
+                        $sticker.html(me.chart.formatValue(step, true, true));
+                    } else {
+                        $sticker.addClass('first');
+                    }
                     $scale[me.get('legend-position', 'vertical') == 'vertical' ? 'prepend' : 'append']($step);
-                    $scale.append($sticker);
                     offset += size;
                 }
             });
