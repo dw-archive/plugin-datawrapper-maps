@@ -15,7 +15,7 @@
     dw.visualization.register('maps', {
 
         render: function(el) {
-            el = $(el); me = this;
+            me = this;
             me.loadMap(el);
         },
 
@@ -107,12 +107,11 @@
         },
 
         loadMap: function(el) {
-            el = $(el);
             me.__initCanvas({});
-            var $map = $('<div id="map"></div>');
+            var $map = $('<div id="map"></div>').html('').appendTo(el);
 
             // FIXME: set the right size
-            me.map = kartograph.map($map, me.__w, me.__h);
+            me.map = kartograph.map($map);
 
             // Load all the layers (defined in the map.json)
             me.map.loadMap(me.getSVG(), function(){
@@ -183,13 +182,19 @@
                         .on('mouseenter', me.showTooltip)
                         .on('mouseleave', me.hideTooltip);
                 }
-            });
-            el.append($map);
+
+                // mark visualization as rendered
+                me.renderingComplete();
+
+            }, { padding: -2 });
         },
 
         resizeMap: function(w, h) {
-            me.map.resize(w,h);
-            $("#map").css({height:h, width:w});
+            var me = this;
+            if (me.get('fit-to-viewport', false)) {
+                me.map.resize(w,h);
+                $("#map").css({height:h, width:w});
+            }
         },
 
         showLegend: function(scale) {
@@ -321,6 +326,7 @@
             var me = this;
             return me.axes(true).keys.values();
         }
+
     });
 
 }).call(this);
