@@ -73,15 +73,24 @@
 
 .scale.horizontal .sticker {
 	border-left  : 1px solid #000;
-	padding-top  : 15px;
-	padding-left : 5px;
+	height: 15px;
+}
+
+.scale.horizontal .sticker .value {
+	width: 100px;
+	position: absolute;
+	left: -50px;
+	text-align: center;
+	top: 16px;
+	font-size: 11px;
 }
 
 .scale.horizontal .sticker.first {
 	border-left: 0;
 }
 
-
-#footer {
-	position: static !important;
+html body #footer {
+    position: relative;
+    top: auto;
+    left: auto;
 }

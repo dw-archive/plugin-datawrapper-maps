@@ -58,9 +58,23 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
         return array(
             "map" => array(
                 "type" => "select",
-                "label" => __("maps", $id),
+                "label" => __("Select map", $id),
                 "options" => $this->getMapsAsOption(),
                 // "default" => $this->getDefaultMap()
+            ),
+            "scale-mode" => array(
+                "type" => "radio",
+                "label" => __("Scale mode"),
+                "options" => array(
+                    array(
+                        "value" => "width",
+                        "label" => __("Scale map to chart width")
+                    ),
+                    array(
+                        "value" => "viewport",
+                        "label" => __("Fit map into chart")
+                    )
+                )
             ),
             "legend-position" => array(
                 "type"    => "radio",
