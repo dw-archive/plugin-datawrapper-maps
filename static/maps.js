@@ -11,9 +11,8 @@
       return str.length >= starts.length && str.slice(0, starts.length) === starts;
     };
 
-    var Maps = Datawrapper.Visualizations.Maps = function() {};
 
-    _.extend(Maps.prototype, Datawrapper.Visualizations.Base, {
+    dw.visualization.register('maps', {
 
         render: function(el) {
             el = $(el); me = this;
@@ -167,7 +166,7 @@
                             return me.data[key].label+'<br/>'+me.chart.formatValue(me.data[key].value);
                         },
                         css: function(key) {
-                            var fill = chroma.hex(me.data[key].color).luminance() > 0.4 ? '#000' : '#fff';
+                            var fill = chroma.hex(me.data[key].color).luminance() > 0.5 ? '#000' : '#fff';
                             return { color: fill, 'font-size': '13px', 'line-height': '15px' };
                         }
                     });
