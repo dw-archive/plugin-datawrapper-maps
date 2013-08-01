@@ -129,6 +129,7 @@
                 // colorize
                 me.scale = eval(me.get('gradient.chromajs-constructor'));
                 function fill(path_data) {
+                    if (path_data == undefined) return false;
                     var data = me.data[path_data['key']];
                     if (data !== undefined) {
                         if (data.raw === null) {
@@ -142,7 +143,11 @@
                 }
                 me.map.getLayer('layer0').style('fill', fill);
                 me.map.getLayer('layer0').style('stroke', function(pd) {
-                    return chroma.hex(fill(pd) || '#ccc').darken(25).hex();
+                    var color = fill(pd);
+                    if (startsWith(color, "url(")) {
+                        color = null;
+                    }
+                    return chroma.hex(fill(color) || '#ccc').darken(25).hex();
                 });
                 // show scale
                 me.showLegend(me.scale);
@@ -151,7 +156,11 @@
 
                 me.map.getLayer('layer0').sort(function(pd) {
                     // sort paths by fill lumincane, so darker paths are on top (outline looks better then)
-                    return chroma.hex(fill(pd) || '#ccc').luminance() * -1;
+                    var color = fill(pd);
+                    if (startsWith(color, "url(")) {
+                        color = null;
+                    }
+                    return chroma.hex(color || '#ccc').luminance() * -1;
                 });
 
                 var highlighted = me.get('highlighted-series', []),
