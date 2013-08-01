@@ -191,7 +191,7 @@
 
         resizeMap: function(w, h) {
             var me = this;
-            if (me.get('fit-to-viewport', false)) {
+            if (me.get('scale-mode', 'width') == 'viewport') {
                 me.map.resize(w,h);
                 $("#map").css({height:h, width:w});
             }
