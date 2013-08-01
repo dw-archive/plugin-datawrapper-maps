@@ -248,7 +248,7 @@
                             .html(me.chart.formatValue(step, true, true))
                             .appendTo($sticker);
                     } else {
-                        $sticker.addClass('first');
+                        $sticker.remove();
                     }
                     // add hover effect to highlight regions
                     $step.hover(function(e) {
