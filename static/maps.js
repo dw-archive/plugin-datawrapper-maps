@@ -193,15 +193,20 @@
             var me = this;
             if (me.get('scale-mode', 'width') == 'viewport') {
                 me.map.resize(w,h);
-                $("#map").css({height:h, width:w});
+                $("#map").css({ height:h, width:w });
+            } else {
+                $('#map').css({ height: me.map.height });
             }
         },
 
         showLegend: function(scale) {
             // remove old legend
+            var me = this;
             $('#chart .scale').remove();
             var domains       = scale.domain(),
-                legend_size   = me.get('legend-position', 'vertical') == 'vertical' ? me.__h/2 : me.__w/2,
+                legend_size   = me.get('legend-position', 'vertical') == 'vertical' ?
+                    me.__h*0.5 :
+                    Math.min(Math.max(Math.min(300, me.__w), me.__w*0.6), 500),
                 domains_delta = domains[domains.length-1] - domains[0],
                 $scale        = $("<div class='scale'></div>").addClass(me.get('legend-position', 'vertical')),
                 orientation   = me.get('legend-position', 'vertical') == 'vertical' ? 'height' : 'width',
@@ -229,10 +234,25 @@
                         step = Globalize.format(step, 'n');
                     }
                     if (index > 0) {
-                        $sticker.html(me.chart.formatValue(step, true, true));
+                        $('<div />')
+                            .addClass('value')
+                            .html(me.chart.formatValue(step, true, true))
+                            .appendTo($sticker);
                     } else {
                         $sticker.addClass('first');
                     }
+                    // add hover effect to highlight regions
+                    $step.hover(function(e) {
+                        var stepColor = chroma.color($(e.target).css('background-color')).hex();
+                        function o(pd) {
+                            return me.data[pd.key] && me.data[pd.key].color == stepColor ? 1 : 0.1;
+                        }
+                        me.map.getLayer('bg').style('opacity', o);
+                        me.map.getLayer('layer0').style('opacity', o);
+                    }, function() {
+                        me.map.getLayer('layer0').style('opacity', 1);
+                        me.map.getLayer('bg').style('opacity', 1);
+                    });
                     $scale[me.get('legend-position', 'vertical') == 'vertical' ? 'prepend' : 'append']($step);
                     offset += size;
                 }
