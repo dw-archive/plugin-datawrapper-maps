@@ -13,7 +13,7 @@
 				option = $(option);
 				keys[option.attr('value')] = option.data('keys');
 			});
-			// comparaison, we count the similar keys for each map
+			// comparaison: we count the similar keys for each map
 			_.each(keys, function(_keys, name) {
 				var diff = _keys.filter(function(i){return map_keys.indexOf(i) > -1;});
 				comparaison.push([name, diff.length]);
