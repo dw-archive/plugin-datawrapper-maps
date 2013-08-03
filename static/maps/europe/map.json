@@ -5,6 +5,7 @@
 		"es" : "Europa",
 		"de" : "Europa"
 	},
+	"keys" : ["AL","AD","AT","BE","BG","BA","BY","CH","CY","CZ","DE","DK","ES","EE","FI","FR","FO","GB","GE","GG","GR","HR","HU","IM","IE","IS","IT","JE","JO","LI","LT","LU","LV","MC","MD","MK","MT","ME","NL","NO","PL","PT","RO","RU","RS","SK","SI","SE","TR","UA","VA"],
 	"layers" : {
 		"bg": {
 			"src":"layer0",

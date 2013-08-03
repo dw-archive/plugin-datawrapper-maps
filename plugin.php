@@ -42,7 +42,13 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                     $label = $json['title']['en'];
                 }
             }
+            if (!empty($json['keys'])) {
+                $keys = $json['keys'];
+            } else {
+                $keys = array();
+            }
             $res[] = array(
+                'keys'  => $keys,
                 'value' => $map,
                 'label' => $label
             );

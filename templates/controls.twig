@@ -1,11 +1,30 @@
-
 {% if option.type == 'map-selector' %}
 
 	<script>
 		// Automatic selection
 		$('#vis-options').on('dw:vis-option:map-selector', function(evt, args) {
-			var chart = args.chart, key = args.key;
-			console.log(args.vis.axes(true)['keys'].values());
+			var comparaison = [];
+			var options     = $("select[name=map] option");
+			var chart       = args.chart, key = args.key;
+			var map_keys    = args.vis.axes(true)['keys'].values();
+			// retrieves all keys of all maps
+			var keys = {};
+			options.each(function(i, option) {
+				option = $(option);
+				keys[option.attr('value')] = option.data('keys');
+			});
+			// comparaison, we count the similar keys for each map
+			_.each(keys, function(_keys, name) {
+				var diff = _keys.filter(function(i){return map_keys.indexOf(i) > -1;});
+				comparaison.push([name, diff.length]);
+			});
+			// we choose the map with the most similiar keys
+			comparaison = comparaison.sort(function(a, b) {return a[1]<b[1];});
+			winner      = comparaison[0][0];
+			options.filter("[value="+winner+"]").prop("selected", true);
+			// sadly it doesn't work without a setTimeout
+			setTimeout(function(){chart.set('metadata.visualize.map', winner);}, 500);
+			// chart.set('metadata.visualize.map', winner);
 		});
 	</script>
 
@@ -14,9 +33,10 @@
         <div class="controls form-inline">
 			<select name="map">
 				{% for map in option.options %}
-					<option value="{{ map.value }}">{{ map.label }}</option>
+					<option value="{{ map.value }}" data-keys="{{ map.keys | json }}">{{ map.label }}</option>
 				{% endfor %}
 			</select>
 		</div>
 	</div>
+
 {% endif %}
