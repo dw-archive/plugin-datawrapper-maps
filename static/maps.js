@@ -128,7 +128,7 @@
                 // colorize
                 me.scale = eval(me.get('gradient.chromajs-constructor'));
                 function fill(path_data) {
-                    if (path_data == undefined) return false;
+                    if (path_data === undefined || (path_data === null)) return false;
                     var data = me.data[path_data['key']];
                     if (data !== undefined) {
                         if (data.raw === null) {

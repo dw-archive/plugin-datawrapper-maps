@@ -7,6 +7,19 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
         $this->maps_as_option = null;
     }
 
+    public function init() {
+        parent::init();
+        $plugin = $this;
+        global $app;
+        DatawrapperHooks::register(
+            DatawrapperHooks::VIS_OPTION_CONTROLS,
+            function($o, $k) use ($app, $plugin) {
+                $env = array('option' => $o, 'key' => $k);
+                $app->render('plugins/' . $plugin->getName() . '/controls.twig', $env);
+            }
+        );
+    }
+
     private function getMaps() {
         if (!empty($this->maps)) return $this->maps;
         $maps = scandir(dirname(__FILE__).'/static/maps');
@@ -38,12 +51,6 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
         return $res;
     }
 
-    // private function getDefaultMap() {
-    //     $maps = $this->getMapsAsOption();
-    //     $map = reset($maps);
-    //     return $map['value'];
-    // }
-
     private function getAssets() {
         $assets = array();
         foreach ($this->getMaps() as $map) {
@@ -57,10 +64,9 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
         $id = $this->getName();
         return array(
             "map" => array(
-                "type" => "select",
-                "label" => __("Select map", $id),
+                "type"    => "map-selector",
+                "label"   => __("Select map", $id),
                 "options" => $this->getMapsAsOption(),
-                // "default" => $this->getDefaultMap()
             ),
             "scale-mode" => array(
                 "type" => "radio",

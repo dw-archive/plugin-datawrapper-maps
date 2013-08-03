@@ -1,0 +1,22 @@
+
+{% if option.type == 'map-selector' %}
+
+	<script>
+		// Automatic selection
+		$('#vis-options').on('dw:vis-option:map-selector', function(evt, args) {
+			var chart = args.chart, key = args.key;
+			console.log(args.vis.axes(true)['keys'].values());
+		});
+	</script>
+
+	<div class="control-group">
+        <label class="control-label">Map</label>
+        <div class="controls form-inline">
+			<select name="map">
+				{% for map in option.options %}
+					<option value="{{ map.value }}">{{ map.label }}</option>
+				{% endfor %}
+			</select>
+		</div>
+	</div>
+{% endif %}
