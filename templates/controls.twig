@@ -22,9 +22,7 @@
 			comparaison = comparaison.sort(function(a, b) {return a[1]<b[1];});
 			winner      = comparaison[0][0];
 			options.filter("[value="+winner+"]").prop("selected", true);
-			// sadly it doesn't work without a setTimeout
-			setTimeout(function(){chart.set('metadata.visualize.map', winner);}, 500);
-			// chart.set('metadata.visualize.map', winner);
+			chart.set('metadata.visualize.map', winner);
 		});
 	</script>
 
