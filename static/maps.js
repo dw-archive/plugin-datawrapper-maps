@@ -213,16 +213,13 @@
             var me = this;
             $('#chart .scale').remove();
             var domains       = scale.domain(),
-                legend_size   = me.get('legend-position', 'vertical') == 'vertical' ?
-                    me.__h*0.5 :
-                    Math.min(Math.max(Math.min(300, me.__w), me.__w*0.6), 500),
+                legend_size   = Math.min(Math.max(Math.min(300, me.__w), me.__w*0.6), 500),
                 domains_delta = domains[domains.length-1] - domains[0],
-                $scale        = $("<div class='scale'></div>").addClass(me.get('legend-position', 'vertical')),
-                orientation   = me.get('legend-position', 'vertical') == 'vertical' ? 'height' : 'width',
+                $scale        = $("<div class='scale'></div>"),
                 offset        = 0,
                 max_height    = 0;
 
-            $scale.css(orientation, legend_size);
+                $scale.css("width", legend_size);
 
             _.each(domains, function(step, index) {
                 // for each segment, we adding a domain in the legend and a sticker
@@ -232,13 +229,11 @@
                         size  = delta / domains_delta * legend_size,
                         // setting step
                         $step = $("<div class='step'></div>"),
-                        opt = {'background-color' : color},
                         $sticker = $("<span class='sticker'></span>").appendTo($scale);
 
-                    opt[orientation] = size;
-                    $step.css(opt);
+                    $step.css({width: size, 'background-color': color});
                     // settings ticker
-                    $sticker.css(me.get('legend-position', 'vertical') == 'vertical' ? 'bottom' : 'left', offset);
+                    $sticker.css('left', offset);
                     if (step.toString().split('.')[1] && step.toString().split('.')[1].length > 2){
                         step = Globalize.format(step, 'n');
                     }
@@ -262,7 +257,7 @@
                         me.map.getLayer('layer0').style('opacity', 1);
                         me.map.getLayer('bg').style('opacity', 1);
                     });
-                    $scale[me.get('legend-position', 'vertical') == 'vertical' ? 'prepend' : 'append']($step);
+                    $scale.append($step);
                     offset += size;
                 }
             });
@@ -270,26 +265,8 @@
             var $title = $("<div class=\"scale_title\"></div>").html(me.dataset.column(1).name());
             // showing the legend
             $('#map').after($scale);
-            if (me.get('legend-position', 'vertical') == 'vertical') {
-                // vertical
-                $('#map').css("float", "left");
-                // get max width of all stickers because of the absolute position
-                var max_width = me.getStickersMaxWidth($scale);
-                _.each($scale.find('.sticker'), function(sticker) {
-                    sticker = $(sticker);
-                    sticker.css('width', max_width + $('.scale').innerWidth()/2); // NOTE: Why /2? I don't know!
-                });
-                $scale.css('margin-left', max_width + 10); // NOTE: -10 for the space between the map and the legend
-                // NOTE: vertical title next to the legend
-                // $scale.prepend($title);
-                // $title.height($title.width());
-                $scale.css('padding-top', $('#map').height()/2 - $scale.outerHeight(true)/2);
-                me.resizeMap(me.__w - $scale.outerWidth(true), me.__h);
-            } else {
-                // horizontal
-                $scale.prepend($title);
-                me.resizeMap(me.__w, me.__h - $scale.outerHeight(true));
-            }
+            $scale.prepend($title);
+            me.resizeMap(me.__w, me.__h - $scale.outerHeight(true));
         },
 
         getStickersMaxWidth: function ($scale) {

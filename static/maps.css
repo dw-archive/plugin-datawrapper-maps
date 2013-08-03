@@ -20,17 +20,8 @@
 }
 
 .scale {
-	position : relative;
-	margin   : 0 auto;
-}
-
-.scale.vertical {
-	float : right;
-	/* NOTE: Vertical title next to the legend */
-	/*margin-right : 20px;*/
-}
-
-.scale.horizontal {
+	position      : relative;
+	margin        : 0 auto;
 	padding-top   : 20px;
 	margin-bottom : 20px;
 	height        : 40px;
@@ -38,45 +29,19 @@
 
 .scale .scale_title {font-size: 1.2em; line-height: 1.8em; font-weight: bold; }
 
-.scale.vertical .scale_title {
-	/* Vertical title next to the legend */
-	-webkit-transform: rotate(-90deg);
-	-moz-transform   : rotate(-90deg);
-	left             : 20px;
-	bottom           : 0px;
-	position         : absolute;
-	white-space      : nowrap;
-}
 
-.scale.vertical .step {
-	width : 11px;
-	position: relative;
-}
-
-.scale.horizontal .step {
+.scale .step {
 	display       : inline-block;
 	height        : 11px;
 }
 
 .scale .sticker {
 	position : absolute;
-}
-
-.scale.vertical .sticker {
-	border-bottom   : 1px solid #000;
-	padding-bottom  : 0px;
-	right           : 0px;
-	text-align      : left;
-	white-space     : nowrap;
-	padding-right   : 5px;
-}
-
-.scale.horizontal .sticker {
 	border-left  : 1px solid #000;
 	height: 15px;
 }
 
-.scale.horizontal .sticker .value {
+.scale .sticker .value {
 	width: 100px;
 	position: absolute;
 	left: -50px;
@@ -85,7 +50,7 @@
 	font-size: 11px;
 }
 
-.scale.horizontal .sticker.first {
+.scale .sticker.first {
 	border-left: 0;
 }
 

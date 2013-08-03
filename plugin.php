@@ -88,21 +88,6 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                     )
                 )
             ),
-            "legend-position" => array(
-                "type"    => "radio",
-                "label"   => __("Legend position", $id),
-                "options" => array(
-                    array(
-                        "value" => "vertical",
-                        "label" => __("vertical", $id)
-                    ),
-                    array(
-                        "value" => "horizontal",
-                        "label" => __("horizontal", $id)
-                    )
-                ),
-                "default"    => "vertical",
-            ),
             "gradient" => array(
                 "type" => "color-gradient-selector",
                 "label" => __("Color gradient", $id),
