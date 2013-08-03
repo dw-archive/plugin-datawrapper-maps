@@ -23,6 +23,10 @@
 			winner      = comparaison[0][0];
 			options.filter("[value="+winner+"]").prop("selected", true);
 			chart.set('metadata.visualize.map', winner);
+			// Bind events
+			$("select[name=map]").change(function(e){
+				chart.set('metadata.visualize.map', $("select[name=map]").val());
+			});
 		});
 	</script>
 
