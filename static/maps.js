@@ -34,7 +34,7 @@
         getLabel: function(key) {
             if (me._localized_labels === undefined) {
                 var res = $.ajax({
-                    url: window.vis.meta.__static_path + 'maps/' + me.get('map') + "/locale/" + me.chart.locale().replace('-', '_') +".json",
+                    url: window.vis.meta.__static_path + 'maps/' + me.get('map') + "/locale/" + me.chart().locale().replace('-', '_') +".json",
                     async: false,
                     dataType: 'json'
                 });
@@ -84,7 +84,7 @@
                 if (_.isNull(value)) {
                     data[geo_code].value = "n/a";
                 } else {
-                    data[geo_code].value = me.chart.formatValue(value, true);
+                    data[geo_code].value = me.formatValue(value, true);
                 }
             });
             return data;
@@ -171,7 +171,7 @@
                         data: highlighted,
                         location: function(key) { return 'layer0.'+key; },
                         text: function(key) {
-                            return me.data[key].label+'<br/>'+me.chart.formatValue(me.data[key].value);
+                            return me.data[key].label+'<br/>'+me.formatValue(me.data[key].value, true);
                         },
                         css: function(key) {
                             var fill = chroma.hex(me.data[key].color).luminance() > 0.5 ? '#000' : '#fff';
@@ -240,7 +240,7 @@
                     if (index > 0) {
                         $('<div />')
                             .addClass('value')
-                            .html(me.chart.formatValue(step, true, true))
+                            .html(me.formatValue(step, true, true))
                             .appendTo($sticker);
                     } else {
                         $sticker.remove();
@@ -312,10 +312,10 @@
             canvas = _.extend({
                 w: me.__w,
                 h: me.__h,
-                rpad: me.theme.padding.right,
-                lpad: me.theme.padding.left,
-                bpad: me.theme.padding.bottom,
-                tpad: me.theme.padding.top
+                rpad: me.theme().padding.right,
+                lpad: me.theme().padding.left,
+                bpad: me.theme().padding.bottom,
+                tpad: me.theme().padding.top
             }, canvas);
             me.__canvas = canvas;
             return canvas;
@@ -331,6 +331,14 @@
         keys: function() {
             var me = this;
             return me.axes(true).keys.values();
+        },
+
+        formatValue: function() {
+            var me = this;
+            // we're overwriting this function with the actual column formatter
+            // when it is first called (lazy evaluation)
+            me.formatValue = me.chart().columnFormatter(me.axes(true).color);
+            return me.formatValue.apply(me, arguments);
         }
 
     });
