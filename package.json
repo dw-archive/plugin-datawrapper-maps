@@ -2,12 +2,10 @@
     "version": "0.3",
     "author": "Edouard Richard",
     "dependencies": {
+        "core": "1.5.0",
         "visualization": "*"
     },
     "contributors": [{
-        "name": "Marak Squires",
-        "email": "marak@nodejitsu.com"
-    }, {
         "name": "Gregor Aisch",
         "email": "gregor@datawrapper.de"
     }],
