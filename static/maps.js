@@ -107,11 +107,11 @@
         },
 
         loadMap: function(el) {
-            me.__initCanvas({});
+            var c = me.__initCanvas({});
             var $map = $('<div id="map"></div>').html('').appendTo(el);
 
             // FIXME: set the right size
-            me.map = kartograph.map($map);
+            me.map = kartograph.map($map, c.w-10);
 
             // Load all the layers (defined in the map.json)
             me.map.loadMap(me.getSVG(), function(){
@@ -195,7 +195,7 @@
                 // mark visualization as rendered
                 me.renderingComplete();
 
-            }, { padding: -2 });
+            }, { padding: 2 });
         },
 
         resizeMap: function(w, h) {
@@ -262,7 +262,7 @@
                 }
             });
             // title
-            var $title = $("<div class=\"scale_title\"></div>").html(me.dataset.column(1).name());
+            var $title = $("<div class=\"scale_title\"></div>").html(me.dataset.column(1).title());
             // showing the legend
             $('#map').after($scale);
             $scale.prepend($title);
