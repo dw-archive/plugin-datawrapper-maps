@@ -1,4 +1,0 @@
-[submodule "static/maps/de-election-2013"]
-	path = static/maps/de-election-2013
-	url = git@git.jplusplus.org:dw-maps-de-election-2013.git
-   ignore = dirty
