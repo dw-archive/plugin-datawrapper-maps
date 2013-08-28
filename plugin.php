@@ -105,7 +105,10 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             "id" => "maps",
             "extends" => "raphael-chart",
             "libraries" => array(
-                "vendor/kartograph.min.js"
+                array(
+                    "local" => "vendor/kartograph.min.js",
+                    "cdn" => "//assets-datawrapper.s3.amazonaws.com/vendor/kartograph.js/0.7.1/kartograph.min.js"
+                )
             ),
             "title"   => __("Maps", $id),
             "order"   => 62,
