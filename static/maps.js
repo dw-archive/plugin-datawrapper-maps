@@ -105,8 +105,6 @@
             // resize map
             me.data = getData();
 
-            console.log('updateMap');
-
             // colorize
             me.scale = eval(me.get('gradient.chromajs-constructor'));
             function fill(path_data) {
