@@ -69,6 +69,10 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
     private function getOptions() {
         $id = $this->getName();
         return array(
+            "---map-options---" => array(
+                "type" => "separator",
+                "label" => "Select and customize display"
+            ),
             "map" => array(
                 "type"    => "map-selector",
                 "label"   => __("Select map", $id),
@@ -88,6 +92,10 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                     )
                 )
             ),
+            "---color-options---" => array(
+                "type" => "separator",
+                "label" => "Customize map colors"
+            ),
             "gradient" => array(
                 "type" => "color-gradient-selector",
                 "label" => __("Color gradient", $id),
@@ -99,6 +107,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             )
         );
     }
+
     public function getMeta() {
         $id = $this->getName();
         return array(
@@ -120,6 +129,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                     "accepts" => array("number")
                 )
             ),
+            "hide-base-color-selector" => true,
             "assets"  => $this->getAssets(),
             "options" => $this->getOptions()
         );
