@@ -169,6 +169,8 @@
                 me.map.getLayer('tooltip-target')
                     .on('mouseenter', _.bind(me.showTooltip, me))
                     .on('mouseleave', _.bind(me.hideTooltip, me));
+
+                me.resizeMap(me.__w, me.__h - $('.scale').outerHeight(true));
             }
 
             /*
