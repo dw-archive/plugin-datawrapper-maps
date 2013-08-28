@@ -103,13 +103,9 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
         $id = $this->getName();
         return array(
             "id" => "maps",
+            "extends" => "raphael-chart",
             "libraries" => array(
-                array(
-                    "local" => "vendor/raphael.min.js",
-                    "cdn" => "//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"
-                ),
-                "vendor/kartograph.min.js",
-                "vendor/chroma.min.js",
+                "vendor/kartograph.min.js"
             ),
             "title"   => __("Maps", $id),
             "order"   => 62,
