@@ -15,188 +15,230 @@
     dw.visualization.register('maps', {
 
         render: function(el) {
-            me = this;
-            me.loadMap(el);
+            var me = this;
+            if (me.map && me.get('map') == me.__lastSVG) {
+                // it's enough to update the map
+                me.updateMap();
+                me.renderingComplete();
+            } else {
+                if (me.map) me._reset();
+                me.loadMap(el);
+            }
+        },
+
+        reset: function() {
+            // we override reset() with an empty function because we
+            // want to decide ourself whether or not we want to reset the map
+        },
+
+        _reset: function() {
+            // this is called by our own render() function
+            var me = this;
+            me.map.clear();
+            $('#chart').html('').off('click').off('mousemove').off('mouseenter').off('mouseover');
+            $('.chart .filter-ui').remove();
+            $('.chart .legend').remove();
         },
 
         /**
         * Return the path for svg file.
         */
         getSVG: function() {
-            return window.vis.meta.__static_path + 'maps/' + me.get('map') + "/map.svg";
+            var me = this;
+            return me.meta.__static_path + 'maps/' + me.get('map') + "/map.svg";
         },
 
-        /**
-        * Return the label for the given path key.
-        * If the translation doens't exist in the <map>/locale/<lang>.json file,
-        * The label is retrieved in the svg file at the 'data-label' field.
-        */
-        getLabel: function(key) {
-            if (me._localized_labels === undefined) {
+        /*
+         * called by render() whenever a new map needs to be loaded
+         */
+        loadMap: function(el) {
+            var me = this,
+                c = me.__initCanvas({});
+                $map = $('<div id="map"></div>').html('').appendTo(el);
+
+            /**
+            * Parse and return the map's json
+            */
+            function getMapMeta() {
+                if (me.map_meta) return me.map_meta;
                 var res = $.ajax({
-                    url: window.vis.meta.__static_path + 'maps/' + me.get('map') + "/locale/" + me.chart().locale().replace('-', '_') +".json",
+                    url: window.vis.meta.__static_path + 'maps/' + me.get('map') + "/map.json",
                     async: false,
                     dataType: 'json'
                 });
-                me._localized_labels = (res.status == 200) ? eval('(' + res.responseText + ')') : null;
+                var meta = eval('(' + res.responseText + ')');
+                me.map_meta = meta;
+                return meta;
             }
-            if (me._localized_labels && me._localized_labels[key]) {
-                return me._localized_labels[key];
-            }
-            var path = me.map.getLayer('layer0').getPaths({"key":key.toString()});
-            if (path.length > 0) {
-                return me.map.getLayer('layer0').getPaths({key:key.toString()})[0].data.label;
-            }
-            return "";
-        },
-
-        /**
-        * Parse and return the map's json
-        */
-        getMapMeta: function() {
-            if (me.map_meta) return me.map_meta;
-            var res = $.ajax({
-                url: window.vis.meta.__static_path + 'maps/' + me.get('map') + "/map.json",
-                async: false,
-                dataType: 'json'
-            });
-            var meta = eval('(' + res.responseText + ')');
-            me.map_meta = meta;
-            return meta;
-        },
-
-        /**
-        * Can be overwrited. This function return the data as:
-        * Array(geo_code_as_key => {raw:, value:})
-        * value is the raw formated.
-        * @return {Array} 
-        */
-        getDataSeries: function() {
-            var me          = this,
-                data        = [],
-                keyColumn   = me.axes(true).keys,
-                valueColumn = me.axes(true).color;
-            _.each(keyColumn.raw(), function (geo_code, index) {
-                var value = valueColumn.val(index);
-                data[geo_code]  = {};
-                data[geo_code].raw   = value;
-                data[geo_code].label = me.getLabel(geo_code);
-                if (_.isNull(value)) {
-                    data[geo_code].value = "n/a";
-                } else {
-                    data[geo_code].value = me.formatValue(value, true);
-                }
-            });
-            return data;
-        },
-
-        /**
-        * Loops into svg's paths, filter the given data to
-        * keep only related data.
-        * @return {Array} 
-        */
-        filterDataWithMapPaths: function(data) {
-            var filtered = [];
-            _.each(me.map.getLayer('layer0').paths, function(path){
-                var key = path.data['key'];
-                if (data[key] !== undefined) {
-                    filtered[key] = data[key];
-                }
-            });
-            return filtered;
-        },
-
-        loadMap: function(el) {
-            var c = me.__initCanvas({});
-            var $map = $('<div id="map"></div>').html('').appendTo(el);
 
             // FIXME: set the right size
             me.map = kartograph.map($map, c.w-10);
+            me.__lastSVG = me.get('map');
 
             // Load all the layers (defined in the map.json)
             me.map.loadMap(me.getSVG(), function(){
 
                 // Loops over layers and adds it into map
-                _.each(me.getMapMeta().layers, function(layer, name){
+                _.each(getMapMeta().layers, function(layer, name){
                     layer.name = name;
                     layer.key = 'key';
                     me.map.addLayer(layer.src, layer);
                 });
 
-                me.data = me.filterDataWithMapPaths(me.getDataSeries());
+                me.updateMap();
 
-                // colorize
-                me.scale = eval(me.get('gradient.chromajs-constructor'));
-                function fill(path_data) {
-                    if (path_data === undefined || (path_data === null)) return false;
-                    var data = me.data[path_data['key']];
-                    if (data !== undefined) {
-                        if (data.raw === null) {
-                            color = "url('"+window.vis.meta.__static_path + 'stripped.png'+"')";
-                        } else {
-                            color = me.scale(data.raw).hex();
-                        }
-                        me.data[path_data['key']].color = color;
-                        return data.color;
-                    }
-                }
-                me.map.getLayer('layer0').style('fill', fill);
-                me.map.getLayer('layer0').style('stroke', function(pd) {
-                    var color = fill(pd);
-                    if (startsWith(color, "url(")) {
-                        color = null;
-                    }
-                    return chroma.hex(fill(color) || '#ccc').darken(25).hex();
-                });
-                // show scale
-                me.showLegend(me.scale);
                 // binds mouse events
-                me.map.getLayer('layer0').on('mouseenter', me.showTooltip).on('mouseleave', me.hideTooltip);
-
-                me.map.getLayer('layer0').sort(function(pd) {
-                    // sort paths by fill lumincane, so darker paths are on top (outline looks better then)
-                    var color = fill(pd);
-                    if (startsWith(color, "url(")) {
-                        color = null;
-                    }
-                    return chroma.hex(color || '#ccc').luminance() * -1;
-                });
-
-                var highlighted = me.get('highlighted-series', []),
-                    data = [];
-
-                if (highlighted.length > 0) {
-                    me.map.addSymbols({
-                        type: $K.HtmlLabel,
-                        data: highlighted,
-                        location: function(key) { return 'layer0.'+key; },
-                        text: function(key) {
-                            return me.data[key].label+'<br/>'+me.formatValue(me.data[key].value, true);
-                        },
-                        css: function(key) {
-                            var fill = chroma.hex(me.data[key].color).luminance() > 0.5 ? '#000' : '#fff';
-                            return { color: fill, 'font-size': '13px', 'line-height': '15px' };
-                        }
-                    });
-                    me.map.addLayer('layer0', {
-                        name: 'tooltip-target',
-                        styles: {
-                            stroke: false,
-                            fill: '#fff',
-                            opacity: 0
-                        },
-                        add_svg_layer: true
-                    });
-                    me.map.getLayer('tooltip-target')
-                        .on('mouseenter', me.showTooltip)
-                        .on('mouseleave', me.hideTooltip);
-                }
+                me.map.getLayer('layer0').on('mouseenter', _.bind(me.showTooltip, me)).on('mouseleave', me.hideTooltip);
 
                 // mark visualization as rendered
                 me.renderingComplete();
 
             }, { padding: 2 });
         },
+
+        /*
+         * called by render() whenever only the map config changed
+         */
+        updateMap: function() {
+            var me = this;
+
+            // resize map
+            me.data = getData();
+
+            console.log('updateMap');
+
+            // colorize
+            me.scale = eval(me.get('gradient.chromajs-constructor'));
+            function fill(path_data) {
+                if (path_data === undefined || (path_data === null)) return false;
+                var data = me.data[path_data['key']];
+                if (data !== undefined) {
+                    if (data.raw === null) {
+                        color = "url('"+window.vis.meta.__static_path + 'stripped.png'+"')";
+                    } else {
+                        // BUG in chroma.js, me.scale() returns undefined
+                        color =me.scale(data.raw) ? me.scale(data.raw).hex() : '#000';
+                    }
+                    me.data[path_data['key']].color = color;
+                    return data.color;
+                }
+            }
+            me.map.getLayer('layer0').style('fill', fill);
+            me.map.getLayer('layer0').style('stroke', function(pd) {
+                var color = fill(pd);
+                if (startsWith(color, "url(")) {
+                    color = null;
+                }
+                return chroma.hex(fill(color) || '#ccc').darken(25).hex();
+            });
+            // show scale
+            me.showLegend(me.scale);
+
+            me.map.getLayer('layer0').sort(function(pd) {
+                // sort paths by fill lumincane, so darker paths are on top (outline looks better then)
+                var color = fill(pd);
+                if (startsWith(color, "url(")) {
+                    color = null;
+                }
+                return chroma.hex(color || '#ccc').luminance() * -1;
+            });
+
+            var highlighted = me.get('highlighted-series', []),
+                data = [];
+
+            if (highlighted.length > 0) {
+                me.map.addSymbols({
+                    type: $K.HtmlLabel,
+                    data: highlighted,
+                    location: function(key) { return 'layer0.'+key; },
+                    text: function(key) {
+                        return me.data[key].label+'<br/>'+me.formatValue(me.data[key].value, true);
+                    },
+                    css: function(key) {
+                        var fill = chroma.hex(me.data[key].color).luminance() > 0.5 ? '#000' : '#fff';
+                        return { color: fill, 'font-size': '13px', 'line-height': '15px' };
+                    }
+                });
+                me.map.addLayer('layer0', {
+                    name: 'tooltip-target',
+                    styles: {
+                        stroke: false,
+                        fill: '#fff',
+                        opacity: 0
+                    },
+                    add_svg_layer: true
+                });
+                me.map.getLayer('tooltip-target')
+                    .on('mouseenter', _.bind(me.showTooltip, me))
+                    .on('mouseleave', _.bind(me.hideTooltip, me));
+            }
+
+            /*
+             * Loops into svg's paths, filter the given data to
+             * keep only related data.
+             * @return {Array}
+             */
+            function getData() {
+                var data = getDataSeries(),
+                    filtered = [];
+                _.each(me.map.getLayer('layer0').paths, function(path){
+                    var key = path.data['key'];
+                    if (data[key] !== undefined) {
+                        filtered[key] = data[key];
+                    }
+                });
+                return filtered;
+            }
+
+            /*
+             * Return the label for the given path key.
+             * If the translation doens't exist in the <map>/locale/<lang>.json file,
+             * The label is retrieved in the svg file at the 'data-label' field.
+             */
+            function getLabel(key) {
+                if (me._localized_labels === undefined) {
+                    var res = $.ajax({
+                        url: window.vis.meta.__static_path + 'maps/' + me.get('map') + "/locale/" + me.chart().locale().replace('-', '_') +".json",
+                        async: false,
+                        dataType: 'json'
+                    });
+                    me._localized_labels = (res.status == 200) ? eval('(' + res.responseText + ')') : null;
+                }
+                if (me._localized_labels && me._localized_labels[key]) {
+                    return me._localized_labels[key];
+                }
+                var path = me.map.getLayer('layer0').getPaths({"key":key.toString()});
+                if (path.length > 0) {
+                    return me.map.getLayer('layer0').getPaths({key:key.toString()})[0].data.label;
+                }
+                return "";
+            }
+
+            /*
+             * This function return the data as:
+             * Array(geo_code_as_key => {raw:, value:})
+             * value is the raw formated.
+             * @return {Array}
+             */
+            function getDataSeries() {
+                var data        = [],
+                    keyColumn   = me.axes(true).keys,
+                    valueColumn = me.axes(true).color;
+                _.each(keyColumn.raw(), function (geo_code, index) {
+                    var value = valueColumn.val(index);
+                    data[geo_code]  = {};
+                    data[geo_code].raw   = value;
+                    data[geo_code].label = getLabel(geo_code);
+                    if (_.isNull(value)) {
+                        data[geo_code].value = "n/a";
+                    } else {
+                        data[geo_code].value = me.formatValue(value, true);
+                    }
+                });
+                return data;
+            }
+
+        }, // end updateMap
 
         resizeMap: function(w, h) {
             var me = this;
@@ -215,11 +257,11 @@
             var domains       = scale.domain(),
                 legend_size   = Math.min(Math.max(Math.min(300, me.__w), me.__w*0.6), 500),
                 domains_delta = domains[domains.length-1] - domains[0],
-                $scale        = $("<div class='scale'></div>"),
+                $legend       = $("<div class='scale'></div>"),
                 offset        = 0,
                 max_height    = 0;
 
-                $scale.css("width", legend_size);
+            $legend.css("width", legend_size);
 
             _.each(domains, function(step, index) {
                 // for each segment, we adding a domain in the legend and a sticker
@@ -229,7 +271,7 @@
                         size  = delta / domains_delta * legend_size,
                         // setting step
                         $step = $("<div class='step'></div>"),
-                        $sticker = $("<span class='sticker'></span>").appendTo($scale);
+                        $sticker = $("<span class='sticker'></span>").appendTo($legend);
 
                     $step.css({width: size, 'background-color': color});
                     // settings ticker
@@ -240,7 +282,7 @@
                     if (index > 0) {
                         $('<div />')
                             .addClass('value')
-                            .html(me.formatValue(step, true, true))
+                            .html(me.formatValue(step, index == domains.length-2, true))
                             .appendTo($sticker);
                     } else {
                         $sticker.remove();
@@ -257,16 +299,19 @@
                         me.map.getLayer('layer0').style('opacity', 1);
                         me.map.getLayer('bg').style('opacity', 1);
                     });
-                    $scale.append($step);
+                    $legend.append($step);
                     offset += size;
                 }
             });
             // title
-            var $title = $("<div class=\"scale_title\"></div>").html(me.dataset.column(1).title());
+            $("<div />")
+                .addClass('scale_title')
+                .html(me.dataset.column(1).title())
+                .prependTo($legend);
             // showing the legend
-            $('#map').after($scale);
-            $scale.prepend($title);
-            me.resizeMap(me.__w, me.__h - $scale.outerHeight(true));
+            $('#map').after($legend);
+
+            me.resizeMap(me.__w, me.__h - $legend.outerHeight(true));
         },
 
         getStickersMaxWidth: function ($scale) {
@@ -278,6 +323,7 @@
         },
 
         showTooltip: function(data, path, event) {
+            var me = this;
             if (me.data[data['key']] === undefined) {return;}
             var $tooltip = $("<div class='tooltip'></div>");
             // set title
@@ -339,6 +385,11 @@
             // when it is first called (lazy evaluation)
             me.formatValue = me.chart().columnFormatter(me.axes(true).color);
             return me.formatValue.apply(me, arguments);
+        },
+
+        // tell the template that we are smart enough to re-render the map
+        supportsSmartRendering: function() {
+            return true;
         }
 
     });
