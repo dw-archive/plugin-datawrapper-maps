@@ -45,7 +45,7 @@
         */
         getSVG: function() {
             var me = this;
-            return me.meta.__static_path + 'maps/' + me.get('map') + "/map.svg";
+            return 'assets/' + me.get('map-path') + "/map.svg";
         },
 
         /*
@@ -62,7 +62,7 @@
             function getMapMeta() {
                 if (me.map_meta) return me.map_meta;
                 var res = $.ajax({
-                    url: window.vis.meta.__static_path + 'maps/' + me.get('map') + "/map.json",
+                    url: 'assets/' + me.get('map-path') + "/map.json",
                     async: false,
                     dataType: 'json'
                 });
@@ -180,13 +180,19 @@
              */
             function getData() {
                 var data = getDataSeries(),
-                    filtered = [];
-                _.each(me.map.getLayer('layer0').paths, function(path){
+                    filtered = {},
+                    paths = me.map.getLayer('layer0').paths,
+                    found = 0;
+                _.each(paths, function(path){
                     var key = path.data['key'];
                     if (data[key] !== undefined) {
                         filtered[key] = data[key];
+                        found++;
                     }
                 });
+                if (found / _.keys(data).length < 0.8) {
+                    me.notify()
+                }
                 return filtered;
             }
 
@@ -198,7 +204,7 @@
             function getLabel(key) {
                 if (me._localized_labels === undefined) {
                     var res = $.ajax({
-                        url: window.vis.meta.__static_path + 'maps/' + me.get('map') + "/locale/" + me.chart().locale().replace('-', '_') +".json",
+                        url: 'assets/' + me.get('map-path') + "/locale/" + me.chart().locale().replace('-', '_') +".json",
                         async: false,
                         dataType: 'json'
                     });
@@ -221,7 +227,7 @@
              * @return {Array}
              */
             function getDataSeries() {
-                var data        = [],
+                var data        = {},
                     keyColumn   = me.axes(true).keys,
                     valueColumn = me.axes(true).color;
                 _.each(keyColumn.raw(), function (geo_code, index) {
