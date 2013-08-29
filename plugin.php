@@ -3,14 +3,27 @@
 class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualization {
 
     function __construct() {
-        $this->maps           = null;
+        $this->maps           = array();
         $this->maps_as_option = null;
     }
 
+    const HOOK_REGISTER_MAP = 'maps-register-map';
+
     public function init() {
-        parent::init();
         $plugin = $this;
         global $app;
+        DatawrapperVisualization::register($this, $this->getMeta(), array($this, 'getAssets'));
+
+        // let other plugins add more maps
+        DatawrapperHooks::register(self::HOOK_REGISTER_MAP, array($this, 'addMap'));
+
+        // and add the maps included in our own /static/maps/ folder
+        foreach (glob(dirname(__FILE__) . "/static/maps/*/map.json") as $file) {
+            preg_match("#/static/maps/([^/]+)/map.json#", $file, $m);
+            $this->addMap($m[1], 'plugins/' . $this->getName() . '/maps/' . $m[1]);
+        }
+
+        // register the map selector dropdown control
         DatawrapperHooks::register(
             DatawrapperHooks::VIS_OPTION_CONTROLS,
             function($o, $k) use ($app, $plugin) {
@@ -20,50 +33,40 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
         );
     }
 
+    public function getMeta() {
+        $id = $this->getName();
+        return array(
+            "id" => "maps",
+            "extends" => "raphael-chart",
+            "libraries" => array(
+                array(
+                    "local" => "vendor/kartograph.min.js",
+                    "cdn" => "//assets-datawrapper.s3.amazonaws.com/vendor/kartograph.js/0.7.1/kartograph.min.js"
+                )
+            ),
+            "title"   => __("Maps", $id),
+            "order"   => 62,
+            "axes"    => array(
+                "keys" => array(
+                    "accepts" => array("text", "number"),
+                ),
+                "color" => array(
+                    "accepts" => array("number")
+                )
+            ),
+            "hide-base-color-selector" => true,
+            "options" => $this->getOptions()
+        );
+    }
+
+    public function addMap($id, $path) {
+        $this->maps[$id] = $path;
+        // we need to register the visualization again, as the options have changed
+        DatawrapperVisualization::register($this, $this->getMeta(), array($this, 'getAssets'));
+    }
+
     private function getMaps() {
-        if (!empty($this->maps)) return $this->maps;
-        $maps = scandir(dirname(__FILE__).'/static/maps');
-        $maps = array_filter($maps, function($var){return strncmp($var, ".", 1);});
-        $this->maps = $maps;
-        return $maps;
-    }
-
-    private function getMapsAsOption() {
-        if (!empty($this->maps_as_option)) return $this->maps_as_option;
-        $res = array();
-        $locale = substr(DatawrapperSession::getLanguage(), 0, 2);
-        foreach ($this->getMaps() as $map) {
-            $json = json_decode(file_get_contents(dirname(__FILE__).'/static/maps/'.$map.'/map.json'), true);
-            $label = $map;
-            if (!empty($json['title'])) {
-                if (!empty($json['title'][$locale])) {
-                    $label = $json['title'][$locale];
-                } elseif (!empty($json['title']['en'])) {
-                    $label = $json['title']['en'];
-                }
-            }
-            if (!empty($json['keys'])) {
-                $keys = $json['keys'];
-            } else {
-                $keys = array();
-            }
-            $res[] = array(
-                'keys'  => $keys,
-                'value' => $map,
-                'label' => $label
-            );
-        }
-        $this->maps_as_option = $res;
-        return $res;
-    }
-
-    private function getAssets() {
-        $assets = array();
-        foreach ($this->getMaps() as $map) {
-            $assets[] = "maps/".$map."/map.json";
-            $assets[] = "maps/".$map."/map.svg";
-        }
-        return $assets;
+        return $this->maps;
     }
 
     private function getOptions() {
@@ -108,31 +111,47 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
         );
     }
 
-    public function getMeta() {
-        $id = $this->getName();
-        return array(
-            "id" => "maps",
-            "extends" => "raphael-chart",
-            "libraries" => array(
-                array(
-                    "local" => "vendor/kartograph.min.js",
-                    "cdn" => "//assets-datawrapper.s3.amazonaws.com/vendor/kartograph.js/0.7.1/kartograph.min.js"
-                )
-            ),
-            "title"   => __("Maps", $id),
-            "order"   => 62,
-            "axes"    => array(
-                "keys" => array(
-                    "accepts" => array("text", "number"),
-                ),
-                "color" => array(
-                    "accepts" => array("number")
-                )
-            ),
-            "hide-base-color-selector" => true,
-            "assets"  => $this->getAssets(),
-            "options" => $this->getOptions()
-        );
+    private function getMapsAsOption() {
+        //if (!empty($this->maps_as_option)) return $this->maps_as_option;
+        $res = array();
+        $locale = substr(DatawrapperSession::getLanguage(), 0, 2);
+        foreach ($this->getMaps() as $map_id => $map_path) {
+            $json = json_decode(file_get_contents(ROOT_PATH . 'www/static/' . $map_path . '/map.json'), true);
+            $label = $map_id;
+            if (!empty($json['title'])) {
+                if (!empty($json['title'][$locale])) {
+                    $label = $json['title'][$locale];
+                } elseif (!empty($json['title']['en'])) {
+                    $label = $json['title']['en'];
+                }
+            }
+            if (!empty($json['keys'])) {
+                $keys = $json['keys'];
+            } else {
+                $keys = array();
+            }
+            $res[] = array(
+                'keys'  => $keys,
+                'value' => $map_id,
+                'label' => $label,
+                'path' => $map_path
+            );
+        }
+        $this->maps_as_option = $res;
+        return $res;
+    }
+
+    /*
+     * returns an array of assets (maps in this case) needed
+     * to render the visualization on a given chart
+     */
+    public function getAssets($chart) {
+        $assets = array();
+        foreach ($this->getMaps() as $map) {
+            $assets[] = "maps/".$map."/map.json";
+            $assets[] = "maps/".$map."/map.svg";
+        }
+        return $assets;
     }
 
     public function getDemoDataSets(){
