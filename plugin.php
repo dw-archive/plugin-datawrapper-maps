@@ -146,12 +146,12 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
      * to render the visualization on a given chart
      */
     public function getAssets($chart) {
-        $assets = array();
-        foreach ($this->getMaps() as $map) {
-            $assets[] = "maps/".$map."/map.json";
-            $assets[] = "maps/".$map."/map.svg";
-        }
-        return $assets;
+        $map_path = $chart->getMetaData('visualize.map-path');
+        return array(
+            $map_path . '/map.svg',
+            $map_path . '/map.json',
+            $map_path . '/locale/' + substr(DatawrapperSession::getLanguage(), 0, 2) + '.json'
+        );
     }
 
     public function getDemoDataSets(){
