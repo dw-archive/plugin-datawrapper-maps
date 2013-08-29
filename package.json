@@ -12,6 +12,6 @@
    }],
    "repository": {
       "type": "git",
-      "url": "git@git.jplusplus.org:dw-plugin-maps"
+      "url": "git@git.jplusplus.org:dw-plugin-visualization-maps"
    }
 }
