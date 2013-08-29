@@ -1,16 +1,17 @@
 {
-    "version": "0.3",
-    "author": "Edouard Richard",
-    "dependencies": {
-        "core": "1.5.0",
-        "visualization": "*"
-    },
-    "contributors": [{
-        "name": "Gregor Aisch",
-        "email": "gregor@datawrapper.de"
-    }],
-    "repository": {
-       "type": "git",
-       "url": "git@git.jplusplus.org:dw-plugin-maps"
+   "name": "visualization-maps",
+   "version": "0.3",
+   "author": "Edouard Richard",
+   "dependencies": {
+      "core": "1.5.0",
+      "visualization": "*"
+   },
+   "contributors": [{
+      "name": "Gregor Aisch",
+      "email": "gregor@datawrapper.de"
+   }],
+   "repository": {
+      "type": "git",
+      "url": "git@git.jplusplus.org:dw-plugin-maps"
    }
 }
