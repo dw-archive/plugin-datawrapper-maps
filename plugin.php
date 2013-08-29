@@ -54,6 +54,10 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                     "accepts" => array("number")
                 )
             ),
+            "locale" => array(
+                "ids-mismatching" => __("A significant fraction of your data (%d) could not be assigned to regions of the chosen map. Please make sure that <ul><li>you have selected the correct map and</li><li>that your dataset uses the same identifiers as used in the map.</li></ul>
+                    <p>You may find this <a download='template.csv' href='%t'>template dataset useful</a>.</li></ul>", $id)
+            ),
             "hide-base-color-selector" => true,
             "options" => $this->getOptions()
         );
@@ -150,7 +154,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
         return array(
             $map_path . '/map.svg',
             $map_path . '/map.json',
-            $map_path . '/locale/' + substr(DatawrapperSession::getLanguage(), 0, 2) + '.json'
+            $map_path . '/locale/' . substr(DatawrapperSession::getLanguage(), 0, 2) . '.json'
         );
     }
 

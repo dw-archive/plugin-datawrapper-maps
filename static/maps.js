@@ -182,16 +182,33 @@
                 var data = getDataSeries(),
                     filtered = {},
                     paths = me.map.getLayer('layer0').paths,
+                    pathIDs = [],
                     found = 0;
                 _.each(paths, function(path){
                     var key = path.data['key'];
+                    pathIDs.push(key);
                     if (data[key] !== undefined) {
                         filtered[key] = data[key];
                         found++;
                     }
                 });
-                if (found / _.keys(data).length < 0.8) {
-                    me.notify()
+                var missing_percent = 1 - found / _.keys(data).length;
+                if (missing_percent > 0.2 && !me.__didAlreadyNotify) {
+                    me.__didAlreadyNotify = true;
+                    var template_ds = dw.dataset([
+                            dw.column('ID', pathIDs, 'text'),
+                            dw.column('Label', _.map(pathIDs, function(k) { return getLabel(k); }), 'text'),
+                            dw.column('Value', _.times(pathIDs.length, function() {
+                                return _.random(0, Math.random() < 0.2 ? 1000 : 500);
+                            }), 'number')
+                        ]),
+                        template_csv = 'data:application/octet-stream;charset=utf-8,' +
+                        encodeURIComponent(template_ds.toCSV());
+                    me.notify(
+                        me.translate("ids-mismatching")
+                          .replace("%d", (missing_percent*100).toFixed(0)+'%')
+                          .replace("%t", template_csv)
+                    );
                 }
                 return filtered;
             }
