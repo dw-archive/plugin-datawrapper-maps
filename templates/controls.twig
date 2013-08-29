@@ -29,7 +29,10 @@
 			}
 			// Bind events
 			$("select[name=map]").change(function(e){
-				chart.set('metadata.visualize.map', $("select[name=map]").val());
+				var map_id = $("select[name=map]").val(),
+					map_path = $("select[name=map] option[value="+map_id+"]").data('path');
+				chart.set('metadata.visualize.map', map_id);
+				chart.set('metadata.visualize.map-path', map_path);
 			});
 		});
 	</script>
@@ -39,7 +42,7 @@
         <div class="controls form-inline">
 			<select name="map">
 				{% for map in option.options %}
-					<option value="{{ map.value }}" data-keys="{{ map.keys | json }}">{{ map.label }}</option>
+					<option value="{{ map.value }}" data-keys="{{ map.keys | json }}" data-path="{{ map.path }}">{{ map.label }}</option>
 				{% endfor %}
 			</select>
 		</div>
