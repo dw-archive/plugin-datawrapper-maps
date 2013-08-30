@@ -107,11 +107,12 @@
 
             // colorize
             me.scale = eval(me.get('gradient.chromajs-constructor'));
+
             function fill(path_data) {
                 if (path_data === undefined || (path_data === null)) return false;
                 var data = me.data[path_data['key']];
                 if (data !== undefined) {
-                    if (data.raw === null) {
+                    if (!_.isNumber(data.raw)) {
                         color = "url('"+window.vis.meta.__static_path + 'stripped.png'+"')";
                     } else {
                         // BUG in chroma.js, me.scale() returns undefined
@@ -121,6 +122,7 @@
                     return data.color;
                 }
             }
+
             me.map.getLayer('layer0').style('fill', fill);
             me.map.getLayer('layer0').style('stroke', function(pd) {
                 var color = fill(pd);
