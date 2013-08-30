@@ -1,6 +1,6 @@
 {
    "name": "visualization-maps",
-   "version": "0.3",
+   "version": "0.4",
    "author": "Edouard Richard",
    "dependencies": {
       "core": "1.5.0",

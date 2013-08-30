@@ -6,6 +6,7 @@
 			var chart       = args.chart, key = args.key;
 			var options     = $("select[name=map] option");
 			if (chart.get('metadata.visualize.map') === undefined) {
+				// There is no defined map, we try to guess one
 				var comparaison  = [];
 				var dataset_keys = args.vis.axes(true)['keys'].values();
 				// retrieves all keys of all maps
@@ -22,8 +23,10 @@
 				// we choose the map with the most similiar keys
 				comparaison = comparaison.sort(function(a, b) {return a[1]<b[1];});
 				winner      = comparaison[0][0];
-				options.filter("[value="+winner+"]").prop("selected", true);
+				var $option_to_select = options.filter("[value="+winner+"]");
+				$option_to_select.prop("selected", true);
 				chart.set('metadata.visualize.map', winner);
+				chart.set('metadata.visualize.map-path', $option_to_select.data('path'));
 			} else {
 				options.filter("[value="+chart.get('metadata.visualize.map')+"]").prop("selected", true);
 			}

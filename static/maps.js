@@ -221,9 +221,10 @@
              * The label is retrieved in the svg file at the 'data-label' field.
              */
             function getLabel(key) {
+                // Load from <map-path>/locale/<lang>.json
                 if (me._localized_labels === undefined) {
                     var res = $.ajax({
-                        url: 'assets/' + me.get('map-path') + "/locale/" + me.chart().locale().replace('-', '_') +".json",
+                        url: 'assets/' + me.get('map-path') + "/locale/" + me.chart().locale().slice(0,2) +".json",
                         async: false,
                         dataType: 'json'
                     });
@@ -232,6 +233,7 @@
                 if (me._localized_labels && me._localized_labels[key]) {
                     return me._localized_labels[key];
                 }
+                // Try to find the label from the svg file at the 'data-label' field
                 var path = me.map.getLayer('layer0').getPaths({"key":key.toString()});
                 if (path.length > 0) {
                     return me.map.getLayer('layer0').getPaths({key:key.toString()})[0].data.label;
