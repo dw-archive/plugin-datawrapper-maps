@@ -207,7 +207,7 @@
                             }), 'number')
                         ]),
                         template_csv = 'data:application/octet-stream;charset=utf-8,' +
-                        encodeURIComponent(template_ds.toCSV());
+                        encodeURIComponent(template_ds.toCSV()).replace(/'/g, '%27');
                     me.notify(
                         me.translate("ids-mismatching")
                           .replace("%d", (missing_percent*100).toFixed(0)+'%')
