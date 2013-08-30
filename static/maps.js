@@ -197,7 +197,9 @@
                     me.__didAlreadyNotify = true;
                     var template_ds = dw.dataset([
                             dw.column('ID', pathIDs, 'text'),
-                            dw.column('Label', _.map(pathIDs, function(k) { return getLabel(k); }), 'text'),
+                            dw.column('Label', _.map(pathIDs, function(k) {
+                                return getLabel(k);
+                            }), 'text'),
                             dw.column('Value', _.times(pathIDs.length, function() {
                                 return _.random(0, Math.random() < 0.2 ? 1000 : 500);
                             }), 'number')
