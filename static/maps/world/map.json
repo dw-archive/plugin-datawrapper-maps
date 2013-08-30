@@ -1,0 +1,27 @@
+{
+	"title" : {
+		"en" : "World",
+		"fr" : "Monde",
+		"es" : "Mundo",
+		"de" : "Welt"
+	},
+	"keys" : ["ABW","AFG","AGO","AIA","ALB","ALA","AND","ARE","ARG","ARM","ATF","ATG","AUS","AUT","AZE","BDI","BEL","BEN","BFA","BGD","BGR","BHR","BHS","BIH","BLM","BLR","BLZ","BMU","BOL","BRA","BRN","BTN","BWA","CAF","CAN","CHE","CHL","CHN","CIV","CMR","COD","COG","COL","CPV","CRI","CUB","CUW","CYM","CYP","CZE","DEU","DJI","DMA","DNK","DOM","DZA","ECU","EGY","ERI","ESP","EST","ETH","FIN","FJI","FLK","FRA","FRO","FSM","GAB","GBR","GEO","GGY","GHA","GIN","GMB","GNB","GNQ","GRC","GRL","GTM","GUY","HKG","HMD","HND","HRV","HTI","HUN","IDN","IMN","IND","IOT","IRL","IRN","IRQ","ISL","ISR","ITA","JAM","JEY","JOR","JPN","KAZ","KEN","KGZ","KHM","KIR","KNA","KOR","KWT","LAO","LBN","LBR","LBY","LCA","LIE","LKA","LSO","LTU","LUX","LVA","MAC","MAF","MAR","MCO","MDA","MDG","MDV","MEX","MHL","MKD","MLI","MLT","MMR","MNE","MNG","MNP","MOZ","MRT","MSR","MWI","MYS","NAM","NCL","NER","NGA","NIC","NLD","NOR","NPL","NRU","NZL","OMN","PAK","PAN","PER","PHL","PLW","PNG","POL","PRI","PRK","PRT","PRY","PSE","PYF","QAT","ROU","RUS","RWA","ESH","SAU","SDN","SSD","SEN","SHN","SLB","SLE","SLV","SOM","SPM","SRB","STP","SUR","SVK","SVN","SWE","SWZ","SXM","SYC","SYR","TCA","TCD","TGO","THA","TJK","TKM","TLS","TTO","TUN","TUR","TWN","TZA","UGA","UKR","URY","USA","UZB","VAT","VCT","VEN","VGB","VIR","VNM","VUT","YEM","ZAF","ZMB","ZWE"],
+	"layers" : {
+		"bg": {
+			"src":"layer0",
+			"styles": {
+				"stroke-width" : 6,
+				"fill" : "none",
+				"stroke": "#ddd",
+				"stroke-linejoin": "round"
+			}
+		},
+		"layer0": {
+			"src": "layer0",
+			"styles": {
+				"stroke-width" : "1",
+				"fill" : "#F7F2F2"
+			}
+		}
+	}
+}
