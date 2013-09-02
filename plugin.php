@@ -87,17 +87,22 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             ),
             "scale-mode" => array(
                 "type" => "radio",
-                "label" => __("Scale mode"),
+                "label" => __("Scale mode", $id),
                 "options" => array(
                     array(
                         "value" => "width",
-                        "label" => __("Scale map to chart width")
+                        "label" => __("Scale map to chart width", $id)
                     ),
                     array(
                         "value" => "viewport",
-                        "label" => __("Fit map into chart")
+                        "label" => __("Fit map into chart", $id)
                     )
                 )
+            ),
+            "color-column" => array(
+                "type" => "select-axis-column",
+                "axis" => "color",
+                "label" => __("Select data column", $id)
             ),
             "---color-options---" => array(
                 "type" => "separator",
