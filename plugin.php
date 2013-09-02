@@ -51,7 +51,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                     "accepts" => array("text", "number"),
                 ),
                 "color" => array(
-                    "accepts" => array("number")
+                    "accepts" => array("number", "text")
                 )
             ),
             "locale" => array(
@@ -99,14 +99,14 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                     )
                 )
             ),
+            "---color-options---" => array(
+                "type" => "separator",
+                "label" => "Customize map colors"
+            ),
             "color-column" => array(
                 "type" => "select-axis-column",
                 "axis" => "color",
                 "label" => __("Select data column", $id)
-            ),
-            "---color-options---" => array(
-                "type" => "separator",
-                "label" => "Customize map colors"
             ),
             "gradient" => array(
                 "type" => "color-gradient-selector",
@@ -115,7 +115,10 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                     "number of classes" => __("Number of classes", $id),
                     "breaks type" => __("Breaks type", $id)
                 ),
-                "color-axis" => "color"
+                "color-axis" => "color",
+                "depends-on" => array(
+                    "chart.column_type[color]" => "number"
+                )
             )
         );
     }
