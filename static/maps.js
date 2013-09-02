@@ -335,7 +335,7 @@
             // title
             $("<div />")
                 .addClass('scale_title')
-                .html(me.dataset.column(1).title())
+                .html(me.axes(true).color.title())
                 .prependTo($legend);
             // showing the legend
             $('#map').after($legend);
