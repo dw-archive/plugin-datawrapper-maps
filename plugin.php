@@ -111,17 +111,13 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             "gradient" => array(
                 "type" => "color-gradient-selector",
                 "label" => __("Color gradient", $id),
-                "locale" => array(
-                    "number of classes" => __("Number of classes", $id),
-                    "breaks type" => __("Breaks type", $id)
-                ),
                 "color-axis" => "color",
                 "depends-on" => array(
                     "chart.column_type[color]" => "number"
                 )
             ),
             "category-colors" => array(
-                "type" => "custom-color-selector",
+                "type" => "color-category-selector",
                 "label" => __("Category colors", $id),
                 "depends-on" => array(
                     "chart.column_type[color]" => "text"
