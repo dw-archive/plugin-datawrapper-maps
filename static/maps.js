@@ -110,7 +110,7 @@
             me.scale = colorByNumbers() ? eval(me.get('gradient.chromajs-constructor')) :
                 (function() {
                     var catColors = {},
-                        colors = me.theme().colors.categories,
+                        colors = me.theme().colors.categories[0], // use first set of colors defined in theme for now
                         num_colors = colors.length,
                         pos = 0;
                     return function(cat) {
