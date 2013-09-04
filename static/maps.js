@@ -300,11 +300,20 @@
         showLegend: function(scale) {
             // remove old legend
             var me = this,
-                $legend = $("<div class='scale'></div>");
-            $('#chart .scale').remove();
+                $legend;
+            $('#chart .scale, #chart .legend').remove();
             if (me.axes(true).color.type() != 'number') {
                 // show category legend
+                var lvalues = [];
+                _.each(_.unique(me.axes(true).color.values()), function(val) {
+                    lvalues.push({ label: val, color: me.scale(val) });
+                });
+                $legend = $("<div />").addClass('legend').css({ height: 20 });
+                me.addLegend(lvalues, $legend);
+                $('#map').before($legend);
             } else {
+                // show value legend
+                $legend = $("<div />").addClass('scale');
                 var domains = scale.domain(),
                     legend_size = Math.min(Math.max(Math.min(300, me.__w), me.__w*0.6), 500),
                     domains_delta = domains[domains.length-1] - domains[0],
@@ -378,9 +387,9 @@
                     .addClass('scale_title')
                     .html(me.axes(true).color.title())
                     .prependTo($legend);
-                // showing the legend
                 $('#map').after($legend);
             }
+            
             me.resizeMap(me.__w, me.__h - $legend.outerHeight(true));
         },
 
