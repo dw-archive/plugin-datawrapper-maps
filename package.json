@@ -4,7 +4,9 @@
    "author": "Edouard Richard",
    "dependencies": {
       "core": "1.5.4",
-      "visualization": "*"
+      "visualization": "*",
+      "color-gradient-selector": "*",
+      "color-category-selector": "*"
    },
    "contributors": [{
       "name": "Gregor Aisch",
