@@ -268,13 +268,13 @@
              * @return {Array}
              */
             function getDataSeries() {
-                var data        = {},
-                    keyColumn   = me.axes(true).keys,
+                var data = {},
+                    keyColumn = me.axes(true).keys,
                     valueColumn = me.axes(true).color;
                 _.each(keyColumn.raw(), function (geo_code, index) {
                     var value = valueColumn.val(index);
-                    data[geo_code]  = {};
-                    data[geo_code].raw   = value;
+                    data[geo_code] = {};
+                    data[geo_code].raw = value;
                     data[geo_code].label = getLabel(geo_code);
                     if (_.isNull(value)) {
                         data[geo_code].value = "n/a";
@@ -305,13 +305,13 @@
             if (me.axes(true).color.type() != 'number') {
                 // show category legend
             } else {
-                var domains       = scale.domain(),
-                    legend_size   = Math.min(Math.max(Math.min(300, me.__w), me.__w*0.6), 500),
+                var domains = scale.domain(),
+                    legend_size = Math.min(Math.max(Math.min(300, me.__w), me.__w*0.6), 500),
                     domains_delta = domains[domains.length-1] - domains[0],
-                    offset        = 0,
-                    max_height    = 0,
+                    offset = 0,
+                    max_height = 0,
                     size_by_value = true,
-                    label_size    = 0;
+                    label_size = 0;
 
                 $legend.css("width", legend_size);
 
@@ -331,7 +331,7 @@
                         var delta = domains[index+1] - step,
                             color = scale(step),
                             label = me.formatValue(roundedDomains[index], index == domains.length-2, true),
-                            size  = size_by_value ? delta / domains_delta * legend_size
+                            size = size_by_value ? delta / domains_delta * legend_size
                                     : legend_size / (domains.length-1),
                             // setting step
                             $step = $("<div class='step'></div>"),
