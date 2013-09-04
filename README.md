@@ -1,6 +1,6 @@
 # Create a Map for Map-plugin
 
-*Datawrapper, 2013*
+*September, 2013*
 
 #### Required
 
