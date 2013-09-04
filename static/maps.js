@@ -106,21 +106,38 @@
             me.data = getData();
 
             // colorize
-            me.scale = eval(me.get('gradient.chromajs-constructor'));
+            me.scale = colorByNumbers() ? eval(me.get('gradient.chromajs-constructor')) :
+                (function() {
+                    var catColors = {},
+                        colors = me.theme().colors.categories,
+                        num_colors = colors.length,
+                        pos = 0;
+                    return function(cat) {
+                        if (!catColors[cat]) {
+                            catColors[cat] = colors[pos % num_colors];
+                            pos++;
+                        }
+                        return chroma.hex(catColors[cat]);
+                    };
+                })();
 
             function fill(path_data) {
                 if (path_data === undefined || (path_data === null)) return false;
                 var data = me.data[path_data['key']];
                 if (data !== undefined) {
-                    if (!_.isNumber(data.raw)) {
+                    if (colorByNumbers() && !_.isNumber(data.raw)) {
                         color = "url('"+window.vis.meta.__static_path + 'stripped.png'+"')";
                     } else {
                         // BUG in chroma.js, me.scale() returns undefined
-                        color =me.scale(data.raw) ? me.scale(data.raw).hex() : '#000';
+                        color = me.scale(data.raw) ? me.scale(data.raw).hex() : '#f00';
                     }
                     me.data[path_data['key']].color = color;
                     return data.color;
                 }
+            }
+
+            function colorByNumbers() {
+                return me.axes(true).color.type() == 'number';
             }
 
             me.map.getLayer('layer0').style('fill', fill);
@@ -283,6 +300,8 @@
             // remove old legend
             var me = this;
             $('#chart .scale').remove();
+            if (me.axes(true).color.type() != 'number') return;
+
             var domains       = scale.domain(),
                 legend_size   = Math.min(Math.max(Math.min(300, me.__w), me.__w*0.6), 500),
                 domains_delta = domains[domains.length-1] - domains[0],
