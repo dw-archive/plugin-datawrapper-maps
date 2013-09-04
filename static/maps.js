@@ -12,10 +12,11 @@
     };
 
 
-    dw.visualization.register('maps', {
+    dw.visualization.register('maps', 'raphael-chart', {
 
         render: function(el) {
             var me = this;
+            me.setRoot(el);
             if (me.map && me.get('map') == me.__lastSVG) {
                 // it's enough to update the map
                 me.updateMap();
@@ -298,67 +299,88 @@
 
         showLegend: function(scale) {
             // remove old legend
-            var me = this;
+            var me = this,
+                $legend = $("<div class='scale'></div>");
             $('#chart .scale').remove();
-            if (me.axes(true).color.type() != 'number') return;
+            if (me.axes(true).color.type() != 'number') {
+                // show category legend
+            } else {
+                var domains       = scale.domain(),
+                    legend_size   = Math.min(Math.max(Math.min(300, me.__w), me.__w*0.6), 500),
+                    domains_delta = domains[domains.length-1] - domains[0],
+                    offset        = 0,
+                    max_height    = 0,
+                    size_by_value = true,
+                    label_size    = 0;
 
-            var domains       = scale.domain(),
-                legend_size   = Math.min(Math.max(Math.min(300, me.__w), me.__w*0.6), 500),
-                domains_delta = domains[domains.length-1] - domains[0],
-                $legend       = $("<div class='scale'></div>"),
-                offset        = 0,
-                max_height    = 0;
+                $legend.css("width", legend_size);
 
-            $legend.css("width", legend_size);
-
-            _.each(domains, function(step, index) {
-                // for each segment, we adding a domain in the legend and a sticker
-                if (index < domains.length - 1) {
-                    var delta = domains[index+1] - step,
-                        color = scale(step),
-                        size  = delta / domains_delta * legend_size,
-                        // setting step
-                        $step = $("<div class='step'></div>"),
-                        $sticker = $("<span class='sticker'></span>").appendTo($legend);
-
-                    $step.css({width: size, 'background-color': color});
-                    // settings ticker
-                    $sticker.css('left', offset);
-                    if (step.toString().split('.')[1] && step.toString().split('.')[1].length > 2){
-                        step = Globalize.format(step, 'n');
-                    }
-                    if (index > 0) {
-                        $('<div />')
-                            .addClass('value')
-                            .html(me.formatValue(step, index == domains.length-2, true))
-                            .appendTo($sticker);
-                    } else {
-                        $sticker.remove();
-                    }
-                    // add hover effect to highlight regions
-                    $step.hover(function(e) {
-                        var stepColor = chroma.color($(e.target).css('background-color')).hex();
-                        function o(pd) {
-                            return me.data[pd.key] && me.data[pd.key].color == stepColor ? 1 : 0.1;
+                _.each(domains, function(step, i) {
+                    if (i > 0) {
+                        if ((domains[i] - domains[i-1]) / domains_delta * legend_size < 20) {
+                            size_by_value = false;
                         }
-                        me.map.getLayer('bg').style('opacity', o);
-                        me.map.getLayer('layer0').style('opacity', o);
-                    }, function() {
-                        me.map.getLayer('layer0').style('opacity', 1);
-                        me.map.getLayer('bg').style('opacity', 1);
-                    });
-                    $legend.append($step);
-                    offset += size;
-                }
-            });
-            // title
-            $("<div />")
-                .addClass('scale_title')
-                .html(me.axes(true).color.title())
-                .prependTo($legend);
-            // showing the legend
-            $('#map').after($legend);
+                    }
+                });
 
+                var roundedDomains = dw.utils.smartRound(domains, 1);
+
+                _.each(domains, function(step, index) {
+                    // for each segment, we adding a domain in the legend and a sticker
+                    if (index < domains.length - 1) {
+                        var delta = domains[index+1] - step,
+                            color = scale(step),
+                            label = me.formatValue(roundedDomains[index], index == domains.length-2, true),
+                            size  = size_by_value ? delta / domains_delta * legend_size
+                                    : legend_size / (domains.length-1),
+                            // setting step
+                            $step = $("<div class='step'></div>"),
+                            $sticker = $("<span class='sticker'></span>").appendTo($legend);
+
+                        $step.css({width: size, 'background-color': color});
+                        // settings ticker
+                        $sticker.css('left', offset);
+                        if (step.toString().split('.')[1] && step.toString().split('.')[1].length > 2){
+                            step = Globalize.format(step, 'n');
+                        }
+                        if (index > 0) {
+                            label_size += size;
+                            if (label_size < 30) {
+                               label = '';
+                            } else {
+                                label_size = 0;
+                            }
+                            $('<div />')
+                                .addClass('value')
+                                .html(label)
+                                .appendTo($sticker);
+                        } else {
+                            $sticker.remove();
+                        }
+                        // add hover effect to highlight regions
+                        $step.hover(function(e) {
+                            var stepColor = chroma.color($(e.target).css('background-color')).hex();
+                            function o(pd) {
+                                return me.data[pd.key] && me.data[pd.key].color == stepColor ? 1 : 0.1;
+                            }
+                            me.map.getLayer('bg').style('opacity', o);
+                            me.map.getLayer('layer0').style('opacity', o);
+                        }, function() {
+                            me.map.getLayer('layer0').style('opacity', 1);
+                            me.map.getLayer('bg').style('opacity', 1);
+                        });
+                        $legend.append($step);
+                        offset += size;
+                    }
+                });
+                // title
+                $("<div />")
+                    .addClass('scale_title')
+                    .html(me.axes(true).color.title())
+                    .prependTo($legend);
+                // showing the legend
+                $('#map').after($legend);
+            }
             me.resizeMap(me.__w, me.__h - $legend.outerHeight(true));
         },
 
