@@ -119,6 +119,14 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 "depends-on" => array(
                     "chart.column_type[color]" => "number"
                 )
+            ),
+            "category-colors" => array(
+                "type" => "custom-color-selector",
+                "label" => __("Category colors", $id),
+                "depends-on" => array(
+                    "chart.column_type[color]" => "text"
+                ),
+                "keys" => "color"
             )
         );
     }
