@@ -3,7 +3,7 @@
    "version": "0.5",
    "author": "Edouard Richard",
    "dependencies": {
-      "core": "1.5.4",
+      "core": "1.5.3",
       "visualization": "*",
       "color-gradient-selector": "*",
       "color-category-selector": "*"
