@@ -4,7 +4,7 @@
 		$(document).ready(function() {
 			// Automatic selection
 			$('#vis-options').on('dw:vis-option:map-selector', function(evt, args) {
-				var chart       = args.chart, key = args.key;
+				var chart = dw.backend.currentChart;
 				var options     = $("select[name=map] option");
 				if (chart.get('metadata.visualize.map') === undefined) {
 					// There is no defined map, we try to guess one
@@ -28,15 +28,6 @@
 					$option_to_select.prop("selected", true);
 					chart.set('metadata.visualize.map', winner);
 					chart.set('metadata.visualize.map-path', $option_to_select.data('path'));
-					// Reload once time the iframe, after that previous parameters were saved.
-					// (At this time the visualization doesn't exist)
-					chart.onSave(function(){
-						var first_run = true;
-						if (first_run) {
-							$('#iframe-vis').get(0).contentWindow.location.reload();
-							first_run = false;
-						}
-					});
 				} else {
 					options.filter("[value="+chart.get('metadata.visualize.map')+"]").prop("selected", true);
 				}

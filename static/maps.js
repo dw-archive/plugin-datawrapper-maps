@@ -23,7 +23,9 @@
                 me.renderingComplete();
             } else {
                 if (me.map) me._reset();
-                me.loadMap(el);
+                if (me.get('map') !== undefined) {
+                    me.loadMap(el);
+                }
             }
         },
 
