@@ -6,7 +6,7 @@
 			$('#vis-options').on('dw:vis-option:map-selector', function(evt, args) {
 				var chart = dw.backend.currentChart;
 				var options     = $("select[name=map] option");
-				if (chart.get('metadata.visualize.map') === undefined) {
+				if (chart.get('metadata.visualize.map') === undefined || chart.get('metadata.visualize.map-path') === undefined) {
 					// There is no defined map, we try to guess one
 					var comparaison  = [];
 					var dataset_keys = args.vis.axes(true)['keys'].values();
