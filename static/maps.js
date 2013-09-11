@@ -374,11 +374,15 @@
                             function o(pd) {
                                 return me.data[pd.key] && me.data[pd.key].color == stepColor ? 1 : 0.1;
                             }
-                            me.map.getLayer('bg').style('opacity', o);
+                            if (me.map.layers['bg']) {
+                                me.map.getLayer('bg').style('opacity', o);
+                            }
                             me.map.getLayer('layer0').style('opacity', o);
                         }, function() {
                             me.map.getLayer('layer0').style('opacity', 1);
-                            me.map.getLayer('bg').style('opacity', 1);
+                            if (me.map.layers['bg']) {
+                                me.map.getLayer('bg').style('opacity', 1);
+                            }
                         });
                         $legend.append($step);
                         offset += size;
