@@ -9,7 +9,7 @@
 				if (chart.get('metadata.visualize.map') === undefined || chart.get('metadata.visualize.map-path') === undefined) {
 					// There is no defined map, we try to guess one
 					var comparaison  = [];
-					var dataset_keys = args.vis.axes(true)['keys'].values();
+					var dataset_keys = args.vis.axes(true)['keys'].raw();
 					// retrieves all keys of all maps
 					var maps_keys = {};
 					options.each(function(i, option) {
