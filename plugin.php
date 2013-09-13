@@ -128,23 +128,24 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
     }
 
     private function getMapsAsOption() {
-        //if (!empty($this->maps_as_option)) return $this->maps_as_option;
         $res = array();
         $locale = substr(DatawrapperSession::getLanguage(), 0, 2);
         foreach ($this->getMaps() as $map_id => $map_path) {
-            $json = json_decode(file_get_contents(ROOT_PATH . 'www/static/' . $map_path . '/map.json'), true);
             $label = $map_id;
-            if (!empty($json['title'])) {
-                if (!empty($json['title'][$locale])) {
-                    $label = $json['title'][$locale];
-                } elseif (!empty($json['title']['en'])) {
-                    $label = $json['title']['en'];
+            $keys  = array();
+            $json_file_path = ROOT_PATH . 'www/static/' . $map_path . '/map.json';
+            if (file_exists($json_file_path)) {
+                $json = json_decode(file_get_contents($json_file_path), true);
+                if (!empty($json['title'])) {
+                    if (!empty($json['title'][$locale])) {
+                        $label = $json['title'][$locale];
+                    } elseif (!empty($json['title']['en'])) {
+                        $label = $json['title']['en'];
+                    }
                 }
-            }
-            if (!empty($json['keys'])) {
-                $keys = $json['keys'];
-            } else {
-                $keys = array();
+                if (!empty($json['keys'])) {
+                    $keys = $json['keys'];
+                }
             }
             $res[] = array(
                 'keys'  => $keys,
@@ -153,7 +154,6 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 'path' => $map_path
             );
         }
-        $this->maps_as_option = $res;
         return $res;
     }
 
