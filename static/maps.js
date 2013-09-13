@@ -420,8 +420,9 @@
             // show
             $('#chart').append($tooltip);
             $(document).bind('mousemove', function(event){
-                var offsetX = event.pageX;
-                var offsetY = event.pageY;
+                // NOTE: on firefox, offsetX is undefined (http://stackoverflow.com/questions/12704686/html5-with-jquery-e-offsetx-is-undefined-in-firefox)
+                var offsetX = event.offsetX === undefined ? event.pageX - $('#chart').offset().left : event.offsetX,
+                    offsetY = event.offsetY === undefined ? event.pageY - $('#chart').offset().top  : event.offsetY;
                 // place tooltip horizontaly
                 if(me.__w < offsetX + $tooltip.outerWidth(true)) {
                     offsetX -= $tooltip.outerWidth(true);
