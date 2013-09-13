@@ -163,11 +163,15 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
      */
     public function getAssets($chart) {
         $map_path = $chart->getMetaData('visualize.map-path');
-        return array(
+        $assets   = array(
             $map_path . '/map.svg',
-            $map_path . '/map.json',
-            $map_path . '/locale/' . substr(DatawrapperSession::getLanguage(), 0, 2) . '.json'
+            $map_path . '/map.json'
         );
+        $locale_file = $map_path . '/locale/' . substr(DatawrapperSession::getLanguage(), 0, 2) . '.json';
+        if (file_exists($locale_file)) {
+            $assets[] = $locale_file;
+        }
+        return $assets;
     }
 
     public function getDemoDataSets(){
