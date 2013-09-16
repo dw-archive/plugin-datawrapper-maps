@@ -169,7 +169,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             $map_path . '/map.json'
         );
         $locale_file = $map_path . '/locale/' . substr(DatawrapperSession::getLanguage(), 0, 2) . '.json';
-        if (file_exists($locale_file)) {
+        if (file_exists("../../www/static/" . $locale_file)) {
             $assets[] = $locale_file;
         }
         return $assets;
