@@ -10,7 +10,7 @@
 		"bg": {
 			"src":"layer0",
 			"styles": {
-				"stroke-width" : 6,
+				"stroke-width" : 4,
 				"fill" : "none",
 				"stroke": "#ddd",
 				"stroke-linejoin": "round"
@@ -20,7 +20,8 @@
 			"src": "layer0",
 			"styles": {
 				"stroke-width" : "1",
-				"fill" : "#F7F2F2"
+				"fill" : "#F7F2F2",
+				"stroke-linejoin": "round"
 			}
 		}
 	}
