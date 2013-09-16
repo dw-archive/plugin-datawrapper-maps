@@ -103,11 +103,12 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 "type" => "separator",
                 "label" => "Customize map colors"
             ),
-            "color-column" => array(
-                "type" => "select-axis-column",
-                "axis" => "color",
-                "label" => __("Select data column", $id)
-            ),
+            // NOTE: doesn't working, breaks the chart if used. Nothing else can be changed after.
+            // "color-column" => array(
+            //     "type" => "select-axis-column",
+            //     "axis" => "color",
+            //     "label" => __("Select data column", $id)
+            // ),
             "gradient" => array(
                 "type" => "color-gradient-selector",
                 "label" => __("Color gradient", $id),
