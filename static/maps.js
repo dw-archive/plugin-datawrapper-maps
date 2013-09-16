@@ -37,6 +37,8 @@
         _reset: function() {
             // this is called by our own render() function
             var me = this;
+            me._localized_labels = undefined;
+            me.map_meta          = undefined;
             me.map.clear();
             $('#chart').html('').off('click').off('mousemove').off('mouseenter').off('mouseover');
             $('.chart .filter-ui').remove();
@@ -439,6 +441,7 @@
             $('#chart').find('.tooltip').remove();
         },
 
+        /** useful for thumbnail generation */
         __initCanvas: function(canvas) {
             var me = this;
             canvas = _.extend({
