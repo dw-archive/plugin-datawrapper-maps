@@ -78,7 +78,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
         return array(
             "---map-options---" => array(
                 "type" => "separator",
-                "label" => "Select and customize display"
+                "label" => __("Select and customize display", $id)
             ),
             "map" => array(
                 "type"    => "map-selector",
@@ -101,7 +101,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             ),
             "---color-options---" => array(
                 "type" => "separator",
-                "label" => "Customize map colors"
+                "label" => __("Customize map colors", $id)
             ),
             // NOTE: doesn't working, breaks the chart if used. Nothing else can be changed after.
             // "color-column" => array(
