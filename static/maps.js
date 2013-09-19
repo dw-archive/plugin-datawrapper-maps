@@ -22,7 +22,11 @@
                 me.updateMap();
                 me.renderingComplete();
             } else {
-                if (me.map) me._reset();
+                if (me.map) {
+                    me._reset();
+                } else {
+                    me.notifications = [];
+                }
                 if (me.get('map') !== undefined && me.get('map-path') !== undefined) {
                     me.loadMap(el);
                 }
@@ -217,24 +221,32 @@
                     }
                 });
                 var missing_percent = 1 - found / _.keys(data).length;
-                if (missing_percent > 0.2 && !me.__didAlreadyNotify) {
-                    me.__didAlreadyNotify = true;
-                    var template_ds = dw.dataset([
-                            dw.column('ID', pathIDs, 'text'),
-                            dw.column('Label', _.map(pathIDs, function(k) {
-                                return getLabel(k);
-                            }), 'text'),
-                            dw.column('Value', _.times(pathIDs.length, function() {
-                                return _.random(0, Math.random() < 0.2 ? 1000 : 500);
-                            }), 'number')
-                        ]),
-                        template_csv = 'data:application/octet-stream;charset=utf-8,' +
-                        encodeURIComponent(template_ds.toCSV()).replace(/'/g, '%27');
-                    me.notify(
-                        me.translate("ids-mismatching")
-                          .replace("%d", (missing_percent*100).toFixed(0)+'%')
-                          .replace("%t", template_csv)
-                    );
+                if (missing_percent > 0.2) {
+                    // if no notification, we create one
+                    if (me.notifications['ids-mismatching'] === undefined) {
+                        var template_ds = dw.dataset([
+                                dw.column('ID', pathIDs, 'text'),
+                                dw.column('Label', _.map(pathIDs, function(k) {
+                                    return getLabel(k);
+                                }), 'text'),
+                                dw.column('Value', _.times(pathIDs.length, function() {
+                                    return _.random(0, Math.random() < 0.2 ? 1000 : 500);
+                                }), 'number')
+                            ]),
+                            template_csv = 'data:application/octet-stream;charset=utf-8,' +
+                            encodeURIComponent(template_ds.toCSV()).replace(/'/g, '%27');
+                        me.notifications['ids-mismatching'] = me.notify(
+                            me.translate("ids-mismatching")
+                              .replace("%d", (missing_percent*100).toFixed(0)+'%')
+                              .replace("%t", template_csv),
+                        "ids-mismatching");
+                    }
+                } else {
+                    // remove notification if exists
+                    if (me.notifications['ids-mismatching']) {
+                        me.notifications['ids-mismatching'].remove();
+                        delete me.notifications['ids-mismatching'];
+                    }
                 }
                 return filtered;
             }
