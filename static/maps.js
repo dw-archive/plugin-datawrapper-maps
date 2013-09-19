@@ -244,7 +244,7 @@
                 } else {
                     // remove notification if exists
                     if (me.notifications['ids-mismatching']) {
-                        me.notifications['ids-mismatching'].remove();
+                        me.notifications['ids-mismatching'].fadeOutAndRemove();
                         delete me.notifications['ids-mismatching'];
                     }
                 }
