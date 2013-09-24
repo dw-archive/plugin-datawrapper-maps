@@ -45,13 +45,13 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 )
             ),
             "title"   => __("Maps", $id),
-            "order"   => 62,
+            "order"   => 92,
             "axes"    => array(
                 "keys" => array(
                     "accepts" => array("text", "number"),
                 ),
                 "color" => array(
-                    "accepts" => array("number", "text")
+                    "accepts" => array("number")
                 )
             ),
             "locale" => array(
@@ -104,11 +104,15 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 "label" => __("Customize map colors", $id)
             ),
             // NOTE: doesn't working, breaks the chart if used. Nothing else can be changed after.
-            // "color-column" => array(
-            //     "type" => "select-axis-column",
-            //     "axis" => "color",
-            //     "label" => __("Select data column", $id)
-            // ),
+            "color-column" => array(
+                "type" => "select-axis-column",
+                "axis" => "color",
+                "default" => 0,
+                "label" => __("Select data column", $id),
+                "depends-on" => array(
+                    "chart.min_columns[color]" => 2
+                )
+            ),
             "gradient" => array(
                 "type" => "color-gradient-selector",
                 "label" => __("Color gradient", $id),
@@ -117,14 +121,14 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                     "chart.column_type[color]" => "number"
                 )
             ),
-            "category-colors" => array(
-                "type" => "color-category-selector",
-                "label" => __("Category colors", $id),
-                "depends-on" => array(
-                    "chart.column_type[color]" => "text"
-                ),
-                "keys" => "color"
-            )
+            // "category-colors" => array(
+            //     "type" => "color-category-selector",
+            //     "label" => __("Category colors", $id),
+            //     "depends-on" => array(
+            //         "chart.column_type[color]" => "text"
+            //     ),
+            //     "keys" => "color"
+            // )
         );
     }
 
