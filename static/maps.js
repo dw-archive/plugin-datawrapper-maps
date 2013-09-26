@@ -183,7 +183,7 @@
                     css: function(key) {
                         if (!me.data[key] && reverseAlias[key]) key = reverseAlias[key];
                         var fill = chroma.hex(me.data[key].color).luminance() > 0.5 ? '#000' : '#fff';
-                        return {
+                        var css = {
                             color: fill,
                             'font-size': '13px',
                             'line-height': '15px',
@@ -191,8 +191,10 @@
                                 '1px 1px 0 %, 1px -1px 0 %, -1px -1px 0 %, -1px 1px 0 %,'+
                                 '0 2px 1px %, 2px 0 1px %, 0 -2px 1px %, -2px 0 1px %,'+
                                 '-1px 2px 0px %, 2px -1px 0px %, -1px -2px 0px %, -2px -1px 0px %,'+
-                                '1px 2px 0px %, 2px 1px 0px %, 1px -2px 0px %, -2px 1px 0px %').replace('%', me.data[key].color)
+                                '1px 2px 0px %, 2px 1px 0px %, 1px -2px 0px %, -2px 1px 0px %')
+                                    .replace(/%/g, me.data[key].color)
                         };
+                        return css;
                     }
                 });
                 me.map.addLayer('layer0', {
@@ -469,7 +471,6 @@
                     .prependTo($legend);
                 $('#map').after($legend);
             }
-            console.log($legend.outerHeight(true));
             me.resizeMap(me.__w, me.__h - $legend.outerHeight(true));
         },
 
@@ -484,7 +485,6 @@
         tooltip: function(data, path, event) {
             var me = this;
             if (me.data[data['key']] === undefined) { return false; }
-            console.log(data, me.data[data['key']]);
             return [
                 me.data[data['key']].label,
                 me.data[data['key']].value
