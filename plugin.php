@@ -108,10 +108,10 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 "type" => "select-axis-column",
                 "axis" => "color",
                 "default" => 0,
-                "label" => __("Select data column", $id),
-                "depends-on" => array(
+                "label" => __("Select data column", $id)
+                /*"depends-on" => array(
                     "chart.min_columns[color]" => 2
-                )
+                )*/
             ),
             "gradient" => array(
                 "type" => "color-gradient-selector",
