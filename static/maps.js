@@ -62,15 +62,27 @@
          */
         loadMap: function(el) {
             var me = this,
-                c = me.__initCanvas({});
-                $map = $('<div id="map"></div>').html('').appendTo(el);
+                c = me.__initCanvas({}),
+                $map = $('<div id="map"></div>').html('').appendTo(el),
+                map_path = me.get('map-path');
 
             /**
             * Parse and return the map's json
             */
             function getMapMeta() {
-                return $.getJSON('assets/' + me.get('map-path') + "/map.json")
+                return $.getJSON('assets/' + map_path + "/map.json")
                     .done(function(res) { me.map_meta = res; });
+            }
+
+            function getLabelJSON() {
+                var mapOpt = _.find(me.meta.options.map.options, function(m) {
+                    return m['path'] == map_path;
+                });
+                if (mapOpt.has_locale) {
+                    return $.getJSON('assets/' + map_path + '/locale/' + me.chart().locale().slice(0,2) +'.json')
+                        .done(function(res) { me._localized_labels = res; });
+                }
+                return false;
             }
 
             // FIXME: set the right size
@@ -78,8 +90,9 @@
             me.__lastSVG = me.get('map');
 
             $.when(
-                me.map.loadMap(me.getSVG(), null, {padding: 2}),
-                getMapMeta()
+                me.map.load(me.getSVG(), null, {padding: 2}),
+                getMapMeta(),
+                getLabelJSON()
             ).done(function(r0, r1) {
                 // Loops over layers and adds it into map
                 _.each(r1[0].layers, function(layer, name){
@@ -91,7 +104,8 @@
                 me.updateMap();
 
                 // binds mouse events
-                me.map.getLayer('layer0').on('mouseenter', _.bind(me.showTooltip, me)).on('mouseleave', me.hideTooltip);
+                //me.map.getLayer('layer0').on('mouseenter', _.bind(me.showTooltip, me)).on('mouseleave', me.hideTooltip);
+                me.map.getLayer('layer0').tooltips(_.bind(me.tooltip, me));
 
                 // mark visualization as rendered
                 me.renderingComplete();
@@ -190,9 +204,7 @@
                     },
                     add_svg_layer: true
                 });
-                me.map.getLayer('tooltip-target')
-                    .on('mouseenter', _.bind(me.showTooltip, me))
-                    .on('mouseleave', _.bind(me.hideTooltip, me));
+                me.map.getLayer('tooltip-target').tooltips(_.bind(me.tooltip, me));
 
                 me.resizeMap(me.__w, me.__h - $('.scale').outerHeight(true));
             }
@@ -266,14 +278,6 @@
              */
             function getLabel(key) {
                 // Load from <map-path>/locale/<lang>.json
-                if (me._localized_labels === undefined) {
-                    var res = $.ajax({
-                        url: 'assets/' + me.get('map-path') + "/locale/" + me.chart().locale().slice(0,2) +".json",
-                        async: false,
-                        dataType: 'json'
-                    });
-                    me._localized_labels = (res.status == 200) ? JSON.parse(res.responseText) : null;
-                }
                 if (me._localized_labels && me._localized_labels[key]) {
                     return me._localized_labels[key];
                 }
@@ -430,36 +434,14 @@
             return max;
         },
 
-        showTooltip: function(data, path, event) {
+        tooltip: function(data, path, event) {
             var me = this;
-            if (me.data[data['key']] === undefined) {return;}
-            var $tooltip = $("<div class='tooltip'></div>");
-            // set title
-            $title = $("<h2></h2>").text(me.data[data['key']].label);
-            $tooltip.append($title);
-            // set value
-            $value = $("<div></div>").text(me.data[data['key']].value);
-            $tooltip.append($value);
-            // show
-            $('#chart').append($tooltip);
-            $(document).bind('mousemove', function(event){
-                // NOTE: on firefox, offsetX is undefined (http://stackoverflow.com/questions/12704686/html5-with-jquery-e-offsetx-is-undefined-in-firefox)
-                var offsetX = event.offsetX === undefined ? event.pageX - $('#chart').offset().left : event.offsetX,
-                    offsetY = event.offsetY === undefined ? event.pageY - $('#chart').offset().top  : event.offsetY;
-                // place tooltip horizontaly
-                if(me.__w < offsetX + $tooltip.outerWidth(true)) {
-                    offsetX -= $tooltip.outerWidth(true);
-                }
-                // place tooltip verticaly
-                if(me.__h < offsetY + $tooltip.outerHeight(true)) {
-                    offsetY -= $tooltip.outerHeight(true);
-                }
-                $tooltip.css({"top": offsetY, "left":offsetX});
-            });
-        },
-
-        hideTooltip: function(data, path, event) {
-            $('#chart').find('.tooltip').remove();
+            if (me.data[data['key']] === undefined) {return; }
+            console.log(data, me.data[data['key']]);
+            return [
+                me.data[data['key']].label,
+                me.data[data['key']].value
+            ];
         },
 
         /** useful for thumbnail generation */
@@ -475,13 +457,6 @@
             }, canvas);
             me.__canvas = canvas;
             return canvas;
-        },
-
-        __urlExists: function(url) {
-            var http = new XMLHttpRequest();
-            http.open('HEAD', url, false);
-            http.send();
-            return http.status!=404;
         },
 
         keys: function() {
