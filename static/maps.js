@@ -70,25 +70,20 @@
             */
             function getMapMeta() {
                 if (me.map_meta) return me.map_meta;
-                var res = $.ajax({
-                    url: 'assets/' + me.get('map-path') + "/map.json",
-                    async: false,
-                    dataType: 'json'
-                });
-                var meta = JSON.parse(res.responseText);
-                me.map_meta = meta;
-                return meta;
+                return $.getJSON('assets/' + me.get('map-path') + "/map.json")
+                    .done(function(res) { me.map_meta = res; });
             }
 
             // FIXME: set the right size
             me.map = kartograph.map($map, c.w-10);
             me.__lastSVG = me.get('map');
 
-            // Load all the layers (defined in the map.json)
-            me.map.loadMap(me.getSVG(), function(){
-
+            $.when(
+                me.map.loadMap(me.getSVG(), null, {padding: 2}),
+                getMapMeta()
+            ).done(function(r0, r1) {
                 // Loops over layers and adds it into map
-                _.each(getMapMeta().layers, function(layer, name){
+                _.each(r1[0].layers, function(layer, name){
                     layer.name = name;
                     layer.key = 'key';
                     me.map.addLayer(layer.src, layer);
@@ -101,8 +96,8 @@
 
                 // mark visualization as rendered
                 me.renderingComplete();
+            });
 
-            }, { padding: 2 });
         },
 
         /*
