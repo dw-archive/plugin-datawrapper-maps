@@ -96,25 +96,42 @@
                 me.map.load(me.getSVG()),
                 getMapMeta(),
                 getLabelJSON()
+
             ).done(function(r0, r1) {
                 // Loops over layers and adds it into map
-                _.each(r1[0].layers, function(layer, name){
-                    layer.name = name;
-                    layer.key = 'key';
-                    me.map.addLayer(layer.src, layer);
-                });
+                var layers = _.pairs(r1[0].layers); // make copy
 
-                if (me.map_meta.options) {
-                    $.extend(me.map.opts, me.map_meta.options);
+                nextLayer();
+
+                me.__root.css('opacity', 0);
+
+                function nextLayer() {
+                    if (layers.length) {
+                        var l = layers.shift();
+                        l[1].name = l[0];
+                        l[1].key = 'key';
+                        l[1].chunks = 50;
+                        l[1].done = nextLayer;
+                        me.map.addLayer(l[1].src, l[1]);
+                    } else {
+                        proceed();
+                    }
                 }
 
-                me.updateMap();
+                function proceed() {
+                    me.__root.css('opacity', 1);
+                    if (me.map_meta.options) {
+                        $.extend(me.map.opts, me.map_meta.options);
+                    }
 
-                // binds mouse events
-                me.map.getLayer('layer0').tooltips(_.bind(me.tooltip, me));
+                    me.updateMap();
 
-                // mark visualization as rendered
-                me.renderingComplete();
+                    // binds mouse events
+                    me.map.getLayer('layer0').tooltips(_.bind(me.tooltip, me));
+
+                    // mark visualization as rendered
+                    me.renderingComplete();
+                }
             });
 
         },
@@ -204,6 +221,7 @@
                         fill: '#fff',
                         opacity: 0
                     },
+                    chunks: true,
                     add_svg_layer: true
                 });
                 me.map.getLayer('tooltip-target').tooltips(_.bind(me.tooltip, me));
