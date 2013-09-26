@@ -41,7 +41,11 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             "libraries" => array(
                 array(
                     "local" => "vendor/kartograph.min.js",
-                    "cdn" => "//assets-datawrapper.s3.amazonaws.com/vendor/kartograph.js/0.7.1/kartograph.min.js"
+                    "cdn" => "//assets-datawrapper.s3.amazonaws.com/vendor/kartograph-js/0.8.1/kartograph.min.js"
+                ),
+                array(
+                    "local" => "vendor/jquery.qtip.min.js",
+                    "cdn" => "//assets-datawrapper.s3.amazonaws.com/vendor/qtip/2.1.1/jquery.qtip.min.js"
                 )
             ),
             "title"   => __("Maps", $id),
@@ -148,15 +152,15 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                         $label = $json['title']['en'];
                     }
                 }
-                if (!empty($json['keys'])) {
-                    $keys = $json['keys'];
-                }
+                $keys = $json['keys'];
             }
+            $map_locale = ROOT_PATH . 'www/static/' . $map_path . '/locale/' . $locale . '.json';
             $res[] = array(
-                'keys'  => $keys,
                 'value' => $map_id,
                 'label' => $label,
-                'path' => $map_path
+                'path' => $map_path,
+                'keys' => $keys,
+                'has_locale' => file_exists($map_locale)
             );
         }
         return $res;
