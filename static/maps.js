@@ -134,8 +134,10 @@
                 if (path_data === undefined || (path_data === null)) return false;
                 var data = me.data[path_data['key']];
                 if (data !== undefined) {
+                    var color;
                     if (colorByNumbers() && !_.isNumber(data.raw)) {
-                        color = "url('"+window.__dw.vis.meta.__static_path + 'stripped.png'+"')";
+                        // NOTE: commented b/c thumbnail generation doesn't work with image as background
+                        // color = "url('"+window.__dw.vis.meta.__static_path + 'stripped.png'+"')";
                     } else {
                         // BUG in chroma.js, me.scale() returns undefined
                         color = me.scale(data.raw) ? me.scale(data.raw).hex() : '#f00';
