@@ -69,7 +69,6 @@
             * Parse and return the map's json
             */
             function getMapMeta() {
-                if (me.map_meta) return me.map_meta;
                 return $.getJSON('assets/' + me.get('map-path') + "/map.json")
                     .done(function(res) { me.map_meta = res; });
             }
