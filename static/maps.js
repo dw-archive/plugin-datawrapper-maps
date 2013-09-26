@@ -17,6 +17,9 @@
         render: function(el) {
             var me = this;
             me.setRoot(el);
+
+            $.fn.qtip.defaults.style.classes = 'ui-tooltip-datawrapper';
+
             if (me.map && me.get('map') == me.__lastSVG) {
                 // it's enough to update the map
                 me.updateMap();
@@ -90,7 +93,7 @@
             me.__lastSVG = me.get('map');
 
             $.when(
-                me.map.load(me.getSVG(), null, {padding: 2}),
+                me.map.load(me.getSVG()),
                 getMapMeta(),
                 getLabelJSON()
             ).done(function(r0, r1) {
@@ -100,6 +103,10 @@
                     layer.key = 'key';
                     me.map.addLayer(layer.src, layer);
                 });
+
+                if (me.map_meta.options) {
+                    $.extend(me.map.opts, me.map_meta.options);
+                }
 
                 me.updateMap();
 
@@ -117,7 +124,10 @@
          * called by render() whenever only the map config changed
          */
         updateMap: function() {
-            var me = this;
+            var me = this,
+                reverseAlias = getReverseAliases(),
+                highlighted = me.get('highlighted-series', []),
+                data = [];
 
             // resize map
             me.data = getData();
@@ -137,27 +147,6 @@
                         return chroma.hex(catColors[cat]);
                     };
                 })();
-
-            function fill(path_data) {
-                if (path_data === undefined || (path_data === null)) return false;
-                var data = me.data[path_data['key']];
-                if (data !== undefined) {
-                    var color;
-                    if (colorByNumbers() && !_.isNumber(data.raw)) {
-                        // NOTE: commented b/c thumbnail generation doesn't work with image as background
-                        // color = "url('"+window.__dw.vis.meta.__static_path + 'stripped.png'+"')";
-                    } else {
-                        // BUG in chroma.js, me.scale() returns undefined
-                        color = me.scale(data.raw) ? me.scale(data.raw).hex() : '#f00';
-                    }
-                    me.data[path_data['key']].color = color;
-                    return data.color;
-                }
-            }
-
-            function colorByNumbers() {
-                return me.axes(true).color.type() == 'number';
-            }
 
             me.map.getLayer('layer0').style('fill', fill);
             me.map.getLayer('layer0').style('stroke', function(pd) {
@@ -179,8 +168,6 @@
                 return chroma.hex(color || '#ccc').luminance() * -1;
             });
 
-            var highlighted = me.get('highlighted-series', []),
-                data = [];
 
             if (highlighted.length > 0) {
                 me.map.addSymbols({
@@ -209,6 +196,51 @@
                 me.resizeMap(me.__w, me.__h - $('.scale').outerHeight(true));
             }
 
+            function fill(path_data) {
+                if (path_data === undefined || (path_data === null)) return false;
+                var data = me.data[path_data['key']];
+                if (data !== undefined) {
+                    var color;
+                    if (colorByNumbers() && !_.isNumber(data.raw)) {
+                        // NOTE: commented b/c thumbnail generation doesn't work with image as background
+                        // color = "url('"+window.__dw.vis.meta.__static_path + 'stripped.png'+"')";
+                    } else {
+                        // BUG in chroma.js, me.scale() returns undefined
+                        color = me.scale(data.raw) ? me.scale(data.raw).hex() : '#f00';
+                    }
+                    me.data[path_data['key']].color = color;
+                    return data.color;
+                }
+            }
+
+            function colorByNumbers() {
+                return me.axes(true).color.type() == 'number';
+            }
+
+            function getReverseAliases() {
+                var rev = {};
+                _.each(me.map_meta.keys, function(key) {
+                    if (me.map_meta['alias-keys']) {
+                        _.each(me.map_meta['alias-keys'], function(alias) {
+                            if (alias[key]) rev[alias[key]] = key;
+                        });
+                    }
+                });
+                return rev;
+            }
+
+            function getKeyCandidates(key) {
+                var keys = [key];
+                if (me.map_meta['alias-keys']) {
+                    _.each(me.map_meta['alias-keys'], function(alias) {
+                        if (alias[key]) {
+                            keys.push(alias[key]);
+                        }
+                    });
+                }
+                return keys;
+            }
+
             /*
              * Loops into svg's paths, filter the given data to
              * keep only related data.
@@ -223,13 +255,8 @@
 
                 _.each(paths, function(path){
                     var key = path.data['key'],
-                        keys = [key]; // list of potential keys
+                        keys = getKeyCandidates(key); // list of potential keys
                     pathIDs.push(key);
-                    if (me.map_meta['alias-keys']) {
-                        _.each(me.map_meta['alias-keys'], function(alias) {
-                            if (alias[key]) keys.push(alias[key]);
-                        });
-                    }
                     _.some(keys, function(k) {
                         if (data[k]) {
                             filtered[key] = data[k];
@@ -278,13 +305,22 @@
              */
             function getLabel(key) {
                 // Load from <map-path>/locale/<lang>.json
+                var layer0 = me.map.getLayer('layer0');
+
                 if (me._localized_labels && me._localized_labels[key]) {
                     return me._localized_labels[key];
                 }
-                // Try to find the label from the svg file at the 'data-label' field
-                var path = me.map.getLayer('layer0').getPaths({"key":key.toString()});
-                if (path.length > 0) {
-                    return me.map.getLayer('layer0').getPaths({key:key.toString()})[0].data.label;
+
+                var paths = layer0.getPaths({key: key.toString() });
+                if (paths.length) {
+                    return paths[0].data.label;
+                }
+
+                console.log(reverseAlias);
+
+                if (reverseAlias[key]) {
+                    console.log('no label for '+key, 'trying', reverseAlias[key]);
+                    return getLabel(reverseAlias[key]);
                 }
                 return "";
             }
@@ -436,7 +472,7 @@
 
         tooltip: function(data, path, event) {
             var me = this;
-            if (me.data[data['key']] === undefined) {return; }
+            if (me.data[data['key']] === undefined) { return false; }
             console.log(data, me.data[data['key']]);
             return [
                 me.data[data['key']].label,

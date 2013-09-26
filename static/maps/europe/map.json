@@ -28,5 +28,8 @@
 				"stroke-linejoin": "round"
 			}
 		}
+	},
+	"options": {
+		"padding": 0
 	}
 }

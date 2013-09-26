@@ -71,13 +71,12 @@ html body #footer {
  * Tested with IE 8, IE 9, Chrome 18, Firefox 9, Opera 11.
  * Does not work with IE 7.
  */
-.ui-tooltip-bootstrap{
-    font-size: 16px;
-    line-height: 22px;
+.ui-tooltip-datawrapper {
+    font-size: 13px;
+    line-height: 16px;
 
     color: #333333;
     background-color: #ffffff;
-
 
     border: 1px solid #ccc;
     border: 1px solid rgba(0, 0, 0, 0.2);
@@ -98,3 +97,6 @@ html body #footer {
     background-clip: padding-box;
 }
 
+.ui-tooltip-datawrapper .qtip-titlebar {
+    background: #eee;
+}
