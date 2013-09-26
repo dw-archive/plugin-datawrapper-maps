@@ -75,7 +75,7 @@
                     async: false,
                     dataType: 'json'
                 });
-                var meta = eval('(' + res.responseText + ')');
+                var meta = JSON.parse(res.responseText);
                 me.map_meta = meta;
                 return meta;
             }
@@ -278,7 +278,7 @@
                         async: false,
                         dataType: 'json'
                     });
-                    me._localized_labels = (res.status == 200) ? eval('(' + res.responseText + ')') : null;
+                    me._localized_labels = (res.status == 200) ? JSON.parse(res.responseText) : null;
                 }
                 if (me._localized_labels && me._localized_labels[key]) {
                     return me._localized_labels[key];
