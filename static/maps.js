@@ -214,16 +214,28 @@
                     paths = me.map.getLayer('layer0').paths,
                     pathIDs = [],
                     found = 0;
+
                 _.each(paths, function(path){
-                    var key = path.data['key'];
+                    var key = path.data['key'],
+                        keys = [key]; // list of potential keys
                     pathIDs.push(key);
-                    if (data[key] !== undefined) {
-                        filtered[key] = data[key];
-                        found++;
+                    if (me.map_meta['alias-keys']) {
+                        _.each(me.map_meta['alias-keys'], function(alias) {
+                            if (alias[key]) keys.push(alias[key]);
+                        });
                     }
+                    _.some(keys, function(k) {
+                        if (data[k]) {
+                            filtered[key] = data[k];
+                            found++;
+                            return true;
+                        }
+                        return false;
+                    });
                 });
+
                 var missing_percent = 1 - found / _.keys(data).length;
-                if (missing_percent > 0.2) {
+                if (missing_percent > 0.4) {
                     // if no notification, we create one
                     if (me.notifications['ids-mismatching'] === undefined) {
                         var template_ds = dw.dataset([
@@ -406,12 +418,13 @@
                 });
                 // title
                 $("<div />")
-                    .addClass('scale_title')
-                    .html(me.axes(true).color.title())
+                    .addClass('scale_title label')
+                    .attr('data-column', me.axes(true).color.name())
+                    .attr('data-row', -1)
+                    .html('<span>'+me.axes(true).color.title()+'</span>')
                     .prependTo($legend);
                 $('#map').after($legend);
             }
-            
             me.resizeMap(me.__w, me.__h - $legend.outerHeight(true));
         },
 
