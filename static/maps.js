@@ -111,7 +111,6 @@
                 me.updateMap();
 
                 // binds mouse events
-                //me.map.getLayer('layer0').on('mouseenter', _.bind(me.showTooltip, me)).on('mouseleave', me.hideTooltip);
                 me.map.getLayer('layer0').tooltips(_.bind(me.tooltip, me));
 
                 // mark visualization as rendered
@@ -173,13 +172,27 @@
                 me.map.addSymbols({
                     type: $K.HtmlLabel,
                     data: highlighted,
-                    location: function(key) { return 'layer0.'+key; },
+                    location: function(key) {
+                        if (!me.data[key] && reverseAlias[key]) key = reverseAlias[key];
+                        return 'layer0.'+key;
+                    },
                     text: function(key) {
+                        if (!me.data[key] && reverseAlias[key]) key = reverseAlias[key];
                         return me.data[key].label+'<br/>'+me.formatValue(me.data[key].value, true);
                     },
                     css: function(key) {
+                        if (!me.data[key] && reverseAlias[key]) key = reverseAlias[key];
                         var fill = chroma.hex(me.data[key].color).luminance() > 0.5 ? '#000' : '#fff';
-                        return { color: fill, 'font-size': '13px', 'line-height': '15px' };
+                        return {
+                            color: fill,
+                            'font-size': '13px',
+                            'line-height': '15px',
+                            'text-shadow': ('0 1px 0 %, 1px 0 0 %, 0 -1px 0 %, -1px 0 0 %,'+
+                                '1px 1px 0 %, 1px -1px 0 %, -1px -1px 0 %, -1px 1px 0 %,'+
+                                '0 2px 1px %, 2px 0 1px %, 0 -2px 1px %, -2px 0 1px %,'+
+                                '-1px 2px 0px %, 2px -1px 0px %, -1px -2px 0px %, -2px -1px 0px %,'+
+                                '1px 2px 0px %, 2px 1px 0px %, 1px -2px 0px %, -2px 1px 0px %').replace('%', me.data[key].color)
+                        };
                     }
                 });
                 me.map.addLayer('layer0', {
@@ -316,10 +329,7 @@
                     return paths[0].data.label;
                 }
 
-                console.log(reverseAlias);
-
                 if (reverseAlias[key]) {
-                    console.log('no label for '+key, 'trying', reverseAlias[key]);
                     return getLabel(reverseAlias[key]);
                 }
                 return "";
@@ -459,6 +469,7 @@
                     .prependTo($legend);
                 $('#map').after($legend);
             }
+            console.log($legend.outerHeight(true));
             me.resizeMap(me.__w, me.__h - $legend.outerHeight(true));
         },
 
