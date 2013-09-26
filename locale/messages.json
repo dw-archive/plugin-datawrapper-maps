@@ -1,16 +1,15 @@
 {
   "Maps": "Maps",
   "A significant fraction of your data (%d) could not be assigned to regions of \nthe chosen map. Please make sure that <ul><li>you have selected the correct \nmap and<\/li><li>that your dataset uses the same identifiers as used in the \nmap.<\/li><\/ul>\n                    <p>You may find this <a download='template.csv' \nhref='%t'>template dataset useful<\/a>.<\/li><\/ul>": "A significant fraction of your data (%d) could not be assigned to regions of \nthe chosen map. Please make sure that <ul><li>you have selected the correct \nmap and<\/li><li>that your dataset uses the same identifiers as used in the \nmap.<\/li><\/ul>\n                    <p>You may find this <a download='template.csv' \nhref='%t'>template dataset useful<\/a>.<\/li><\/ul>",
+  "Select and customize display": "Select and customize display",
   "Select map": "Select map",
   "Scale mode": "Scale mode",
   "Scale map to chart width": "Scale map to chart width",
   "Fit map into chart": "Fit map into chart",
+  "Customize map colors": "Customize map colors",
   "Select data column": "Select data column",
   "Color gradient": "Color gradient",
-  "Category colors": "Category colors",
   "Unemployment rate in the European Union": "Unemployment rate in the European Union",
   "Europe Map": "Europe Map",
-  "The unemployment rate is the percentage of unemployed in the labor force, on \nthe basis of the definition of the International Labour Organization (ILO).": "The unemployment rate is the percentage of unemployed in the labor force, on \nthe basis of the definition of the International Labour Organization (ILO).",
-  "Select and customize display" : "Select and customize display",
-  "Customize map colors" : "Customize map colors"
+  "The unemployment rate is the percentage of unemployed in the labor force, on \nthe basis of the definition of the International Labour Organization (ILO).": "The unemployment rate is the percentage of unemployed in the labor force, on \nthe basis of the definition of the International Labour Organization (ILO)."
 }
