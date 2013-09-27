@@ -154,7 +154,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 }
                 $keys = $json['keys'];
             }
-            $map_locale = ROOT_PATH . 'www/static/' . $map_path . '/locale/' . $locale . '.json';
+            $map_locale = ROOT_PATH . 'www/static/' . $map_path . '/locale.json';
             $res[] = array(
                 'value' => $map_id,
                 'label' => $label,
@@ -177,8 +177,8 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             'plugins/' . $this->getName() . '/stripped.png',
             $map_path . '/map.json'
         );
-        $locale_file = $map_path . '/locale/' . substr(DatawrapperSession::getLanguage(), 0, 2) . '.json';
-        if (file_exists("../../www/static/" . $locale_file)) {
+        $locale_file = $map_path . '/locale.json';
+        if (file_exists(ROOT_PATH . 'www/static/' . $locale_file)) {
             $assets[] = $locale_file;
         }
         return $assets;

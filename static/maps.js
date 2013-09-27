@@ -82,8 +82,12 @@
                     return m['path'] == map_path;
                 });
                 if (mapOpt.has_locale) {
-                    return $.getJSON('assets/' + map_path + '/locale/' + me.chart().locale().slice(0,2) +'.json')
-                        .done(function(res) { me._localized_labels = res; });
+                    return $.getJSON('assets/' + map_path + '/locale.json')
+                        .done(function(res) {
+                            me._all_locales = res;
+                            var loc = me.chart().locale().slice(0,2);
+                            if (res[loc]) me._localized_labels = res[loc];
+                        });
                 }
                 return false;
             }
@@ -259,6 +263,14 @@
                             if (alias[key]) rev[alias[key]] = key;
                         });
                     }
+                    if (me._localized_labels && me._localized_labels[key]) {
+                        rev[me._localized_labels[key]] = key;
+                    }
+                    if (me._all_locales) {
+                        _.each(me._all_locales, function(labels) {
+                            if (labels[key]) rev[labels[key]] = key;
+                        });
+                    }
                 });
                 return rev;
             }
@@ -270,6 +282,11 @@
                         if (alias[key]) {
                             keys.push(alias[key]);
                         }
+                    });
+                }
+                if (me._all_locales) {
+                    _.each(me._all_locales, function(labels) {
+                        if (labels[key]) keys.push(labels[key]);
                     });
                 }
                 return keys;
