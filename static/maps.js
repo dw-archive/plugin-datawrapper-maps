@@ -401,12 +401,7 @@
 
         resizeMap: function(w, h) {
             var me = this;
-            if (me.get('scale-mode', 'width') == 'viewport') {
-                me.map.resize(w,h);
-                $("#map").css({ height:h, width:w });
-            } else {
-                $('#map').css({ height: me.map.height });
-            }
+            $('#map').css({ height: me.map.height });
         },
 
         showLegend: function(scale) {

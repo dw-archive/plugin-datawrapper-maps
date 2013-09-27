@@ -89,20 +89,6 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 "label"   => __("Select map", $id),
                 "options" => $this->getMapsAsOption(),
             ),
-            "scale-mode" => array(
-                "type" => "radio",
-                "label" => __("Scale mode", $id),
-                "options" => array(
-                    array(
-                        "value" => "width",
-                        "label" => __("Scale map to chart width", $id)
-                    ),
-                    array(
-                        "value" => "viewport",
-                        "label" => __("Fit map into chart", $id)
-                    )
-                )
-            ),
             "---color-options---" => array(
                 "type" => "separator",
                 "label" => __("Customize map colors", $id)
