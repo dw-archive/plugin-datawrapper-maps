@@ -222,11 +222,12 @@
                         opacity: 0
                     },
                     chunks: true,
-                    add_svg_layer: true
+                    add_svg_layer: true,
+                    done: function() {
+                        me.map.getLayer('tooltip-target').tooltips(_.bind(me.tooltip, me));
+                        me.resizeMap(me.__w, me.__h - $('.scale').outerHeight(true));
+                    }
                 });
-                me.map.getLayer('tooltip-target').tooltips(_.bind(me.tooltip, me));
-
-                me.resizeMap(me.__w, me.__h - $('.scale').outerHeight(true));
             }
 
             function fill(path_data) {
