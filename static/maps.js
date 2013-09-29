@@ -229,7 +229,7 @@
                     add_svg_layer: true,
                     done: function() {
                         me.map.getLayer('tooltip-target').tooltips(_.bind(me.tooltip, me));
-                        me.resizeMap(me.__w, me.__h - $('.scale').outerHeight(true));
+                        me.resizeMap(me.__w, me.__h - $legend.outerHeight(true));
                     }
                 });
             }
@@ -400,8 +400,14 @@
         }, // end updateMap
 
         resizeMap: function(w, h) {
-            var me = this;
-            $('#map').css({ height: me.map.height });
+            var me = this,
+                view = me.map.layers.layer0.view,
+                ratio = view.height / view.width,
+                mapH = me.get('fit-into-chart', false) ? h : w * ratio,
+                winH = window.outerHeight - $('#header').outerHeight() - $('#footer').outerHeight() - $('.scale').outerHeight() - 30;
+            h = Math.min(mapH, winH);
+            $('#map').css({ height: h });
+            me.map.resize(w, h);
         },
 
         showLegend: function(scale) {
