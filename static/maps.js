@@ -188,12 +188,10 @@
                 return chroma.hex(color || '#ccc').luminance() * -1;
             });
 
+            // remove any previous symbols
+            try { me.map.removeSymbols(); } catch (e) {}
 
             if (highlighted.length > 0) {
-
-                // remove any previous symbols
-                try { __dw.vis.map.removeSymbols(); } catch (e) {}
-
                 me.map.addSymbols({
                     type: $K.HtmlLabel,
                     data: highlighted,
@@ -237,6 +235,8 @@
                     }
                 });
             }
+
+            me.keyLabel = getLabel;
 
             function fill(path_data) {
                 if (path_data === undefined || (path_data === null)) return false;
@@ -357,28 +357,20 @@
                 return filtered;
             }
 
-            /*
-             * Return the label for the given path key.
-             * If the translation doens't exist in the <map>/locale/<lang>.json file,
-             * The label is retrieved in the svg file at the 'data-label' field.
-             */
             function getLabel(key) {
                 // Load from <map-path>/locale/<lang>.json
                 var layer0 = me.map.getLayer('layer0');
-
                 if (me._localized_labels && me._localized_labels[key]) {
                     return me._localized_labels[key];
                 }
-
                 var paths = layer0.getPaths({key: key.toString() });
                 if (paths.length) {
                     return paths[0].data.label;
                 }
-
                 if (reverseAlias[key]) {
                     return getLabel(reverseAlias[key]);
                 }
-                return "";
+                return key;
             }
 
             /*
@@ -554,6 +546,15 @@
         keys: function() {
             var me = this;
             return me.axes(true).keys.values();
+        },
+
+        /*
+         * Return the label for the given path key.
+         * If the translation doens't exist in the <map>/locale/<lang>.json file,
+         * The label is retrieved in the svg file at the 'data-label' field.
+         */
+        keyLabel: function(key) {
+            return key;
         },
 
         formatValue: function() {
