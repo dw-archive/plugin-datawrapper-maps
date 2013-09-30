@@ -1,16 +1,13 @@
 {
-  "Select map"                              : "Choisir une carte",
-  "Maps"                                    : "Carte",
-  "Scale mode"                              : "Mode d'affichage",
-  "Scale map to chart width"                : "Conserver la largeur actuelle",
-  "Fit map into chart"                      : "Adapter la carte au cadre",
-  "Select data column"                      : "Sélectionner la colonne contenant les données",
-  "Color gradient"                          : "Dégradé de couleurs",
-  "Category colors"                         : "Catégorie de couleurs",
-  "Unemployment rate in the European Union" : "Taux de chômage dans l'Union Européenne",
-  "Europe Map"                              : "Carte d'Europe",
-  "A significant fraction of your data (%d) could not be assigned to regions of \nthe chosen map. Please make sure that <ul><li>you have selected the correct \nmap and<\/li><li>that your dataset uses the same identifiers as used in the \nmap.<\/li><\/ul>\n                    <p>You may find this <a download='template.csv' \nhref='%t'>template dataset useful<\/a>.<\/li><\/ul>": "Un nombre important de vos données (%d) n'a pas pu être assigné aux régions de \nla carte choisie. Vérifiez que <ul><li>vous avez sélectionné le bon type de carte<\/li><li>votre jeu de données utilise les mêmes identifiants que ceux utilisés dans la carte.<\/li><\/ul>\n                    <p>Vous pouvez <a download='template.csv' \nhref='%t'>utiliser cet exemple de jeu de données<\/a>.<\/li><\/ul>",
-  "The unemployment rate is the percentage of unemployed in the labor force, on \nthe basis of the definition of the International Labour Organization (ILO).": "Le taux de chômage représente le pourcentage de chômeurs dans la population active, sur la base de la définition de l'Organisation Internationale du Travail (OIT).",
-  "Select and customize display" : "Sélectionner et personnaliser l'affichage",
-  "Customize map colors" : "Personnaliser les couleurs"
+  "Maps":"Maps",
+  "A significant fraction of your data (%d) could not be assigned to regions of \nthe chosen map. Please make sure that <ul><li>you have selected the correct \nmap and<\/li><li>that your dataset uses the same identifiers as used in the \nmap.<\/li><\/ul>\n                    <p>You may find this <a download='template.csv' \nhref='%t'>template dataset useful<\/a>.<\/li><\/ul>":"A significant fraction of your data (%d) could not be assigned to regions of \nthe chosen map. Please make sure that <ul><li>you have selected the correct \nmap and<\/li><li>that your dataset uses the same identifiers as used in the \nmap.<\/li><\/ul>\n                    <p>You may find this <a download='template.csv' \nhref='%t'>template dataset useful<\/a>.<\/li><\/ul>",
+  "Select map":"Select map",
+  "Key column":"Key column",
+  "Data column":"Data column",
+  "Color gradient":"Color gradient",
+  "Map scaling":"Map scaling",
+  "Fit map into chart size":"Fit map into chart size",
+  "Unemployment rate in the European Union":"Unemployment rate in the European Union",
+  "Europe Map":"Europe Map",
+  "The unemployment rate is the percentage of unemployed in the labor force, on \nthe basis of the definition of the International Labour Organization (ILO).":"The unemployment rate is the percentage of unemployed in the labor force, on \nthe basis of the definition of the International Labour Organization (ILO)."
 }
