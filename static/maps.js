@@ -565,6 +565,10 @@
         // tell the template that we are smart enough to re-render the map
         supportsSmartRendering: function() {
             return true;
+        },
+
+        _svgCanvas: function() {
+            return this.map.layers.layer0.paper.canvas;
         }
 
     });
