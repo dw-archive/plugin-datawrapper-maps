@@ -243,8 +243,11 @@
                         // NOTE: commented b/c thumbnail generation doesn't work with image as background
                         // color = "url('"+window.__dw.vis.meta.__static_path + 'stripped.png'+"')";
                     } else {
-                        // BUG in chroma.js, me.scale() returns undefined
-                        color = me.scale(data.raw) ? me.scale(data.raw).hex() : '#f00';
+                        if ($.isFunction(me.scale)) {
+                            color = me.scale(data.raw) ? me.scale(data.raw).hex() : '#f00';
+                        } else {
+                            color = '#ccc';
+                        }
                     }
                     me.data[path_data['key']].color = color;
                     return data.color;
