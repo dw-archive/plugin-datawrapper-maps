@@ -7,7 +7,7 @@
 	},
 	"keys" : ["AL","AD","AT","BE","BG","BA","BY","CH","CY","CZ","DE","DK","ES","EE","FI","FR","FO","GB","GE","GG","GR","HR","HU","IM","IE","IS","IT","JE","JO","LI","LT","LU","LV","MC","MD","MK","MT","ME","NL","NO","PL","PT","RO","RU","RS","SK","SI","SE","TR","UA","VA"],
 	"alias-keys": [
-		{ "AD": "AND","AL": "ALB","AT": "AUT","AX": "ALA","BA": "BIH","BE": "BEL","BG": "BGR","BY": "BLR","CH": "CHE","CY": "CYP","CZ": "CZE","DE": "DEU","DK": "DNK","EE": "EST","ES": "ESP","FI": "FIN","FO": "FRO","FR": "FRA","GB": "GBR","GG": "GGY","GI": "GIB","GR": "GRC","HR": "HRV","HU": "HUN","IE": "IRL","IM": "IMN","IS": "ISL","IT": "ITA","JE": "JEY","XK": "XKX","LI": "LIE","LT": "LTU","LU": "LUX","LV": "LVA","MC": "MCO","MD": "MDA","ME": "MNE","MK": "MKD","MT": "MLT","NL": "NLD","NO": "NOR","PL": "POL","PT": "PRT","RO": "ROU","RS": "SRB","RU": "RUS","SE": "SWE","SI": "SVN","SJ": "SJM","SK": "SVK","SM": "SMR","UA": "UKR","VA": "VAT","CS": "SCG" }
+		{ "AD": "AND","AL": "ALB","AT": "AUT","AX": "ALA","BA": "BIH","BE": "BEL","BG": "BGR","BY": "BLR","CH": "CHE","CY": "CYP","CZ": "CZE","DE": "DEU","DK": "DNK","EE": "EST","ES": "ESP","FI": "FIN","FO": "FRO","FR": "FRA","GB": "GBR","GG": "GGY","GI": "GIB","GR": "GRC","HR": "HRV","HU": "HUN","IE": "IRL","IM": "IMN","IS": "ISL","IT": "ITA","JE": "JEY","XK": "XKX","LI": "LIE","LT": "LTU","LU": "LUX","LV": "LVA","MC": "MCO","MD": "MDA","ME": "MNE","MK": "MKD","MT": "MLT","NL": "NLD","NO": "NOR","PL": "POL","PT": "PRT","RO": "ROU","RS": "SRB","RU": "RUS","SE": "SWE","SI": "SVN","SJ": "SJM","SK": "SVK","SM": "SMR","UA": "UKR","VA": "VAT","CS": "SCG", "TR": "TUR" }
     ],
     "layers" : {
 		"bg": {
