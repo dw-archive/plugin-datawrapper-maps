@@ -190,6 +190,10 @@
 
 
             if (highlighted.length > 0) {
+
+                // remove any previous symbols
+                try { __dw.vis.map.removeSymbols(); } catch (e) {}
+
                 me.map.addSymbols({
                     type: $K.HtmlLabel,
                     data: highlighted,
