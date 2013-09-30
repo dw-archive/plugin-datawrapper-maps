@@ -220,6 +220,7 @@
                         return css;
                     }
                 });
+                
                 me.map.addLayer('layer0', {
                     name: 'tooltip-target',
                     styles: {
@@ -227,12 +228,8 @@
                         fill: '#fff',
                         opacity: 0
                     },
-                    chunks: true,
-                    add_svg_layer: true,
-                    done: function() {
-                        me.map.getLayer('tooltip-target').tooltips(_.bind(me.tooltip, me));
-                        me.resizeMap(me.__w, me.__h - $legend.outerHeight(true));
-                    }
+                    tooltips: _.bind(me.tooltip, me),
+                    add_svg_layer: true
                 });
             }
 
