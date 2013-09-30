@@ -115,7 +115,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             // )
             "---other-options---" => array(
                 "type" => "separator",
-                "label" => __("Other settings", $id)
+                "label" => __("Map scaling", $id)
             ),
             "fit-into-chart" => array(
                 "type" => "checkbox",
