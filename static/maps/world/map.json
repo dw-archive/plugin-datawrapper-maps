@@ -11,7 +11,7 @@
 	],
 	"layers" : {
 		"bg": {
-			"src":"countries",
+			"src":"layer0",
 			"styles": {
 				"stroke-width" : 4,
 				"fill" : "none",
@@ -20,7 +20,7 @@
 			}
 		},
 		"layer0": {
-			"src": "countries",
+			"src": "layer0",
 			"styles": {
 				"stroke-width" : "1",
 				"fill" : "#F7F2F2"
