@@ -174,7 +174,7 @@
                 if (startsWith(color, "url(")) {
                     color = null;
                 }
-                return chroma.hex(fill(color) || '#ccc').darken(25).hex();
+                return chroma.hex(color || '#ccc').darken(25).hex();
             });
             // show scale
             me.showLegend(me.scale);
@@ -236,22 +236,23 @@
 
             function fill(path_data) {
                 if (path_data === undefined || (path_data === null)) return false;
-                var data = me.data[path_data['key']];
+
+                var data = me.data[path_data['key']],
+                    no_data_color = "url('"+window.__dw.vis.meta.__static_path + 'stripped.png'+"')";
+
                 if (data !== undefined) {
                     var color;
-                    if (colorByNumbers() && !_.isNumber(data.raw)) {
-                        // NOTE: commented b/c thumbnail generation doesn't work with image as background
-                        // color = "url('"+window.__dw.vis.meta.__static_path + 'stripped.png'+"')";
-                    } else {
+                    if (_.isNumber(data.raw)) {
                         if ($.isFunction(me.scale)) {
                             color = me.scale(data.raw) ? me.scale(data.raw).hex() : '#f00';
                         } else {
                             color = '#ccc';
                         }
+                        data.color = color;
+                        return data.color;
                     }
-                    me.data[path_data['key']].color = color;
-                    return data.color;
                 }
+                return no_data_color;
             }
 
             function colorByNumbers() {
