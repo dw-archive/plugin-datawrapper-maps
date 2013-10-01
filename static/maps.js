@@ -449,7 +449,7 @@
                     if (index < domains.length - 1) {
                         var delta = domains[index+1] - step,
                             color = scale(step),
-                            label = me.formatValue(roundedDomains[index], index == domains.length-2, true),
+                            label = me.formatValue(roundedDomains[index], index == domains.length-2),
                             size = size_by_value ? delta / domains_delta * legend_size
                                     : legend_size / (domains.length-1),
                             // setting step
