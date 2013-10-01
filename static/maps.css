@@ -75,6 +75,7 @@ html body #footer {
     -webkit-background-clip: padding-box;
     -moz-background-clip: padding;
     background-clip: padding-box;
+    max-width: 48%;
 }
 
 .ui-tooltip-datawrapper .qtip-titlebar {
