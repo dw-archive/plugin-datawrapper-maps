@@ -103,7 +103,8 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 "color-axis" => "color",
                 "depends-on" => array(
                     "chart.column_type[color]" => "number"
-                )
+                ),
+                "use-classes" => true
             ),
             // "category-colors" => array(
             //     "type" => "color-category-selector",
