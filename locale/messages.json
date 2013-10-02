@@ -1,12 +1,15 @@
 {
   "Maps": "Maps",
   "A significant fraction of your data (%d) could not be assigned to regions of \nthe chosen map. Please make sure that <ul><li>you have selected the correct \nmap and<\/li><li>that your dataset uses the same identifiers as used in the \nmap.<\/li><\/ul>\n                    <p>You may find this <a download='template.csv' \nhref='%t'>template dataset useful<\/a>.<\/li><\/ul>": "A significant fraction of your data (%d) could not be assigned to regions of \nthe chosen map. Please make sure that <ul><li>you have selected the correct \nmap and<\/li><li>that your dataset uses the same identifiers as used in the \nmap.<\/li><\/ul>\n                    <p>You may find this <a download='template.csv' \nhref='%t'>template dataset useful<\/a>.<\/li><\/ul>",
-  "Select map": "Select map",
+  "Configure the map": "Configure the map",
+  "Base map": "Base map",
   "Key column": "Key column",
   "Data column": "Data column",
+  "Please select the data columns that contain the <b>region keys<\/b> and the \n<b>data values<\/b> to be shown in the map.": "Please select the data columns that contain the <b>region keys<\/b> and the \n<b>data values<\/b> to be shown in the map.",
   "Color gradient": "Color gradient",
   "Map scaling": "Map scaling",
   "Fit map into chart size": "Fit map into chart size",
+  "If selected, the map will be scaled to fit the chart size. Otherwise it will \nalways use the full chart width.": "If selected, the map will be scaled to fit the chart size. Otherwise it will \nalways use the full chart width.",
   "Unemployment rate in the European Union": "Unemployment rate in the European Union",
   "Europe Map": "Europe Map",
   "The unemployment rate is the percentage of unemployed in the labor force, on \nthe basis of the definition of the International Labour Organization (ILO).": "The unemployment rate is the percentage of unemployed in the labor force, on \nthe basis of the definition of the International Labour Organization (ILO)."

@@ -80,13 +80,16 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
     private function getOptions() {
         $id = $this->getName();
         return array(
-
+            "---map-options---" => array(
+                "type" => "separator",
+                "label" => __("Configure the map", $id)
+            ),
             "map" => array(
                 "type"    => "map-selector",
-                "label"   => __("Select map", $id),
+                "label"   => __("Base map", $id),
                 "options" => $this->getMapsAsOption(),
             ),
-            // NOTE: doesn't working, breaks the chart if used. Nothing else can be changed after.
+
             "map-columns" => array(
                 "type" => "select-axis-column",
                 "axes" => array(array(
@@ -95,7 +98,9 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 ), array(
                     "id" => "color",
                     "label" => __("Data column")
-                ))
+                )),
+                "help" => __("Please select the data columns that contain the <b>region keys</b> and the <b>data values</b> to be shown in the map.")
+
             ),
             "gradient" => array(
                 "type" => "color-gradient-selector",
@@ -121,7 +126,9 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             "fit-into-chart" => array(
                 "type" => "checkbox",
                 "label" => __("Fit map into chart size"),
-                "default" => false
+                "default" => false,
+                "help" => __("If selected, the map will be scaled to fit the chart size. Otherwise it will always use the full chart width.")
+
             )
         );
     }
