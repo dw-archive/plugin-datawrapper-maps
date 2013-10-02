@@ -4,7 +4,7 @@
    "author": "Edouard Richard",
    "dependencies": {
       "core": "1.5.3",
-      "visualization": "*",
+      "visualization-raphael-chart": "*",
       "color-gradient-selector": "*",
       "color-category-selector": "*"
    },
