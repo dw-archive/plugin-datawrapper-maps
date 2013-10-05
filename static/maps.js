@@ -499,7 +499,7 @@
                 // title
                 $("<div />")
                     .addClass('scale_title label')
-                    .attr('data-column', me.axes(true).color.name())
+                    .attr('data-column', me.axes().color)
                     .attr('data-row', -1)
                     .html('<span>'+me.axes(true).color.title()+'</span>')
                     .prependTo($legend);
