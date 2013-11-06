@@ -401,7 +401,7 @@
                 view = me.map.layers.layer0.view,
                 ratio = view.height / view.width,
                 mapH = me.get('fit-into-chart', false) ? h : w * ratio,
-                winH = window.outerHeight - $('#header').outerHeight() - $('#footer').outerHeight() - $('.scale').outerHeight() - 30;
+                winH = window.innerHeight - $('#header').outerHeight() - $('#footer').outerHeight() - 60 - 30;
             h = Math.min(mapH, winH);
             $('#map').css({ height: h });
             me.map.resize(w, h);
