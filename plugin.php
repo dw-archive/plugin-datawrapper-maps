@@ -41,7 +41,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             "libraries" => array(
                 array(
                     "local" => "vendor/kartograph.min.js",
-                    "cdn" => "//assets-datawrapper.s3.amazonaws.com/vendor/kartograph-js/0.8.2/kartograph.min.js"
+                    "cdn" => "//assets-datawrapper.s3.amazonaws.com/vendor/kartograph-js/0.8.3/kartograph.min.js"
                 ),
                 array(
                     "local" => "vendor/jquery.qtip.min.js",
