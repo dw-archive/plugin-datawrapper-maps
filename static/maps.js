@@ -168,20 +168,22 @@
                     };
                 })();
 
-            me.map.getLayer('layer0').style('fill', fill);
-            me.map.getLayer('layer0').style('stroke', function(pd) {
-                var color = fill(pd);
-                if (startsWith(color, "url(")) {
-                    color = null;
+            me.map.getLayer('layer0').style({
+                fill: fill,
+                stroke: function(pd) {
+                    var color = fill(pd);
+                    if (startsWith(color, "url(")) {
+                        color = null;
+                    }
+                    return chroma.hex(color || '#ccc').darken(25).hex();
                 }
-                return chroma.hex(color || '#ccc').darken(25).hex();
-            });
+            }, 0, 0);
             // show scale
             me.showLegend(me.scale);
 
             me.map.getLayer('layer0').sort(function(pd) {
                 // sort paths by fill lumincane, so darker paths are on top (outline looks better then)
-                var color = fill(pd);
+                var color = pd.__last_fill;
                 if (startsWith(color, "url(")) {
                     color = null;
                 }
@@ -250,6 +252,7 @@
                             color = '#ccc';
                         }
                         data.color = color;
+                        path_data.__last_fill = color;
                         return data.color;
                     }
                 }
