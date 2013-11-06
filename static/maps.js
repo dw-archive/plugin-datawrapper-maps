@@ -410,8 +410,10 @@
         showLegend: function(scale) {
             // remove old legend
             var me = this,
-                $legend;
-            $('#chart .scale, #chart .legend').remove();
+                $legend = $('#chart .scale, #chart .legend'),
+                old_height = $legend.length ? $legend.outerHeight(true) : 0;
+
+            $legend.remove();
             if (me.axes(true).color.type() != 'number') {
                 // show category legend
                 var lvalues = [];
@@ -505,7 +507,8 @@
                     .prependTo($legend);
                 $('#map').after($legend);
             }
-            me.resizeMap(me.__w, me.__h - $legend.outerHeight(true));
+            var h = $legend.outerHeight(true);
+            if (h != old_height) me.resizeMap(me.__w, me.__h - old_height);
         },
 
         getStickersMaxWidth: function ($scale) {
