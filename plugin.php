@@ -84,24 +84,31 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 "type" => "separator",
                 "label" => __("Configure the map", $id)
             ),
+
             "map" => array(
                 "type"    => "map-selector",
                 "label"   => __("Base map", $id),
                 "options" => $this->getMapsAsOption(),
             ),
 
-            "map-columns" => array(
+            "map-keys" => array(
                 "type" => "select-axis-column",
                 "axes" => array(array(
                     "id" => "keys",
-                    "label" => __("Key column")
-                ), array(
+                    "label" => __("Map key column")
+                )),
+                "help" => __("Please select the column which contains the <b>map region keys</b>.")
+            ),
+
+            "map-data" => array(
+                "type" => "select-axis-column",
+                "axes" => array(array(
                     "id" => "color",
                     "label" => __("Data column")
                 )),
-                "help" => __("Please select the data columns that contain the <b>region keys</b> and the <b>data values</b> to be shown in the map.")
-
+                "help" => __("Please select the data columns that contain the <b>data values</b> to be displayed in the map.")
             ),
+
             "gradient" => array(
                 "type" => "color-gradient-selector",
                 "label" => __("Color gradient", $id),
@@ -119,17 +126,17 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             //     ),
             //     "keys" => "color"
             // )
-            "---other-options---" => array(
-                "type" => "separator",
-                "label" => __("Map scaling", $id)
-            ),
-            "fit-into-chart" => array(
-                "type" => "checkbox",
-                "label" => __("Fit map into chart size"),
-                "default" => false,
-                "help" => __("If selected, the map will be scaled to fit the chart size. Otherwise it will always use the full chart width.")
+            // "---other-options---" => array(
+            //     "type" => "separator",
+            //     "label" => __("Map scaling", $id)
+            // ),
+            // "fit-into-chart" => array(
+            //     "type" => "checkbox",
+            //     "label" => __("Fit map into chart size"),
+            //     "default" => false,
+            //     "help" => __("If selected, the map will be scaled to fit the chart size. Otherwise it will always use the full chart width.")
 
-            )
+            // )
         );
     }
 

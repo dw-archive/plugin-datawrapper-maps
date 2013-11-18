@@ -6,33 +6,17 @@
             $('#vis-options').on('dw:vis-option:map-selector', function(evt, args) {
                 var chart = dw.backend.currentChart;
                 var options     = $("select[name=map] option");
+
                 if (chart.get('metadata.visualize.map') === undefined || chart.get('metadata.visualize.map-path') === undefined) {
-                    // There is no defined map, we try to guess one
-                    var comparaison  = [];
-                    var dataset_keys = args.vis.axes(true)['keys'].raw();
-                    // retrieves all keys of all maps
-                    var maps_keys = {};
-                    options.each(function(i, option) {
-                        option = $(option);
-                        maps_keys[option.attr('value')] = option.data('keys');
-                    });
-                    // comparaison: we count the similar keys for each map
-                    _.each(maps_keys, function(_keys, name) {
-                        var diff = _keys.filter(function(i){return dataset_keys.indexOf(i) > -1;});
-                        comparaison.push([name, diff.length/_keys.length]);
-                    });
-                    // we choose the map with the most similiar keys
-                    comparaison = comparaison.sort(function(a, b) {return b[1] - a[1];});
-                    winner      = comparaison[0][0];
-                    var $option_to_select = options.filter("[value="+winner+"]");
-                    $option_to_select.prop("selected", true);
-                    chart.set('metadata.visualize.map', winner);
-                    chart.set('metadata.visualize.map-path', $option_to_select.data('path'));
+                    // There is no defined map, we use the first map
+                    chart.set('metadata.visualize.map', $(options.get(0)).attr('value'));
+                    chart.set('metadata.visualize.map-path', $(options.get(0)).data('path'));
                 } else {
                     options.filter("[value="+chart.get('metadata.visualize.map')+"]").prop("selected", true);
                 }
                 // Bind events
                 $("select[name=map]").change(function(e){
+                    $('.notification').remove();
                     var map_id = $("select[name=map]").val(),
                         map_path = $("select[name=map] option[value="+map_id+"]").data('path');
                     chart.set('metadata.visualize.map', map_id);
@@ -43,9 +27,9 @@
     </script>
 
 
-    <div class="control-group" style="margin-bottom:0">
-        <div class="pull-left">
-            <label>{{ option.label }}</label>
+    <div class="control-group vis-option-type-select-axis-column">
+        <label class="control-label">{{ option.label }}</label>
+        <div class="controls" >
             <select name="map">
                 {% for map in option.options %}
                     <option value="{{ map.value }}" data-keys="{{ map.keys | json }}" data-path="{{ map.path }}">{{ map.label }}</option>
