@@ -197,6 +197,7 @@
                     },
                     text: function(key) {
                         if (!me.data[key] && reverseAlias[key]) key = reverseAlias[key];
+                        if (!me.data[key]) return "";
                         return me.data[key].label+'<br/>'+me.formatValue(me.data[key].value, true);
                     },
                     css: function(key) {
