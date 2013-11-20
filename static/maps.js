@@ -244,7 +244,7 @@
 
                 if (data !== undefined) {
                     var color;
-                    if (_.isNumber(data.raw)) {
+                    if (_.isNumber(data.raw) || !colorByNumbers()) {
                         if ($.isFunction(me.scale)) {
                             color = me.scale(data.raw) ? me.scale(data.raw).hex() : '#f00';
                         } else {

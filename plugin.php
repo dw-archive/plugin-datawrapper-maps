@@ -55,7 +55,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                     "accepts" => array("text", "number"),
                 ),
                 "color" => array(
-                    "accepts" => array("number")
+                    "accepts" => array("number", "text")
                 )
             ),
             "locale" => array(
@@ -118,14 +118,14 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 ),
                 "use-classes" => true
             ),
-            // "category-colors" => array(
-            //     "type" => "color-category-selector",
-            //     "label" => __("Category colors", $id),
-            //     "depends-on" => array(
-            //         "chart.column_type[color]" => "text"
-            //     ),
-            //     "keys" => "color"
-            // )
+            "category-colors" => array(
+                "type" => "color-category-selector",
+                "label" => __("Category colors", $id),
+                "depends-on" => array(
+                    "chart.column_type[color]" => "text"
+                ),
+                "keys" => "color"
+            )
             // "---other-options---" => array(
             //     "type" => "separator",
             //     "label" => __("Map scaling", $id)
