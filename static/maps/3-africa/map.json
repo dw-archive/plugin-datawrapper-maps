@@ -1,0 +1,34 @@
+{
+    "title" : {
+        "en" : "Africa",
+        "fr" : "Afrique",
+        "es" : "África",
+        "de" : "Afrika"
+    },
+    "keys" : ["AGO", "ARE", "BDI", "BEN", "BFA", "BHR", "BWA", "CAF", "CIV", "CMR", "COD", "COG", "COM", "DJI", "DZA", "EGY", "ERI", "ETH", "FRA", "GAB", "GAZ", "GHA", "GIN", "GMB", "GNB", "GNQ", "ISR", "JOR", "KEN", "KWT", "LBN", "LBR", "LBY", "LSO", "MAR", "MDG", "MLI", "MOZ", "MRT", "MWI", "NAM", "NER", "NGA", "OMN", "PR1", "QAT", "RWA", "SAH", "SAU", "SDN", "SDS", "SEN", "SHN", "SLE", "SOL", "SOM", "STP", "SWZ", "SYC", "TCD", "TGO", "TUN", "TZA", "UGA", "WEB", "YEM", "ZAF", "ZMB", "ZWE"],
+    "alias-keys": [
+        {"AGO":"AO","ARE":"AE","BDI":"BI","BEN":"BJ","BFA":"BF","BHR":"BH","BWA":"BW","CAF":"CF","CIV":"CI","CMR":"CM","COD":"CD","COG":"CG","COM":"KM","DJI":"DJ","DZA":"DZ","EGY":"EG","ERI":"ER","ETH":"ET","FRA":"FR","GAB":"GA","GAZ":"PS","GHA":"GH","GIN":"GN","GMB":"GM","GNB":"GW","GNQ":"GQ","ISR":"IL","JOR":"JO","KEN":"KE","KWT":"KW","LBN":"LB","LBR":"LR","LBY":"LY","LSO":"LS","MAR":"MA","MDG":"MG","MLI":"ML","MOZ":"MZ","MRT":"MR","MWI":"MW","NAM":"NA","NER":"NE","NGA":"NG","OMN":"OM","PR1":"PT","QAT":"QA","RWA":"RW","SAH":"-99","SAU":"SA","SDN":"SD","SDS":"SS","SEN":"SN","SHN":"SH","SLE":"SL","SOL":"-99","SOM":"SO","STP":"ST","SWZ":"SZ","SYC":"SC","TCD":"TD","TGO":"TG","TUN":"TN","TZA":"TZ","UGA":"UG","WEB":"PS","YEM":"YE","ZAF":"ZA","ZMB":"ZM","ZWE":"ZW"}
+    ],
+    "layers" : {
+        "bg": {
+            "src":"layer0",
+            "styles": {
+                "stroke-width" : 4,
+                "fill" : "none",
+                "stroke": "#ddd",
+                "stroke-linejoin": "round"
+            }
+        },
+        "layer0": {
+            "src": "layer0",
+            "styles": {
+                "stroke-width" : "1",
+                "fill" : "#F7F2F2",
+                "stroke-linejoin": "round"
+            }
+        }
+    },
+    "options": {
+        "padding": 0
+    }
+}

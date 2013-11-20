@@ -1,0 +1,19 @@
+proj:
+    id: laea
+    lon0: 11
+    lat0: 0
+layers:
+    layer0:
+        src: ../europe/shp/50m_admin_0_countries.shp
+        simplify: 1
+        attributes:
+            label: NAME
+            key: SU_A3
+            iso_a2: ISO_A2
+        filter: ['SU_A3', 'not in', ['ESP', 'PRT', 'ITA', 'IRQ', 'AFG', 'IRN', 'PAK', 'SYR', 'GRC', 'CYP', 'CYN']]
+bounds:
+    mode: bbox
+    data: [-17.5, -33.7, 56.7, 35.2]
+export:
+    round: 1
+    width: 700
