@@ -52,9 +52,11 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             "order"   => 92,
             "axes"    => array(
                 "keys" => array(
+                    "title" => __("Key"),
                     "accepts" => array("text", "number"),
                 ),
                 "color" => array(
+                    "title" => __("Color"),
                     "accepts" => array("number", "text")
                 )
             ),
