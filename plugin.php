@@ -124,7 +124,8 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 "depends-on" => array(
                     "chart.column_type[color]" => "number"
                 ),
-                "use-classes" => true
+                "use-classes" => true,
+                "help" => __("Here you can define a <b>color gradient</b> from which map colors are picked according to the <b>classification</b>.")
             ),
             "category-colors" => array(
                 "type" => "color-category-selector",
@@ -132,7 +133,8 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 "depends-on" => array(
                     "chart.column_type[color]" => "text"
                 ),
-                "keys" => "color"
+                "keys" => "color",
+                "help" => __("Here you can select a palette from which the category colors are picked. On top of that you can assign custom colors for each category.")
             )
             // "---other-options---" => array(
             //     "type" => "separator",
