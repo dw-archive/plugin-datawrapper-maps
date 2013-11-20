@@ -326,7 +326,7 @@
                     });
                 });
 
-                var missing_percent = 1 - found / _.keys(data).length;
+                var missing_percent = 1 - found / paths.length;
                 if (missing_percent > 0.4) {
                     // if no notification, we create one
                     if (me.notifications['ids-mismatching'] === undefined) {
