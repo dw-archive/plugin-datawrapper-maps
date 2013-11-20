@@ -415,8 +415,7 @@
         showLegend: function(scale) {
             // remove old legend
             var me = this,
-                $legend = $('#chart .scale, #chart .legend'),
-                old_height = $legend.length ? $legend.outerHeight(true) : 0;
+                $legend = $('#chart .scale, #chart .legend');
 
             $legend.remove();
             if (me.axes(true).color.type() != 'number') {
@@ -513,7 +512,7 @@
                 $('#map').after($legend);
             }
             var h = $legend.outerHeight(true);
-            if (h != old_height) me.resizeMap(me.__w, me.__h - old_height);
+            me.resizeMap(me.__w, me.__h - h);
         },
 
         getStickersMaxWidth: function ($scale) {
