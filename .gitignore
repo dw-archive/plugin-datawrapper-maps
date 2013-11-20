@@ -1,1 +1,5 @@
 .DS_Store
+
+src/countryInfo.txt
+
+src/countries.db
