@@ -405,6 +405,9 @@
                 ratio = view.height / view.width,
                 winH = me.__h;
             h = Math.min(h, winH);
+            if (me.__lastH && me.__lastH == h && me.__lastW == w) return;
+            me.__lastH = h;
+            me.__lastW = w;
             $('#map').css({ height: h });
             me.map.resize(w, h);
         },
