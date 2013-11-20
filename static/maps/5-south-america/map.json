@@ -1,0 +1,33 @@
+{
+    "title" : {
+        "en" : "South America",
+        "fr" : "Amérique du Sud",
+        "es" : "América del Sur",
+        "de" : "Südamerika",
+        "it" : "America del Sud"
+    },
+    "keys" : ["ARG", "BOL", "BRA", "CHL", "COL", "ECU", "FLK", "GUF", "GUY", "PER", "PRY", "SUR", "URY", "VEN", "FRA", "PAN"],
+    "alias-keys": [{"GUF": "GF", "CHL": "CL", "FLK": "FK", "PER": "PE", "URY": "UY", "ECU": "EC", "BOL": "BO", "SUR": "SR", "ARG": "AR", "VEN": "VE", "GUY": "GY", "PRY": "PY", "COL": "CO", "BRA": "BR"}, {"GUF": "254", "CHL": "152", "FLK": "238", "PER": "604", "URY": "858", "ECU": "218", "BOL": "068", "SUR": "740", "ARG": "032", "VEN": "862", "GUY": "328", "PRY": "600", "COL": "170", "BRA": "076"}],
+    "layers" : {
+        "bg": {
+            "src":"layer0",
+            "styles": {
+                "stroke-width" : 4,
+                "fill" : "none",
+                "stroke": "#ddd",
+                "stroke-linejoin": "round"
+            }
+        },
+        "layer0": {
+            "src": "layer0",
+            "styles": {
+                "stroke-width" : "1",
+                "fill" : "#F7F2F2",
+                "stroke-linejoin": "round"
+            }
+        }
+    },
+    "options": {
+        "padding": 0
+    }
+}

@@ -1,0 +1,19 @@
+proj:
+    id: laea
+    lon0: -80
+    lat0: 63
+layers:
+    layer0:
+        src: ../europe/shp/50m_admin_0_countries.shp
+        simplify: 1.5
+        attributes:
+            label: NAME
+            key: SU_A3
+            iso_a2: ISO_A2
+        filter: ['SU_A3', 'in', ['ATG', 'AIA', 'ABW', 'BRB', 'BLM', 'BMU', 'BES', 'BHS', 'BLZ', 'CAN', 'CRI', 'CUB', 'CUW', 'DMA', 'DOM', 'GRD', 'GRL', 'GLP', 'GTM', 'HND', 'HTI', 'JAM', 'KNA', 'CYM', 'LCA', 'MAF', 'MTQ', 'MSR', 'MEX', 'NIC', 'PAN', 'SPM', 'PRI', 'SLV', 'SXM', 'TCA', 'TTO', 'USA', 'VCT', 'VGB', 'VIR', 'ANT']]
+bounds:
+    mode: points
+    data: [[-178, 50], [-52, 47], [-77, 7], [-18, 78]]
+export:
+    round: 1
+    width: 700

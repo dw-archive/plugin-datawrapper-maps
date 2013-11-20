@@ -1,0 +1,33 @@
+{
+    "title" : {
+        "en" : "North America",
+        "fr" : "Amérique du Nord",
+        "es" : "América del Norte",
+        "de" : "Nordamerika",
+        "it" : "America del Nord"
+    },
+    "keys" :  ["ATG", "AIA", "ABW", "BRB", "BLM", "BMU", "BES", "BHS", "BLZ", "CAN", "CRI", "CUB", "CUW", "DMA", "DOM", "GRD", "GRL", "GLP", "GTM", "HND", "HTI", "JAM", "KNA", "CYM", "LCA", "MAF", "MTQ", "MSR", "MEX", "NIC", "PAN", "SPM", "PRI", "SLV", "SXM", "TCA", "TTO", "USA", "VCT", "VGB", "VIR", "ANT"],
+    "alias-keys": [{"ATG": "AG", "HND": "HN", "USA": "US", "DOM": "DO", "MSR": "MS", "CAN": "CA", "GLP": "GP", "BES": "BQ", "CRI": "CR", "AIA": "AI", "PAN": "PA", "ANT": "AN", "PRI": "PR", "SXM": "SX", "TTO": "TT", "SPM": "PM", "BMU": "BM", "CYM": "KY", "TCA": "TC", "CUW": "CW", "MTQ": "MQ", "BLZ": "BZ", "DMA": "DM", "SLV": "SV", "MAF": "MF", "GTM": "GT", "VGB": "VG", "KNA": "KN", "BLM": "BL", "GRD": "GD", "JAM": "JM", "VCT": "VC", "CUB": "CU", "ABW": "AW", "GRL": "GL", "NIC": "NI", "HTI": "HT", "MEX": "MX", "VIR": "VI", "LCA": "LC", "BHS": "BS", "BRB": "BB"}, {"ATG": "028", "HND": "340", "USA": "840", "DOM": "214", "MSR": "500", "CAN": "124", "GLP": "312", "BES": "535", "CRI": "188", "AIA": "660", "PAN": "591", "ANT": "530", "PRI": "630", "SXM": "534", "TTO": "780", "SPM": "666", "BMU": "060", "CYM": "136", "TCA": "796", "CUW": "531", "MTQ": "474", "BLZ": "084", "DMA": "212", "SLV": "222", "MAF": "663", "GTM": "320", "VGB": "092", "KNA": "659", "BLM": "652", "GRD": "308", "JAM": "388", "VCT": "670", "CUB": "192", "ABW": "533", "GRL": "304", "NIC": "558", "HTI": "332", "MEX": "484", "VIR": "850", "LCA": "662", "BHS": "044", "BRB": "052"}],
+    "layers" : {
+        "bg": {
+            "src":"layer0",
+            "styles": {
+                "stroke-width" : 4,
+                "fill" : "none",
+                "stroke": "#ddd",
+                "stroke-linejoin": "round"
+            }
+        },
+        "layer0": {
+            "src": "layer0",
+            "styles": {
+                "stroke-width" : "1",
+                "fill" : "#F7F2F2",
+                "stroke-linejoin": "round"
+            }
+        }
+    },
+    "options": {
+        "padding": 0
+    }
+}
