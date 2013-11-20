@@ -384,7 +384,7 @@
                     keyColumn = me.axes(true).keys,
                     valueColumn = me.axes(true).color;
                 _.each(keyColumn.raw(), function (geo_code, index) {
-                    var value = valueColumn.val(index);
+                    var value = colorByNumbers() ? valueColumn.val(index) : valueColumn.raw(index);
                     data[geo_code] = {};
                     data[geo_code].raw = value;
                     data[geo_code].label = getLabel(geo_code);
