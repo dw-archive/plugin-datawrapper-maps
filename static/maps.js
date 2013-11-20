@@ -429,6 +429,22 @@
                         .css({ 'border-left-color': me.scale(val) })
                         .addClass('legend-item')
                         .appendTo($legend);
+
+                    // add hover effect to highlight regions
+                    d.hover(function(e) {
+                        function o(pd) {
+                            return me.data[pd.key] && me.data[pd.key].raw == val ? 1 : 0.1;
+                        }
+                        if (me.map.layers['bg']) {
+                            me.map.getLayer('bg').style('opacity', o);
+                        }
+                        me.map.getLayer('layer0').style('opacity', o);
+                    }, function() {
+                        me.map.getLayer('layer0').style('opacity', 1);
+                        if (me.map.layers['bg']) {
+                            me.map.getLayer('bg').style('opacity', 1);
+                        }
+                    });
                 });
                 $('#map').before($legend);
             } else {
