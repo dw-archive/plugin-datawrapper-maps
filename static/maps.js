@@ -222,7 +222,6 @@
                         return css;
                     }
                 });
-                
 
                 if (me.map.layers['tooltip-target']) {
                     me.map.getLayer('tooltip-target').remove();
