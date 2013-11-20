@@ -58,6 +58,12 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 "color" => array(
                     "title" => __("Color"),
                     "accepts" => array("number", "text")
+                ),
+                "tooltip" => array(
+                    "title" => __("Tooltip"),
+                    "multiple" => true,
+                    "optional" => true,
+                    "accepts" => array("text", "number", "date")
                 )
             ),
             "locale" => array(
