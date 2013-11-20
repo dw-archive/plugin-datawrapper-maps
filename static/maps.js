@@ -223,6 +223,13 @@
                     }
                 });
                 
+
+                if (me.map.layers['tooltip-target']) {
+                    me.map.getLayer('tooltip-target').remove();
+                    me.map.getLayer('tooltip-target').paper.remove();
+                    delete me.map.layers['tooltip-target'];
+                }
+
                 me.map.addLayer('layer0', {
                     name: 'tooltip-target',
                     styles: {
