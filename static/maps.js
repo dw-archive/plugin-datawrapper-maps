@@ -403,9 +403,8 @@
             var me = this,
                 view = me.map.layers.layer0.view,
                 ratio = view.height / view.width,
-                mapH = me.get('fit-into-chart', false) ? h : w * ratio,
-                winH = window.innerHeight - $('#header').outerHeight() - $('#footer').outerHeight() - 60 - 30;
-            h = Math.min(mapH, winH);
+                winH = me.__h;
+            h = Math.min(h, winH);
             $('#map').css({ height: h });
             me.map.resize(w, h);
         },
