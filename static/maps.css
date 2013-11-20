@@ -85,3 +85,15 @@ path {
 .ui-tooltip-datawrapper .qtip-titlebar {
     background: #eee;
 }
+
+.legend .legend-item {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1; /* Fix for IE7 */
+    *display: inline; /* Fix for IE7 */
+    margin: 0 10px 5px 0;
+    white-space: nowrap;
+    padding-left: 5px;
+    border-left: 15px solid #fff;
+}
+

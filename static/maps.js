@@ -418,14 +418,18 @@
                 $legend = $('#chart .scale, #chart .legend');
 
             $legend.remove();
+
             if (me.axes(true).color.type() != 'number') {
                 // show category legend
                 var lvalues = [];
+                $legend = $("<div />").addClass('legend');
                 _.each(_.unique(me.axes(true).color.values()), function(val) {
-                    lvalues.push({ label: val, color: me.scale(val) });
+                    var d = $('<div />')
+                        .html(val)
+                        .css({ 'border-left-color': me.scale(val) })
+                        .addClass('legend-item')
+                        .appendTo($legend);
                 });
-                $legend = $("<div />").addClass('legend').css({ height: 20 });
-                me.addLegend(lvalues, $legend);
                 $('#map').before($legend);
             } else {
                 // show value legend
