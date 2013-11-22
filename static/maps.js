@@ -600,7 +600,7 @@
         },
 
         _svgCanvas: function() {
-            if (!this.map.layers.layer0) return null;
+            if (!this.map || !this.map.layers || !this.map.layers.layer0) return null;
             return this.map.layers.layer0.paper.canvas;
         }
 
