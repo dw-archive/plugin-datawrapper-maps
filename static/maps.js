@@ -192,14 +192,15 @@
             if (highlighted.length > 0) {
                 me.map.addSymbols({
                     type: $K.HtmlLabel,
-                    data: highlighted,
+                    data: _.filter(highlighted, function(key) {
+                        return me.data[key] || me.data[reverseAlias[key]];
+                    }),
                     location: function(key) {
                         if (!me.data[key] && reverseAlias[key]) key = reverseAlias[key];
                         return 'layer0.'+key;
                     },
                     text: function(key) {
                         if (!me.data[key] && reverseAlias[key]) key = reverseAlias[key];
-                        if (!me.data[key]) return "";
                         return me.data[key].label+'<br/>'+me.formatValue(me.data[key].value, true);
                     },
                     css: function(key) {
