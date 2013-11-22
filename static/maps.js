@@ -162,6 +162,8 @@
                     };
                 })();
 
+            if (!me.scale) me.scale = chroma.scale('Reds');
+
             me.map.getLayer('layer0').style({
                 fill: fill,
                 stroke: function(pd) {
