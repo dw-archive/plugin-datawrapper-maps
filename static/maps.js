@@ -366,12 +366,14 @@
                 if (me._localized_labels && me._localized_labels[key]) {
                     return me._localized_labels[key];
                 }
-                var paths = layer0.getPaths({key: key.toString() });
-                if (paths.length) {
-                    return paths[0].data.label;
-                }
-                if (reverseAlias[key]) {
-                    return getLabel(reverseAlias[key]);
+                if (layer0) {
+                    var paths = layer0.getPaths({key: key.toString() });
+                    if (paths.length) {
+                        return paths[0].data.label;
+                    }
+                    if (reverseAlias[key]) {
+                        return getLabel(reverseAlias[key]);
+                    }
                 }
                 return key;
             }
@@ -598,6 +600,7 @@
         },
 
         _svgCanvas: function() {
+            if (!this.map.layers.layer0) return null;
             return this.map.layers.layer0.paper.canvas;
         }
 
