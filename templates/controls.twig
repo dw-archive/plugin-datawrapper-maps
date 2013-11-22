@@ -3,22 +3,24 @@
     <script type="text/javascript">
         $(document).ready(function() {
             // Automatic selection
-            $('#vis-options').on('dw:vis-option:map-selector', function(evt, args) {
-                var chart = dw.backend.currentChart;
-                var options     = $("select[name=map] option");
+            $('#vis-options').off('dw:vis-option:map-selector').on('dw:vis-option:map-selector', function(evt, args) {
+                var chart = dw.backend.currentChart,
+                    rt = $('#vis-options-'+args.key),
+                    $select = $('select.map', rt),
+                    $options = $('option', $select);
 
-                if (chart.get('metadata.visualize.map') === undefined || chart.get('metadata.visualize.map-path') === undefined) {
+                if (!chart.get('metadata.visualize.map')) {
                     // There is no defined map, we use the first map
-                    chart.set('metadata.visualize.map', $(options.get(0)).attr('value'));
-                    chart.set('metadata.visualize.map-path', $(options.get(0)).data('path'));
+                    chart.set('metadata.visualize.map', '{{ option.options[0].value }}');
+                    chart.set('metadata.visualize.map-path', '{{ option.options[0].path }}');
                 } else {
-                    options.filter("[value="+chart.get('metadata.visualize.map')+"]").prop("selected", true);
+                    $('.map option[value='+chart.get('metadata.visualize.map')+']', rt).prop("selected", true);
                 }
                 // Bind events
-                $("select[name=map]").change(function(e){
+                $select.off('change').change(function(e){
                     $('.notification').remove();
-                    var map_id = $("select[name=map]").val(),
-                        map_path = $("select[name=map] option[value="+map_id+"]").data('path');
+                    var map_id = $select.val(),
+                        map_path = $('option[value='+map_id+']', $select).data('path');
                     chart.set('metadata.visualize.map', map_id);
                     chart.set('metadata.visualize.map-path', map_path);
                 });
@@ -30,7 +32,7 @@
     <div class="control-group vis-option-type-select-axis-column">
         <label class="control-label">{{ option.label }}</label>
         <div class="controls" >
-            <select name="map">
+            <select class="map">
                 {% for map in option.options %}
                     <option value="{{ map.value }}" data-keys="{{ map.keys | json }}" data-path="{{ map.path }}">{{ map.label }}</option>
                 {% endfor %}
