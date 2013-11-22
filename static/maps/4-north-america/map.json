@@ -29,5 +29,9 @@
     },
     "options": {
         "padding": 0
+    },
+    "custom-center": {
+        "USA": [-100,40],
+        "CAN": [-112,60]
     }
 }

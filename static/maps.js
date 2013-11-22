@@ -38,7 +38,7 @@
             // this is called by our own render() function
             var me = this;
             me._localized_labels = undefined;
-            me.map_meta          = undefined;
+            me.map_meta = undefined;
             me.map.clear();
             $('#chart').html('').off('click').off('mousemove').off('mouseenter').off('mouseover');
             $('.chart .filter-ui').remove();
@@ -197,6 +197,11 @@
                     }),
                     location: function(key) {
                         if (!me.data[key] && reverseAlias[key]) key = reverseAlias[key];
+                        if (me.map_meta['custom-center'] && me.map_meta['custom-center'][key]) {
+                            // use custom center
+                            return me.map_meta['custom-center'][key];
+                        }
+                        // use centroid of region
                         return 'layer0.'+key;
                     },
                     text: function(key) {
