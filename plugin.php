@@ -98,7 +98,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             "map" => array(
                 "type"    => "map-selector",
                 "label"   => __("Base map", $id),
-                "options" => $this->getMapsAsOption(),
+                "options" => $this->getMapsAsOption()
             ),
 
             "map-keys" => array(
