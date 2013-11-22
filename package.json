@@ -1,9 +1,9 @@
 {
    "name": "visualization-maps",
-   "version": "0.9",
+   "version": "0.9.1",
    "author": "Edouard Richard",
    "dependencies": {
-      "core": "1.6",
+      "core": "1.6.2",
       "visualization-raphael-chart": "*",
       "color-gradient-selector": "*",
       "color-category-selector": "*"
