@@ -493,7 +493,7 @@
                             $step = $("<div class='step'></div>"),
                             $sticker = $("<span class='sticker'></span>").appendTo($legend);
 
-                        $step.css({width: size, 'background-color': color});
+                        $step.css({width: size, 'background-color': color.hex() });
                         // settings ticker
                         $sticker.css('left', offset);
                         if (step.toString().split('.')[1] && step.toString().split('.')[1].length > 2){
