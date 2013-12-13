@@ -426,9 +426,7 @@
         showLegend: function(scale) {
             // remove old legend
             var me = this,
-                $legend = $('#chart .scale, #chart .legend');
-
-            $legend.remove();
+                $legend = $('#chart .scale, #chart .legend').remove();
 
             if (me.axes(true).color.type() != 'number') {
                 // show category legend
