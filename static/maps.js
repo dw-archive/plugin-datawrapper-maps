@@ -2,7 +2,7 @@
 (function () {
 
     // Map
-    // -------------------------
+    // ---
 
 
     dw.visualization.register('maps', 'raphael-chart', {
@@ -11,6 +11,7 @@
             var me = this;
             me.setRoot(el);
 
+            // init datawrapper style for jquery.qtip
             $.fn.qtip.defaults.style.classes = 'ui-tooltip-datawrapper';
 
             if (me.map && me.get('map') == me.__lastSVG) {
@@ -32,10 +33,15 @@
         reset: function() {
             // we override reset() with an empty function because we
             // want to decide ourself whether or not we want to reset the map
+            // e.g. if just the colors are changed we don't need to re-draw
+            // the entire SVG dom but just adjust the colors..
         },
 
+        /*
+         * resets the initial map state in preparation of
+         * a new rendering
+         */
         _reset: function() {
-            // this is called by our own render() function
             var me = this;
             me._localized_labels = undefined;
             me.map_meta = undefined;
@@ -70,6 +76,9 @@
                     .done(function(res) { me.map_meta = res; });
             }
 
+            /*
+             * return the dict which contains all the labels in current locale
+             */
             function getLabelJSON() {
                 var mapOpt = _.find(me.meta.options.map.options, function(m) {
                     return m['path'] == map_path;
@@ -85,7 +94,7 @@
                 return false;
             }
 
-            // FIXME: set the right size
+            // initialize kartograph instance
             me.map = kartograph.map($map, c.w-10);
             me.__lastSVG = me.get('map');
 
@@ -100,8 +109,13 @@
 
                 nextLayer();
 
+                // hide map until the rendering is done
                 me.__root.css('opacity', 0);
 
+                /*
+                 * asynchronously adds another layer to the map
+                 * if all layers are added, proceed() is called
+                 */
                 function nextLayer() {
                     if (layers.length) {
                         var l = layers.shift();
@@ -115,7 +129,11 @@
                     }
                 }
 
+                /*
+                 * called after all layers have been rendered
+                 */
                 function proceed() {
+                    // hide map until the rendering is done
                     me.__root.css('opacity', 1);
                     if (me.map_meta.options) {
                         $.extend(me.map.opts, me.map_meta.options);
@@ -134,7 +152,8 @@
         },
 
         /*
-         * called by render() whenever only the map config changed
+         * called by render() whenever the map config changed
+         * this resizes the map and updates the colors
          */
         updateMap: function() {
             var me = this,
@@ -162,7 +181,10 @@
                     };
                 })();
 
-            if (!me.scale) me.scale = chroma.scale('Reds');
+            if (!me.scale) {
+                // fallback to red color scheme, should not happen
+                me.scale = chroma.scale('Reds');
+            }
 
             me.map.getLayer('layer0').style({
                 fill: fill,
@@ -190,11 +212,16 @@
             try { me.map.removeSymbols(); } catch (e) {}
 
             if (highlighted.length > 0) {
+                // add text labels for highlighted elements
                 me.map.addSymbols({
                     type: $K.HtmlLabel,
+                    // only show labels for paths that exist in our map
                     data: _.filter(highlighted, function(key) {
                         return me.data[key] || me.data[reverseAlias[key]];
                     }),
+                    // by default, the path centroid is used as label position
+                    // however, this can be changed by defining a custom-center
+                    // in map.json (see North America example map)
                     location: function(key) {
                         if (!me.data[key] && reverseAlias[key]) key = reverseAlias[key];
                         if (me.map_meta['custom-center'] && me.map_meta['custom-center'][key]) {
@@ -204,10 +231,13 @@
                         // use centroid of region
                         return 'layer0.'+key;
                     },
+                    // show both label and the formatted value as text
                     text: function(key) {
                         if (!me.data[key] && reverseAlias[key]) key = reverseAlias[key];
                         return me.data[key].label+'<br/>'+me.formatValue(me.data[key].value, true);
                     },
+                    // make sure the label is readable against the paths color
+                    // also add some buffer using text-shadow
                     css: function(key) {
                         if (!me.data[key] && reverseAlias[key]) key = reverseAlias[key];
                         var fill = chroma.hex(me.data[key].color).luminance() > 0.5 ? '#000' : '#fff';
@@ -226,12 +256,16 @@
                     }
                 });
 
+                // once the label symbols are added we need to add another
+                // invisible layer for catching the mouse events
+                // before we do so we need to remove the layer if it exists already
                 if (me.map.layers['tooltip-target']) {
                     me.map.getLayer('tooltip-target').remove();
                     me.map.getLayer('tooltip-target').paper.remove();
                     delete me.map.layers['tooltip-target'];
                 }
 
+                // now add the invisible layer for catching the mouse events
                 me.map.addLayer('layer0', {
                     name: 'tooltip-target',
                     styles: {
@@ -246,6 +280,10 @@
 
             me.keyLabel = getLabel;
 
+            /*
+             * returns the fill color (as hex string) for
+             * the given path data.
+             */
             function fill(path_data) {
                 if (path_data === undefined || (path_data === null)) return false;
 
@@ -268,10 +306,18 @@
                 return no_data_color;
             }
 
+            /*
+             * returns true if the data column is numeric
+             */
             function colorByNumbers() {
                 return me.axes(true).color.type() == 'number';
             }
 
+            /*
+             * returns the reverse key aliases for the map
+             * they are used to maximize the likelyhood that
+             * we identify the map paths by their id
+             */
             function getReverseAliases() {
                 var rev = {};
                 _.each(me.map_meta.keys, function(key) {
