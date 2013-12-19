@@ -412,18 +412,26 @@
                 return filtered;
             }
 
+            /*
+             * returns the displayed label for a given key
+             * looks up the translated region names in locale.json
+             * and falls back to the label stored with the svg map
+             */
             function getLabel(key) {
                 // Load from <map-path>/locale/<lang>.json
                 var layer0 = me.map.getLayer('layer0');
                 if (me._localized_labels && me._localized_labels[key]) {
+                    // yeah, we have a translated label
                     return me._localized_labels[key];
                 }
                 if (layer0) {
                     var paths = layer0.getPaths({key: key.toString() });
-                    if (paths.length) {
+                    if (paths.length && paths[0].data.label) {
+                        // use the label stored in the svg map
                         return paths[0].data.label;
                     }
                     if (reverseAlias[key]) {
+                        // try again with a different key (if present)
                         return getLabel(reverseAlias[key]);
                     }
                 }
@@ -456,19 +464,29 @@
 
         }, // end updateMap
 
+        /*
+         * resizes the map so that the map fits into the
+         * chart area.
+         */
         resizeMap: function(w, h) {
             var me = this,
                 view = me.map.layers.layer0.view,
                 ratio = view.height / view.width,
                 winH = me.__h;
             h = Math.min(h, winH);
-            if (me.__lastH && me.__lastH == h && me.__lastW == w) return;
+            if (me.__lastH && me.__lastH == h && me.__lastW == w) {
+                // if the size hasn't changed, there is no need for action
+                return;
+            }
             me.__lastH = h;
             me.__lastW = w;
-            $('#map').css({ height: h });
+            $('#map').css({ height: h });  // update size of map container
             me.map.resize(w, h);
         },
 
+        /*
+         * add the map legend
+         */
         showLegend: function(scale) {
             // remove old legend
             var me = this,
@@ -486,7 +504,7 @@
                         .appendTo($legend);
 
                     // add hover effect to highlight regions
-                    d.hover(function(e) {
+                    d.hover(function mouseover(e) {
                         function o(pd) {
                             return me.data[pd.key] && me.data[pd.key].raw == val ? 1 : 0.1;
                         }
@@ -494,7 +512,7 @@
                             me.map.getLayer('bg').style('opacity', o);
                         }
                         me.map.getLayer('layer0').style('opacity', o);
-                    }, function() {
+                    }, function mouseout() {
                         me.map.getLayer('layer0').style('opacity', 1);
                         if (me.map.layers['bg']) {
                             me.map.getLayer('bg').style('opacity', 1);
@@ -503,7 +521,7 @@
                 });
                 $('#map').before($legend);
             } else {
-                // show value legend
+                // show legend for numeric data
                 $legend = $("<div />").addClass('scale');
                 var domains = scale.domain(),
                     legend_size = Math.min(Math.max(Math.min(300, me.__w), me.__w*0.6), 500),
