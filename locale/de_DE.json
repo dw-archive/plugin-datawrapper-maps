@@ -1,5 +1,5 @@
 {
-  "Maps":"Karte",
+  "Map":"Karte",
   "Key":"Schlüssel",
   "Color":"Farbe",
   "Tooltip":"Tooltip",
@@ -13,8 +13,5 @@
   "Color gradient":"Farbverlauf",
   "Here you can define a <b>color gradient<\/b> from which map colors are picked \naccording to the <b>classification<\/b>.":"Hier kann ein <b>Farbverlauf<\/b> definiert werden, aus dem anhand der <b>Klassifikation<\/b> die Kartenregionen eingefärbt werden.",
   "Category colors":"Kategoriefarben",
-  "Here you can select a palette from which the category colors are picked. On \ntop of that you can assign custom colors for each category.":"Hier kann eine Palette ausgewählt werden, aus der die Kategoriefarben entnommen werden. Alternativ können benutzerdefinierte Farben für jede Kategorie zugewiesen werden.",
-  "Unemployment rate in the European Union":"Arbeitslosigkeit in der EU",
-  "Europe Map":"Europakarte",
-  "The unemployment rate is the percentage of unemployed in the labor force, on \nthe basis of the definition of the International Labour Organization (ILO).":"The unemployment rate is the percentage of unemployed in the labor force, on \nthe basis of the definition of the International Labour Organization (ILO)."
+  "Here you can select a palette from which the category colors are picked. On \ntop of that you can assign custom colors for each category.":"Hier kann eine Palette ausgewählt werden, aus der die Kategoriefarben entnommen werden. Alternativ können benutzerdefinierte Farben für jede Kategorie zugewiesen werden."
 }

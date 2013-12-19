@@ -1,5 +1,5 @@
 {
-  "Maps":"Carte",
+  "Map":"Map",
   "Key":"Key",
   "Color":"Color",
   "Tooltip":"Tooltip",
@@ -13,8 +13,5 @@
   "Color gradient":"Dégradé de couleurs",
   "Here you can define a <b>color gradient<\/b> from which map colors are picked \naccording to the <b>classification<\/b>.":"Here you can define a <b>color gradient<\/b> from which map colors are picked \naccording to the <b>classification<\/b>.",
   "Category colors":"Category colors",
-  "Here you can select a palette from which the category colors are picked. On \ntop of that you can assign custom colors for each category.":"Here you can select a palette from which the category colors are picked. On \ntop of that you can assign custom colors for each category.",
-  "Unemployment rate in the European Union":"Taux de chômage dans l'Union Européenne",
-  "Europe Map":"Carte d'Europe",
-  "The unemployment rate is the percentage of unemployed in the labor force, on \nthe basis of the definition of the International Labour Organization (ILO).":"Le taux de chômage représente le pourcentage de chômeurs dans la population active, sur la base de la définition de l'Organisation Internationale du Travail (OIT)."
+  "Here you can select a palette from which the category colors are picked. On \ntop of that you can assign custom colors for each category.":"Here you can select a palette from which the category colors are picked. On \ntop of that you can assign custom colors for each category."
 }
