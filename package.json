@@ -3,7 +3,7 @@
    "version": "0.9.1",
    "author": "Edouard Richard",
    "dependencies": {
-      "core": "1.6.2",
+      "core": "1.7.0",
       "visualization-raphael-chart": "*",
       "color-gradient-selector": "*",
       "color-category-selector": "*"

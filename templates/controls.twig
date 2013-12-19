@@ -3,7 +3,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             // Automatic selection
-            $('#vis-options').off('dw:vis-option:map-selector').on('dw:vis-option:map-selector', function(evt, args) {
+            dw.backend.on('sync-option:map-selector', function(args) {
                 var chart = dw.backend.currentChart,
                     rt = $('#vis-options-'+args.key),
                     $select = $('select.map', rt),
