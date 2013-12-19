@@ -49,7 +49,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                     "cdn" => "//assets-datawrapper.s3.amazonaws.com/vendor/qtip/2.1.1/jquery.qtip.min.js"
                 )
             ),
-            "title"   => __("Maps", $id),
+            "title"   => __("Map", $id).' (beta)',
             "order"   => 92,
             "axes"    => array(
                 "keys" => array(
