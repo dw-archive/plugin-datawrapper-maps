@@ -71,7 +71,6 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 "ids-mismatching" => __("A significant fraction of your data (%d) could not be assigned to regions of the chosen map. Please make sure that <ul><li>you have selected the correct map and</li><li>that your dataset uses the same identifiers as used in the map.</li></ul>
                     <p>You may find this <a download='template.csv' href='%t'>template dataset useful</a>.</li></ul>", $id)
             ),
-            "hide-base-color-selector" => true,
             "options" => $this->getOptions()
         );
     }
