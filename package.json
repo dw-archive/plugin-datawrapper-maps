@@ -14,6 +14,6 @@
    }],
    "repository": {
       "type": "git",
-      "url": "git@bitbucket.org:datawrapper/dw-plugin-visualization-maps.git"
+      "url": "git@github.com:gka/datawrapper-maps.git"
    }
 }
