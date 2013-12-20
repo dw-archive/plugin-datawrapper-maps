@@ -28,10 +28,13 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             DatawrapperHooks::VIS_OPTION_CONTROLS,
             function($o, $k) use ($app, $plugin) {
                 $env = array('option' => $o, 'key' => $k);
-                $app->render('plugins/' . $plugin->getName() . '/controls.twig', $env);
+                $app->render('plugins/' . $plugin->getName() . '/map-selector.twig', $env);
             }
         );
 
+        $this->declareAssets(array(
+            'sync-map-selector.js'
+        ), "|/chart/[^/]+/visualize|");
     }
 
     public function getMeta() {

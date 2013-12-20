@@ -1,0 +1,14 @@
+{% if option.type == 'map-selector' %}
+
+    <div class="control-group vis-option-type-select-axis-column">
+        <label class="control-label">{{ option.label }}</label>
+        <div class="controls" >
+            <select class="map">
+                {% for map in option.options %}
+                    <option value="{{ map.value }}" data-keys="{{ map.keys | json }}" data-path="{{ map.path }}">{{ map.label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+{% endif %}
