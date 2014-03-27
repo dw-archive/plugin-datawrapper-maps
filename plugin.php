@@ -39,17 +39,22 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
 
     public function getMeta() {
         $id = $this->getName();
+        $cdn_url = $GLOBALS['dw_config']['cdn_asset_base_url'];
         return array(
             "id" => "maps",
             "extends" => "raphael-chart",
             "libraries" => array(
                 array(
-                    "local" => "vendor/kartograph.min.js",
-                    "cdn" => "//assets-datawrapper.s3.amazonaws.com/vendor/kartograph-js/0.8.3/kartograph.min.js"
+                    "local" => "vendor/kartograph.js",
+                    "cdn" => !empty($cdn_url)
+                        ? $cdn_url . "vendor/kartograph-js/0.8.5/kartograph.min.js"
+                        : null
                 ),
                 array(
                     "local" => "vendor/jquery.qtip.min.js",
-                    "cdn" => "//assets-datawrapper.s3.amazonaws.com/vendor/qtip/2.1.1/jquery.qtip.min.js"
+                    "cdn" => !empty($cdn_url)
+                        ? $cdn_url . "vendor/qtip/2.1.1/jquery.qtip.min.js"
+                        : null
                 )
             ),
             "title"   => __("Map", $id).' (beta)',
