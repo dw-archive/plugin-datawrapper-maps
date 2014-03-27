@@ -34,10 +34,42 @@
 	border-left: 0;
 }
 
+.scale.mobile .scale_title {font-size: 1em; line-height: 1.4em; font-weight: bold; }
+
+
+.scale.mobile {
+    height: 30px;
+    padding-top: 5px;
+}
+
+.scale.mobile div {
+    vertical-align: top;
+}
+
+.scale.mobile .sticker {
+    height: 10px;
+}
+
+.scale.mobile .step {
+    height: 7px;
+}
+
+.scale.mobile .sticker .value {
+    font-size: 9px;
+    top: 10px;
+}
+
 html body #footer {
     position: relative;
     top: auto;
     left: auto;
+}
+
+
+html body #footer .footer-left { left: 0;}
+
+html body .chart-footer-text {
+    top: 3px;
 }
 
 path {
@@ -96,4 +128,5 @@ path {
     padding-left: 5px;
     border-left: 15px solid #fff;
 }
+
 

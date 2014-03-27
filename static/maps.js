@@ -490,6 +490,7 @@
         showLegend: function(scale) {
             // remove old legend
             var me = this,
+                mobile = me.__w < 400,
                 $legend = $('#chart .scale, #chart .legend').remove();
 
             if (me.axes(true).color.type() != 'number') {
@@ -523,8 +524,10 @@
             } else {
                 // show legend for numeric data
                 $legend = $("<div />").addClass('scale');
+                if (mobile) $legend.addClass('mobile');
+
                 var domains = scale.domain(),
-                    legend_size = Math.min(Math.max(Math.min(300, me.__w), me.__w*0.6), 500),
+                    legend_size = Math.min(Math.max(Math.min(mobile ? 250 : 300, me.__w), me.__w*0.6), 500),
                     domains_delta = domains[domains.length-1] - domains[0],
                     offset = 0,
                     max_height = 0,
