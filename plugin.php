@@ -45,7 +45,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             "extends" => "raphael-chart",
             "libraries" => array(
                 array(
-                    "local" => "vendor/kartograph.js",
+                    "local" => "vendor/kartograph.min.js",
                     "cdn" => !empty($cdn_url)
                         ? $cdn_url . "vendor/kartograph-js/0.8.5/kartograph.min.js"
                         : null
