@@ -46,9 +46,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
             "libraries" => array(
                 array(
                     "local" => "vendor/kartograph.min.js",
-                    "cdn" => !empty($cdn_url)
-                        ? $cdn_url . "vendor/kartograph-js/0.8.5/kartograph.min.js"
-                        : null
+                    "cdn" => '//cdnjs.cloudflare.com/ajax/libs/kartograph-js/0.8.5/kartograph.min.js'
                 ),
                 array(
                     "local" => "vendor/jquery.qtip.min.js",
