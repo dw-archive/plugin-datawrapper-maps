@@ -8,6 +8,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
     }
 
     const HOOK_REGISTER_MAP = 'maps-register-map';
+    const HOOK_GET_MAPS = 'maps-get-maps';  // expose maps to other plugins
 
     public function init() {
         $plugin = $this;
@@ -16,6 +17,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
 
         // let other plugins add more maps
         DatawrapperHooks::register(self::HOOK_REGISTER_MAP, array($this, 'addMap'));
+        DatawrapperHooks::register(self::HOOK_GET_MAPS, array($this, 'getMaps'));
 
         // and add the maps included in our own /static/maps/ folder
         foreach (glob(dirname(__FILE__) . "/static/maps/*/map.json") as $file) {
@@ -39,7 +41,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
 
     public function getMeta() {
         $id = $this->getName();
-        $cdn_url = $GLOBALS['dw_config']['cdn_asset_base_url'];
+        $cdn_url = $GLOBALS['dw_config']['asset_domain'];
         return array(
             "id" => "maps",
             "extends" => "raphael-chart",
@@ -51,7 +53,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
                 array(
                     "local" => "vendor/jquery.qtip.min.js",
                     "cdn" => !empty($cdn_url)
-                        ? $cdn_url . "vendor/qtip/2.1.1/jquery.qtip.min.js"
+                        ? '//' . $cdn_url . "/vendor/qtip/2.1.1/jquery.qtip.min.js"
                         : null
                 )
             ),
@@ -87,7 +89,7 @@ class DatawrapperPlugin_VisualizationMaps extends DatawrapperPlugin_Visualizatio
         DatawrapperVisualization::register($this, $this->getMeta(), array($this, 'getAssets'));
     }
 
-    private function getMaps() {
+    public function getMaps() {
         return $this->maps;
     }
 
